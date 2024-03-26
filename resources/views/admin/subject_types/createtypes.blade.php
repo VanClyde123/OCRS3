@@ -8,42 +8,42 @@
         const labPercentageInput = document.querySelector('input[name="lab_percentage"]');
         
         function validatePercentage() {
-    const lecPercentage = parseFloat(lecPercentageInput.value || 0);
-    const labPercentage = parseFloat(labPercentageInput.value || 0);
-    const totalPercentage = lecPercentage + labPercentage;
+        const lecPercentage = parseFloat(lecPercentageInput.value || 0);
+        const labPercentage = parseFloat(labPercentageInput.value || 0);
+        const totalPercentage = lecPercentage + labPercentage;
 
-    if (lecPercentage > 0 && labPercentage > 0) {
-        if (totalPercentage > 1) {
-            alert('Total percentage exceeds 100%');
-           
-            lecPercentageInput.value = '';
-            labPercentageInput.value = '';
-        } else if (totalPercentage < 1) {
-            alert('Total percentage is less than 100%');
-          
-            lecPercentageInput.value = '';
-            labPercentageInput.value = '';
-        }
+        if (lecPercentage > 0 && labPercentage > 0) {
+            if (totalPercentage > 1) {
+                alert('Total percentage exceeds 100%');
+               
+                lecPercentageInput.value = '';
+                labPercentageInput.value = '';
+            } else if (totalPercentage < 1) {
+                alert('Total percentage is less than 100%');
+              
+                lecPercentageInput.value = '';
+                labPercentageInput.value = '';
             }
-        }
+                }
+            }
 
-        lecPercentageInput.addEventListener('input', function() {
-            if (parseFloat(this.value) > 0.99) {
-                alert('Please enter a maximum of 0.99');
-                this.value = '0.00';
-            }
-            validatePercentage();
+            lecPercentageInput.addEventListener('input', function() {
+                if (parseFloat(this.value) > 0.99) {
+                    alert('Please enter a maximum of 0.99');
+                    this.value = '0.00';
+                }
+                validatePercentage();
+            });
+
+            labPercentageInput.addEventListener('input', function() {
+                if (parseFloat(this.value) > 0.99) {
+                    alert('Please enter a maximum of 0.99');
+                    this.value = '0.00'; 
+                }
+                validatePercentage();
+            });
         });
-
-        labPercentageInput.addEventListener('input', function() {
-            if (parseFloat(this.value) > 0.99) {
-                alert('Please enter a maximum of 0.99');
-                this.value = '0.00'; 
-            }
-            validatePercentage();
-        });
-    });
-</script>
+    </script>
 
 
 <style>
