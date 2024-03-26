@@ -48,7 +48,7 @@
 
 <style>
   .instruction-text {
-    font-size: 14px; /* Adjust the font size as needed */
+    font-size: 14px; 
 }
 </style>
 <div class="content-wrapper">
@@ -72,7 +72,7 @@
                             <h3 class="card-title">Create Subject Type for Calculation</h3>
                         </div>
                         <div class="card-body">
-                            <p>Please provide the following information:</p>
+                          
                             <form action="{{ route('subject_types.store1') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
@@ -83,12 +83,12 @@
                                 <div class="form-group">
                                     <label for="lec_percentage">Lec Percentage:</label>
                                     <input type="number" name="lec_percentage" step="0.01" class="form-control" required>
-                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or for 20%)</small>
+                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or .2 for 20%)</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="lab_percentage">Lab Percentage:</label>
                                     <input type="number" name="lab_percentage" step="0.01" class="form-control" required>
-                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 for 80%)</small>
+                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 or .8 for 80%)</small>
                                 </div>
                                 <button type="submit" class="btn btn-success">Save</button>
                             </form>
