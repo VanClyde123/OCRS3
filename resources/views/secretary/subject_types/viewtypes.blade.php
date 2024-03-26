@@ -10,7 +10,7 @@
         <div class="row mb-2">
         
           <div class="col-sm-6" style="text-align: right;">
-            <a href="{{ route('subject_types.create') }}" class="btn btn-success">Add Class Type</a>
+            <a href="{{ route('subject_types.create1') }}" class="btn btn-success">Add Class Type</a>
           </div>
 
         </div>
@@ -47,8 +47,8 @@
                     <td>{{ $subjectType->lec_percentage }}</td>
                     <td>{{ $subjectType->lab_percentage }}</td>
                     <td>
-                        <a href="{{ route('subject_types.edit', $subjectType->id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('subject_types.destroy', $subjectType->id) }}" method="POST" style="display: inline;">
+                        <a href="{{ route('subject_types.edit1', $subjectType->id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('subject_types.destroy1', $subjectType->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>

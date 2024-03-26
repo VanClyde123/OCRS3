@@ -215,11 +215,11 @@ Route::group(['middleware' => 'secretary'], function () {
     Route::get('/view-student-points/{studentId}/{subjectId}', [SecretaryController::class, 'viewStudentPoints'])->name('view.student.points');
 
       Route::get('secretary/subject_types/viewtypes', [SubjectTypeController::class, 'viewTypes1']);
-    Route::get('secretary/subject_types/createtypes', [SubjectTypeController::class, 'create1'])->name('subject_types.create');
-    Route::post('secretary/subject_types/createtypes', [SubjectTypeController::class, 'store1'])->name('subject_types.store');
-    Route::get('secretary/subject_types/edittypes/{id}', [SubjectTypeController::class, 'edit1'])->name('subject_types.edit');
-    Route::put('secretary/subject_types/edittypes/{id}', [SubjectTypeController::class, 'update1'])->name('subject_types.update');
-    Route::delete('secretary/subject_types/{id}', [SubjectTypeController::class, 'destroy1'])->name('subject_types.destroy');
+    Route::get('secretary/subject_types/createtypes', [SubjectTypeController::class, 'create1'])->name('subject_types.create1');
+    Route::post('secretary/subject_types/createtypes', [SubjectTypeController::class, 'store1'])->name('subject_types.store1');
+    Route::get('secretary/subject_types/edittypes/{id}', [SubjectTypeController::class, 'edit1'])->name('subject_types.edit1');
+    Route::put('secretary/subject_types/edittypes/{id}', [SubjectTypeController::class, 'update1'])->name('subject_types.update1');
+    Route::delete('secretary/subject_types/{id}', [SubjectTypeController::class, 'destroy1'])->name('subject_types.destroy1');
 
 
     Route::get('secretary/set_semester/view_semesters', [SemesterController::class, 'viewSemester1'])->name('semesters.view_semesters');  
