@@ -41,11 +41,17 @@
         </thead>
         <tbody>
             @foreach ($subjectTypes as $subjectType)
+                @php
+                    $lecPercentage = $subjectType->lec_percentage;
+                    $lecPercentage = 100 * $lecPercentage; 
+                    $labPercentage = $subjectType->lab_percentage;
+                    $labPercentage = 100 * $labPercentage; 
+                @endphp
                 <tr>
                     <td>{{ $subjectType->id }}</td>
                     <td>{{ $subjectType->subject_type }}</td>
-                    <td>{{ $subjectType->lec_percentage }}</td>
-                    <td>{{ $subjectType->lab_percentage }}</td>
+                    <td><center>{{ $lecPercentage }}%</center></td> 
+                    <td>{{ $labPercentage }}%</td>
                     <td>
                         <a href="{{ route('subject_types.edit', $subjectType->id) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('subject_types.destroy', $subjectType->id) }}" method="POST" style="display: inline;">

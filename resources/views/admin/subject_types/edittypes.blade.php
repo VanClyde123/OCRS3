@@ -26,7 +26,7 @@
             }
                 }
             }
-
+            /* I COMMENT KO MUNA KASI WHAT IF 100% LEC OR LAB IS ENTERED
             lecPercentageInput.addEventListener('input', function() {
                 if (parseFloat(this.value) > 0.99) {
                     alert('Please enter a maximum of 0.99');
@@ -42,6 +42,7 @@
                 }
                 validatePercentage();
             });
+            */
         });
     </script>
 
@@ -83,13 +84,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="lec_percentage">Lec Percentage:</label>
-                                    <input type="number" name="lec_percentage" step="0.01" class="form-control" value="{{ $subjectType->lec_percentage }}" required>
+                                    <input type="number" name="lec_percentage" min="0.00" max="1" step="0.01" class="form-control" value="{{ $subjectType->lec_percentage  }}" required>
                                     <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or .2 for 20%)</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="lab_percentage">Lab Percentage:</label>
-                                    <input type="number" name="lab_percentage" step="0.01" class="form-control" value="{{ $subjectType->lab_percentage }}"  required>
-                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 or .2 for 80%)</small>
+                                    <input type="number" name="lab_percentage" min="0.00" max="1" step="0.01" class="form-control" value="{{ $subjectType->lab_percentage  }}" required>
+                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 or .8 for 80%)</small>
                                 </div>
                               <button type="submit" class="btn btn-primary">Update</button>
                           </form>
