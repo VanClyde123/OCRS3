@@ -581,11 +581,11 @@ $(document).ready(function() {
 
 
     <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div >
           
       
 
@@ -598,8 +598,8 @@ $(document).ready(function() {
 
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-           <div class="col-md-12">
+        
+           <div >
                 @php
                     $studentCount = count($enrolledStudents);
                 @endphp
@@ -608,7 +608,7 @@ $(document).ready(function() {
 
                         <div class="card">
                         <div class="card-header">
-                            <div class="row">
+                            
                                 <div class="col-md-6">
                                     <p><strong>Subject:</strong> {{ $subject->subject_code }}</p>
                                     <p><strong>Description:</strong> {{ $subject->description }}</p>
@@ -1206,7 +1206,7 @@ $(document).ready(function() {
 
     <!-- /.content -->
  
-  <!-- /.content-wrapper \
+  <!-- /.content-wrappers \
 
 $('#assessmentModal').on('shown.bs.modal', function () {
     //$('#assessmentFieldsContainer').empty(); // Clear existing fields
@@ -1231,7 +1231,7 @@ $('#assessmentModal').on('shown.bs.modal', function () {
 
   -->
 
-  @endsection
+@endsection
 
 
   <!--<div class="form-row mb-3">

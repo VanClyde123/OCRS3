@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="content-wrapper">
+<div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div >
     <h1>Enrolled Students for {{ $subject->description }} ({{ $subject->subject_code }})</h1>
 
  <table class="table mt-3">

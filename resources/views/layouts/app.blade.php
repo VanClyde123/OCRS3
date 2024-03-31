@@ -26,8 +26,81 @@
         <link rel="stylesheet" href="{{ url('public/plugins/daterangepicker/daterangepicker.css')}}">
         <!-- summernote -->
         <link rel="stylesheet" href="{{ url('public/plugins/summernote/summernote-bs4.min.css')}}">
-        <link rel="stylesheet" href="{{ url('resources/css/app.css')}}">
+
+        {{--TEST--}}
+        <style>
+            body{
+                background-color:lightgrey;
+            }
+            hr{
+                border: 2px solid darkslategrey;
+            }
+            .sidebars {
+                height: 100%;
+                width:  0;
+                position: fixed;
+                top: 0;  
+                left: 0;
+                z-index: 998;  
+                background-color: rgb(26, 41, 41);
+                overflow-x: hidden;
+                transition: 0.5s;
+                padding-top: 30px;
+                box-sizing: border-box;
+                .closebtn {
+                    position: absolute;
+                    top: 0;
+                    right: 25px;  
+                    font-size: 36px;
+                    margin-left: 50px; 
+                    background-color: rgb(16, 37, 37);
+                    color:darkgrey;
+                    &:hover{
+                        color:yellow;
+                    }
+                }
+            }
+            .openbtn {
+                font-size: 20px;
+                cursor: pointer;  
+                background-color: darkslategrey;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                &:hover {
+                    color:yellow;
+                    background-color: black; 
+                }
+            }
+            #main {
+                transition: margin-left .5s;
+            }
+            @media screen and (max-height: 450px) {
+                .sidebar {padding-top: 15px;}
+                .sidebar a {font-size: 18px;}
+            }
+            .content-wrappers{
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .header-expanded #mySidebar {
+                width: 200px; 
+            }
+            .butt{
+                padding: 16px; 
+                position:fixed; 
+                z-index: 999;  
+                top: 0; 
+                left: 0;
+                &:hover{
+                    opacity:0.3;
+                }
+            }
+        </style>
         @yield('style')
+
+
+        
 
         <!--<script src="{{ url('public/plugins/jquery/jquery.min.js')}}"></script>-->
         <script src="{{ url('public/plugins/jquery/jquery-3.6.0.min.js')}}"></script>
@@ -38,8 +111,6 @@
         <script>$.widget.bridge('uibutton', $.ui.button)</script>
         <!-- Bootstrap 4  <script src="{{ url('public/plugins/bootstrap/js/bootstrap5.3.0.bundle.min.js')}}"></script>-->
         <script src="{{ url('public/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-        
-
         <!-- ChartJS -->
         <script src="{{ url('public/plugins/chart.js/Chart.min.js')}}"></script>
         <!-- Sparkline -->
@@ -66,15 +137,14 @@
         @yield('script')
 
     </head>
-    <body class="hold-transition sidebar-mini layout-fixed">
-        <div class="wrapper">
-            <!-- Preloader EXTRA ANIMATION
-            <div class="preloader flex-column justify-content-center align-items-center">
-                <img class="animation__shake" src="{{ url('public/dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
-            </div> -->
-            @include('layouts.header')
-            @yield('content')
-            @include('layouts.footer')
+    <body >
+        <div>
+            @include('layouts.header') 
+            <div id="main">
+                @yield('content')
+                <br><br><br><br>
+                @include('layouts.footer')
             </div>
+        </div>
     </body>
 </html>

@@ -31,10 +31,10 @@
 
 
 
-    <div class="content-wrapper">
+    <div class="content-wrappers">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div >
                     <!-- You can add content here if needed -->
                 </div>
             </div>
@@ -42,8 +42,8 @@
 
         <section class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
+                
+                    <div >
                         @include('messages')
                         <div class="card">
                             <div class="card-header">

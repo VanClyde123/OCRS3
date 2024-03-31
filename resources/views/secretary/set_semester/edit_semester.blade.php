@@ -3,11 +3,11 @@
 @section('content')
 
 
-<div class="content-wrapper">
+<div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div >
 
 <div class="container">
     <h1>Edit Semester</h1>

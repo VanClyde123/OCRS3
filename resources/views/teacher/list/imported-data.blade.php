@@ -45,11 +45,11 @@
         }
 </style>
 
-<div class="content-wrapper">
+<div class="content-wrappers">
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
+            
+                <div >
                     @include('messages')
                     <div class="card">
                         <div class="card-header">

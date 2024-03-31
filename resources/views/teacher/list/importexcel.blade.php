@@ -4,7 +4,7 @@
 <script src="{{ asset('resources/js/import.js') }}"></script>
 
     <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrappers">
     <body>
         <h6></h6>
         <div class="container">
@@ -38,8 +38,8 @@
 
     <!-- Main content -->
    
-  <!-- /.content-wrapper -->
+  <!-- /.content-wrappers -->
 
-  @endsection
+@endsection
 
   

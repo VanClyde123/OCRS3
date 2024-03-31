@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="content-wrapper">
+<div class="content-wrappers">
    
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
+        <div >
+          <div >
            
           </div>
           
@@ -17,7 +17,7 @@
 
       <section class="content">
       <div class="container-fluid">
-        <div class="row">
+        
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->

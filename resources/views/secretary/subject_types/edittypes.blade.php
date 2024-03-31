@@ -53,11 +53,11 @@
 }
 </style>
 
-  <div class="content-wrapper">
+  <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div >
                
             </div>
         </div><!-- /.container-fluid -->
@@ -65,7 +65,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            
                 <!-- left column -->
                 <div class="col-md-6">
                     <!-- general form elements -->

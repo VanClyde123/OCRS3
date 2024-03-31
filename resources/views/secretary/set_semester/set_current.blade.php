@@ -12,12 +12,12 @@
 </script>
 @endpush
 
-<div class="content-wrapper">
+<div class="content-wrappers">
    
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
+        <div >
+          <div >
            <a href="{{ url('secretary/set_semester/view_semesters')}}" class="btn btn-primary">Modify Semesters</a>
           </div>
           
@@ -27,7 +27,7 @@
   
   <section class="content">
       <div class="container-fluid">
-        <div class="row">
+        
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->

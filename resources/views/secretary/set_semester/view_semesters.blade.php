@@ -2,15 +2,15 @@
 
 @section('content')
 
-<div class="content-wrapper">
+<div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div >
 <div class="container">
     <h1>Semesters</h1>
       @include('messages')
-        <div class="col-sm-6" style="text-align: right;">
+        <div  style="text-align: right;">
     <a href="{{ route('semesters.create1') }}" class="btn btn-primary">Add Semester</a>
 </div>
     <table class="table mt-3">

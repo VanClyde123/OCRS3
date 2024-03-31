@@ -2,11 +2,11 @@
 
 @section('content')
 
-<div class="content-wrapper">
+<div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div >
 
     <div class="container">
         <h2>Create Assessment Description</h2>

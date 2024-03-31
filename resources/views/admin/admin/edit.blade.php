@@ -1,12 +1,12 @@
 @extends('layouts.app')
    
 @section('content')
-   <div class="content-wrapper">
+   <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
+        <div >
+          <div >
             <h1>Edit User</h1>
           </div>
           
@@ -17,7 +17,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
+        
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->
@@ -53,7 +53,10 @@
                   </div>
                   <div class="form-group">
                     <label>Password</label>
-                    <input type="text" class="form-control" name="password" placeholder="Password">
+                    <input type="password" class="form-control" name="password" placeholder="Password"
+                                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                title="Password must contain at least 8 characters, including atleast one letter and one number.">
+                    
 
                   </div>
                   
@@ -65,25 +68,8 @@
                 </div>
               </form>
             </div>
-            <!-- /.card -->
-
-            <!-- general form elements -->
-           
-            <!-- /.card -->
-
-            <!-- Input addon -->
-    
-             
-            <!-- /.card -->
-            <!-- Horizontal Form -->
-            
-            <!-- /.card -->
 
           </div>
-          <!--/.col (left) -->
-          <!-- right column -->
-         
-          <!--/.col (right) -->
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
