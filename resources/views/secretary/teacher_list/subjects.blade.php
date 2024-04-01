@@ -9,7 +9,7 @@
         <div >
  
     <h1>Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h1>
-<table class="table mt-3">
+<table class="table table-striped">
 
      <thead>
                 <tr>

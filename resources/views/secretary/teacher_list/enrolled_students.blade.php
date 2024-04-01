@@ -9,7 +9,7 @@
         <div >
     <h1>Enrolled Students for {{ $subject->description }} ({{ $subject->subject_code }})</h1>
 
- <table class="table mt-3">
+ <table class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>

@@ -13,7 +13,7 @@
         <div  style="text-align: right;">
     <a href="{{ route('semesters.create1') }}" class="btn btn-primary">Add Semester</a>
 </div>
-    <table class="table mt-3">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>

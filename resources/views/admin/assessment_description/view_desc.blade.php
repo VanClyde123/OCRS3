@@ -9,7 +9,8 @@
             <div  style="text-align: left;">
                 <a href="{{ route('assessment-descriptions.create') }}" class="btn btn-success">Create New Description</a>
             </div>
-            <br>
+        </section>
+        <section class="content">
             <div class="card p-0">
                 <div class="table-responsive">
                     <table class="table table-striped">

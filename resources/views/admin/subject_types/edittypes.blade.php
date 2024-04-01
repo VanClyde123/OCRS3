@@ -58,7 +58,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div >
-               
+                <h3 >Edit Subject Type</h3>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -67,12 +67,9 @@
         <div class="container-fluid">
             
                 <!-- left column -->
-                <div class="col-md-6">
+                <div>
                     <!-- general form elements -->
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Edit Subject Type</h3>
-                        </div>
+                    <div class="card ">
                           <div class="card-body">
                               <form action="{{ route('subject_types.update', $subjectType->id) }}" method="POST">
                                   @csrf

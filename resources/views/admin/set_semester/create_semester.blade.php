@@ -4,10 +4,12 @@
 <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
+        <h1>Create Semester</h1>
+    </section>
+    <section class="content">
         <div class="container-fluid">
-            <div >
-                <div class="container">
-                    <h1>Create Semester</h1>
+            <div class="card ">
+                <div class="card-body">
                     <form method="post" action="{{ route('semesters.store') }}">
                         @csrf
                         <div class="form-group">
@@ -33,29 +35,29 @@
                         <button  type="submit" class="btn btn-primary">Create</button>
                     </form>
                 </div>
-                <script>
-
-                    // Get input elements
-                    const input1 = document.querySelector('input[name="school_year1"]');
-                    const input2 = document.querySelector('input[name="school_year2"]');
-                    const yearRange = document.getElementById('yearRange');
-
-                    function updateInput2() {
-                        input2.value = parseInt(input1.value) + 1; 
-                    }
-                    function updateRange() {
-                        const year1 = input1.value;
-                        const year2 = input2.value;
-                        yearRange.value = `${year1} - ${year2}`;
-                    }
-
-                    input1.addEventListener('change', updateInput2);
-                    input1.addEventListener('change', updateRange);
-                    updateInput2(); 
-                    updateRange();
-                </script>
             </div>
         </div>
     </section>
 </div>
+<script>
+
+    // Get input elements
+    const input1 = document.querySelector('input[name="school_year1"]');
+    const input2 = document.querySelector('input[name="school_year2"]');
+    const yearRange = document.getElementById('yearRange');
+
+    function updateInput2() {
+        input2.value = parseInt(input1.value) + 1; 
+    }
+    function updateRange() {
+        const year1 = input1.value;
+        const year2 = input2.value;
+        yearRange.value = `${year1} - ${year2}`;
+    }
+
+    input1.addEventListener('change', updateInput2);
+    input1.addEventListener('change', updateRange);
+    updateInput2(); 
+    updateRange();
+</script>
 @endsection

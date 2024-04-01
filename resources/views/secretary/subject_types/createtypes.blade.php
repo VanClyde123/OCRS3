@@ -65,9 +65,9 @@
         <div class="container-fluid">
             
                 <!-- left column -->
-                <div class="col-md-6">
+                <div>
                     <!-- general form elements -->
-                    <div class="card card-primary">
+                    <div class="card ">
                         <div class="card-header">
                             <h3 class="card-title">Create Subject Type for Calculation</h3>
                         </div>

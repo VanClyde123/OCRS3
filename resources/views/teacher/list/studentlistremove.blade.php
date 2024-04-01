@@ -39,7 +39,6 @@
                                                         <td>{{ $student->student->id_number }}</td>
                                                         <td>{{ $student->student->last_name }}, {{ $student->student->name }} {{ $student->student->middle_name }}</td>
                                                         <td>{{ $student->student->course }}</td>
-                                                        <td><a class="btn btn-primary" href="{{ route('remove.student', ['enrolledStudentId' => $student->id]) }}" onclick="return confirm('Are you sure you want to remove this student?')">Remove</a></td>
                                                     </tr>
                                                 @endforeach
                                             @endif

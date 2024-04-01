@@ -4,11 +4,7 @@
    <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="container-fluid">
-                <div >
-
-                </div>
-            </div>
+            <h2 >Subjects</h2>
         </section>
 
         <section class="content">
@@ -16,9 +12,6 @@
                 <div > 
                     @include('messages')
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Subjects</h3>
-                        </div>
                         <!-- /.card-header -->
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -28,6 +21,7 @@
                                             <th>Subject Code</th>
                                             <th>Description</th>
                                             <th>Section</th>
+                                            <th>Semester</th>
                                             <th>Current Instructor</th>
                                             <th>Actions</th>
                                         </tr>
@@ -35,9 +29,10 @@
                                     <tbody>
                                         @foreach($importedClasses as $importedClass)
                                             <tr>
-                                                    <td>{{ $importedClass->subject->subject_code }}</td>
+                                                <td>{{ $importedClass->subject->subject_code }}</td>
                                                 <td>{{ $importedClass->subject->description }}</td>
-                                                    <td>{{ $importedClass->subject->section}}</td>
+                                                <td>{{ $importedClass->subject->section}}</td>
+                                                <td>{{ $importedClass->subject->term}}</td>
                                                 <td>{{ $importedClass->instructor->name }} {{ $importedClass->instructor->middle_name }} {{ $importedClass->instructor->last_name }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.changeInstructorForm',  ['importedClassId' => $importedClass->id]) }}" class="btn btn-primary">Change Instructor</a>

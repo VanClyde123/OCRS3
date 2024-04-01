@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div >
 
-    <table class="table mt-3">
+    <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Name</th>

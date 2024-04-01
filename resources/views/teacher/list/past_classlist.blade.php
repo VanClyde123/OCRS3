@@ -45,15 +45,13 @@
                                                 @csrf
                                                 @method('PUT')
 
-                                            <select name="subject_type" class="form-control">
+                                            <select name="subject_type" class="form-control" disabled>
                                                     @foreach ($subjectTypes as $type)
                                                         <option value="{{ $type }}" {{ $subject->subject_type === $type ? 'selected' : '' }}>
                                                             {{ $type }}
                                                         </option>
                                                     @endforeach
                                                 </select>
-
-                                                <button type="submit" class="btn btn-primary mt-1">Update</button>
                                             </form>
                                     </td>
                                     <td>

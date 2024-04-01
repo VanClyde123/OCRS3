@@ -67,9 +67,9 @@
         <div class="container-fluid">
             
                 <!-- left column -->
-                <div class="col-md-6">
+                <div>
                     <!-- general form elements -->
-                    <div class="card card-primary">
+                    <div class="card ">
                         <div class="card-header">
                             <h3 class="card-title">Edit Subject Type</h3>
                         </div>

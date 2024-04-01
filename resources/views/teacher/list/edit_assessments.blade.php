@@ -12,7 +12,7 @@
     <h1>Assessments for {{ $subject->description }} </h1>
       @include('messages')
         
-    <table class="table mt-3">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Grading Period</th>

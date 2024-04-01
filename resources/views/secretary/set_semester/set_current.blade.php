@@ -29,9 +29,9 @@
       <div class="container-fluid">
         
           <!-- left column -->
-          <div class="col-md-6">
+          <div>
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card ">
    @include('messages')
     <form method="post" action="{{ route('semesters.setupCurrent1') }}">
         @csrf

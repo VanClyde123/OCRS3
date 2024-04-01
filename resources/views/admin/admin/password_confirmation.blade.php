@@ -20,9 +20,9 @@
       <div class="container-fluid">
         
           <!-- left column -->
-          <div class="col-md-6">
+          <div>
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card ">
               <!-- form start -->
              <form method="post" action="{{ route('admin.confirm-password', ['id' => $userId]) }}">
             {{ csrf_field() }}

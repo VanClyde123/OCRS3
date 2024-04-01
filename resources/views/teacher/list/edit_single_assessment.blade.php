@@ -62,9 +62,9 @@
       <div class="container-fluid">
         
           <!-- left column -->
-          <div class="col-md-6">
+          <div>
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card ">
   
     
     <form method="post" action="{{ route('instructor.updateAssessment', ['assessmentId' => $assessment->id]) }}">
