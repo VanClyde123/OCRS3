@@ -25,7 +25,7 @@
                             <label for="school_year">School Year</label>
                             <div class="d-flex">
                                 <input id="year1" min="2020" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "4" class="form-control" name="school_year1" step="1" placeholder="Starting Year (eg., 2023)" required>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                                 <input id="year2" disabled min="2021" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "4" class="form-control" name="school_year2" step="1" placeholder="Ending Year"required>
 
                                 <input type="text" id="yearRange" name="school_year" hidden> 
@@ -41,7 +41,7 @@
 </div>
 <script>
 
-    // Get input elements
+    
     const input1 = document.querySelector('input[name="school_year1"]');
     const input2 = document.querySelector('input[name="school_year2"]');
     const yearRange = document.getElementById('yearRange');

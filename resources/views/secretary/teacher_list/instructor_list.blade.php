@@ -21,7 +21,7 @@
              <tbody>
               @foreach($instructors as $instructor)
                     <tr>
-                       <td>{{ $instructor->name }} {{ $instructor->middle_name }}{{ $instructor->last_name }}</td>
+                       <td>{{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</td>
                        
                      <td>  <a href="{{ route('secretary.teacher_list.subjects', ['instructorId' => $instructor->id]) }}"class="btn btn-info btn-sm">View Subjects</a></td>
                     </tr>

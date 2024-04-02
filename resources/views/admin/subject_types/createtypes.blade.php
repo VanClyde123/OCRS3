@@ -26,7 +26,7 @@
             }
                 }
             }
-            /* I COMMENT KO MUNA KASI WHAT IF 100% LEC OR LAB IS ENTERED
+           
             lecPercentageInput.addEventListener('input', function() {
                 if (parseFloat(this.value) > 0.99) {
                     alert('Please enter a maximum of 0.99');
@@ -42,7 +42,6 @@
                 }
                 validatePercentage();
             });
-            */
         });
 </script>
 

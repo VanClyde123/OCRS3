@@ -3,7 +3,7 @@
 @section('content')
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Class Types</h2>
+            <h2>Class Types for Lec and Lab Subjects</h2>
             <div  style="text-align: left;">
                 <a href="{{ route('subject_types.create') }}" class="btn btn-success">Add Class Type</a>
             </div>
