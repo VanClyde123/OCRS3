@@ -72,7 +72,11 @@ class InstructorController extends Controller
 
     public function viewEnrolledStudents($subjectId)
     {
-         
+         ///// check for the subject if is in the past subject view(same logic from the pas subject view)
+        $subject = Subject::findOrFail($subjectId);
+        $currentSemester = Semester::where('is_current', true)->first();
+        $isPastSubjectList = $subject->term != $currentSemester->semester_name . ', ' . $currentSemester->school_year;
+
 
       // $assessments = Assessment::all(); 
         $assessments = Assessment::where('subject_id', $subjectId)
@@ -181,7 +185,7 @@ class InstructorController extends Controller
 
 
 
-     return view('teacher.list.studentlist', compact('subject', 'assessments', 'enrolledStudents', 'hasAssessment', 'sortedStudents', 'descriptions', 'totalMaxPoints', 'students'));
+     return view('teacher.list.studentlist', compact('subject', 'assessments', 'enrolledStudents', 'hasAssessment', 'sortedStudents', 'descriptions', 'totalMaxPoints', 'students', 'isPastSubjectList'));
      }
 
 

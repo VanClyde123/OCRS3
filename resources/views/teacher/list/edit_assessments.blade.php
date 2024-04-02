@@ -29,7 +29,7 @@
                     <td>{{ $assessment->grading_period }}</td>
                     <td>{{ $assessment->type }}</td>
                     <td>{{ $assessment->description }}</td>
-                    <td>{{ $assessment->max_points }}</td>
+                    <td>{{ number_format($assessment->max_points, 0) }}</td>
                     <td>{{ $assessment->activity_date }}</td>
                     <td>
                       <a href="{{ route('instructor.editSingleAssessment', ['assessmentId' => $assessment->id]) }}"  class="btn btn-primary">Edit</a>

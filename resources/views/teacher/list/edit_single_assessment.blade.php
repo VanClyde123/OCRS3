@@ -4,7 +4,7 @@
 
 <script>
     $(document).ready(function () {
-        // Fetch assessment descriptions based on the selected type
+        ///// get the assessment descriptions based on the selected type
         $('#assessmentType').change(function () {
             const selectedType = $(this).val();
 
@@ -24,7 +24,7 @@
             });
         });
 
-        // Function to update the Description dropdown
+        //// update the description dropdown
         function updateDescriptionDropdown(descriptions, currentDescriptionId) {
             const $descriptionDropdown = $('#assessmentDescription');
             $descriptionDropdown.empty();
@@ -38,7 +38,7 @@
                 $descriptionDropdown.append($option);
             });
         }
-        // Initial fetch and update on page load
+        //// to initially get and update on page load
         $('#assessmentType').change();
     });
 </script>
@@ -97,7 +97,7 @@
 
             <div class="form-group">
                 <label for="maxPoints">Max Points</label>
-                <input type="number"  class="form-control"  name="max_points" value="{{ $assessment->max_points }}" required>
+                <input type="number"  class="form-control"  name="max_points" value="{{ number_format($assessment->max_points, 0) }}" required>
             </div>
 
             <div class="form-group">
