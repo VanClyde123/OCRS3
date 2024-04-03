@@ -20,9 +20,9 @@
         </section>
         <section class="content">
             <div class="container-fluid">
+                @include('messages')
                 <div>
                     <div class="card ">
-                        @include('messages')
                         <form method="post" action="{{ route('semesters.setupCurrent') }}">
                             @csrf
                             <div class="card-body">

@@ -52,7 +52,7 @@ $(document).ready(function () {
                 
             </select>
                 <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
-                <input type="number" class="form-control" name="max_points" value="">
+                <input type="number" class="form-control" min="1" name="max_points" value="">
                 <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
                 <input type="date" class="form-control" name="activity_date" value="">
             </div>
@@ -115,7 +115,7 @@ function updateDescriptionDropdown(descriptions, targetSelector) {
                     <label for="assessmentDescription${index}">Description</label>
                     <input type="text" class="form-control" name="description" value="${assessment.description}">
                     <label for="assessmentMaxPoints${index}">Max Points</label>
-                    <input type="number" class="form-control assessmentMaxPoints" id="assessmentMaxPoints${index}" name="assessment_max_points[]" value="${assessment.maxPoints}">
+                    <input type="number" class="form-control assessmentMaxPoints" id="assessmentMaxPoints${index}"  min="1" name="assessment_max_points[]" value="${assessment.maxPoints}">
                     <label for="assessmentActivityDate${index}">Activity Date</label>
                     <input type="date" class="form-control" name="activity_date" value="${assessment.activity_date}">
          
@@ -168,7 +168,7 @@ function updateDescriptionDropdown(descriptions, targetSelector) {
                     <label for="assessmentDescription${index}">Description</label>
                     <input type="text" class="form-control" name="description" value="${assessment.description}">
                     <label for="assessmentMaxPoints${index}">Max Points</label>
-                   <input type="number" class="form-control assessmentMaxPoints" id="assessmentMaxPoints${index}" name="assessment_max_points[]" value="${assessment.maxPoints}">
+                   <input type="number" class="form-control assessmentMaxPoints" id="assessmentMaxPoints${index}" min="1" name="assessment_max_points[]" value="${assessment.maxPoints}">
                    <label for="assessmentActivityDate${index}">Activity Date</label>
                     <input type="date" class="form-control" name="activity_date" value="${assessment.activity_date}">
          

@@ -70,7 +70,8 @@
     <form method="post" action="{{ route('instructor.updateAssessment', ['assessmentId' => $assessment->id]) }}">
         @csrf
         @method('PUT')
-      <div class="card-body">
+        <div class="table-responsive">
+            <div class="card-body">
             <div class="form-group">
                 <label for="gradingPeriod">Grading Period</label>
                 <input type="text"  class="form-control"  name="grading_period" value="{{ $assessment->grading_period }}" readonly>
@@ -97,14 +98,15 @@
 
             <div class="form-group">
                 <label for="maxPoints">Max Points</label>
-                <input type="number"  class="form-control"  name="max_points" value="{{ number_format($assessment->max_points, 0) }}" required>
+                <input type="number"  class="form-control" min="1" name="max_points" value="{{ number_format($assessment->max_points, 0) }}" required>
             </div>
 
             <div class="form-group">
                 <label for="activityDate">Activity Date</label>
                 <input type="date"  class="form-control"  name="activity_date" value="{{ $assessment->activity_date }}" required>
             </div>
-    </div>
+            </div>
+        </div>
       <div class="card-footer">
             <button type="submit"  class="btn btn-primary">Update Assessment</button>
         </div>
