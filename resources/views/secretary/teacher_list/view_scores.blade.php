@@ -17,7 +17,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Assessment Scores</h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
@@ -29,13 +29,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($grades as $grade)
-                                            <tr>
-                                                <td>{{ $grade->assessment->grading_period }}</td>
-                                                <td>{{ $grade->assessment->type }}</td>
-                                                <td>{{ $grade->assessment->description }}</td>
-                                                <td>{{ $grade->points }} / {{ number_format($grade->assessment->max_points, $grade->assessment->max_points == intval($grade->assessment->max_points) ? 0 : 2) }}</td>
+                                        @php
+                                            $grades = $grades->groupBy('assessment.grading_period');
+                                        @endphp
+
+                                        @foreach($grades as $gradingPeriod => $periodGrades)
+                                        <h3>{{ $gradingPeriod }}</h3>
+
+                                        @foreach($periodGrades as $grade)
+                                            <tr>      <td>{{ $grade->assessment->grading_period }}</td>
+
+                                            <td>{{ $grade->assessment->type }}</td>
+                                            <td>{{ $grade->assessment->description }}</td>
+                                            <td>{{ $grade->points }} / {{ $grade->assessment->max_points }}</td>
                                             </tr>
+                                        @endforeach
+
                                         @endforeach
                                         @foreach($studentGrades as $score)
                                             @if ($score->fg_grade !== null || $score->midterms_grade !== null || $score->finals_grade !== null)

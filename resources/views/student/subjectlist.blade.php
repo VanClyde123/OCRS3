@@ -40,7 +40,7 @@
                                                     <td>{{ $enrolledSubject->importedclasses->days }}</td>
                                                     <td>{{ $enrolledSubject->importedclasses->time }}</td>
                                                     <td>{{ $enrolledSubject->importedclasses->room }}</td>
-                                                    <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}">View Scores</a></td>
+                                                    <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-primary">View Scores</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
