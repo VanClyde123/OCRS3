@@ -886,13 +886,7 @@ $(document).ready(function() {
                                                                     if ($grade->fg_grade !== null) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
                                                                     echo '<span class="displayed-value">' . number_format($grade->fg_grade, $grade->fg_grade == intval($grade->fg_grade) ? 0 : 2) . '</span>';
-                                                                    echo '<select class="status-dropdown" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
-                                                                        echo '<option value="DEFAULT">Grade</option>';
-                                                                        echo '<option value="DRP" ' . ($grade->status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                        echo '<option value="WITHDRAW" ' . ($grade->status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                        echo '</select>';
-                                                                        echo '</div>';
-                                                                        echo '<br>';
+                                                                    
                                                                     }
                                                                 }
                                                             echo '</td>';
@@ -901,16 +895,9 @@ $(document).ready(function() {
                                                             echo '<td class="grade-column">';
                                                             foreach ($enrolledStudent->grades as $grade) {
                                                                 if ($grade->midterms_grade !== null) {
-
                                                                     echo '<div class="grade-dropdown displayed-value">';
                                                                 echo '<span class="displayed-value">' . number_format($grade->midterms_grade, $grade->midterms_grade == intval($grade->midterms_grade) ? 0 : 2) . '</span>';
-                                                                  echo '<select class="status-dropdown" data-grade-type="midterm" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
-                                                                        echo '<option value="DEFAULT">Grade</option>';
-                                                                        echo '<option value="DRP" ' . ($grade->midterms_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                        echo '<option value="WITHDRAW" ' . ($grade->midterms_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                        echo '</select>';
-                                                                        echo '</div>';
-                                                                        echo '<br>';
+                                                                
                                                                 }
                                                             }
                                                             echo '</td>';
@@ -981,9 +968,9 @@ $(document).ready(function() {
                                                                 data-description="' . $assessment->description . '">
                                                                 ' . ($assessment->activity_date ?? '') . '
                                                             </p>
-                                                               <button class="btn btn-sm btn-publish publish-button btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '" data-assessment-id="' . $assessment->id . '" data-published="' . ($assessment->published ? 'true' : 'false') . '">
-                                                                ' . ($assessment->published ? 'Hide Scores' : 'Show Scores') . '
-                                                            </button>
+                                                              <button class="btn btn-sm btn-publish publish-button btn-primary" data-assessment-id="' . $assessment->id . '" data-published="' . ($assessment->published ? 'true' : 'false') . '"' . ($isPastSubjectList ? ' disabled' : '') . '>
+                                                                    ' . ($assessment->published ? 'Hide Scores' : 'Show Scores') . '
+                                                                </button>
 
                                                         </th>';
 
@@ -1001,9 +988,10 @@ $(document).ready(function() {
                                                 $subjectId = $subject->id;
                                                     ///// Empty th for grades column under 
                                                 echo '<th class="grade-column">
-                                                        <button class="btn btn-sm btn-publish-grades btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '"
-                                                                data-grading-period="' . $gradingPeriod . '"
-                                                                data-subject-id="' . $subjectId . '">Grades</button>
+                                                       <button class="btn btn-sm btn-publish-grades btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '"
+                                                        data-grading-period="' . $gradingPeriod . '"
+                                                        data-subject-id="' . $subjectId . '"'
+                                                        . ($isPastSubjectList ? ' disabled' : '') . '>Grades</button>
                                                     </th>';
                                                 $currentColIndex++;
                                             }
