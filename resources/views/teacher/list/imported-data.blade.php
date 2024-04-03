@@ -137,7 +137,7 @@
                                     </table>
                                 </div>
                             </div>
-                            </div
+                        </div>
                        <div class="form-row mb-3">
                        <div class="col-md-2">
                         <div class="subject-type-select">

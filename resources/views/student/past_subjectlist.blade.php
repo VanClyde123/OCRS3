@@ -5,8 +5,7 @@
         <section class="content-header">
         <div class="container-fluid">
             <div >
-            
-
+                <h3 >Previously Enrolled Subjects</h3>
             </div>
         </div>
         </section>
@@ -14,11 +13,8 @@
             <div class="container-fluid">
                 @include('messages')
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Enrolled Subjects</h3>
-                    </div>
                     @if ($pastStudentSubjects->count() > 0)
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
@@ -41,7 +37,7 @@
                                                 <td>{{ $enrolledSubject->importedclasses->days }}</td>
                                                 <td>{{ $enrolledSubject->importedclasses->time }}</td>
                                                 <td>{{ $enrolledSubject->importedclasses->room }}</td>
-                                                <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}">View Scores</a></td>
+                                                <td><a class="btn btn-info" href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}">View Scores</a></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

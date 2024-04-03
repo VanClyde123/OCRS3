@@ -1,33 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-
-
-<div class="content-wrappers">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div >
-
-<div class="container">
-    <h1>Edit Semester</h1>
-
-    <form method="post" action="{{ route('semesters.update1', $semester->id) }}">
-        @csrf
-        @method('PUT')
-        <div class="form-group">
-            <label for="name">Semester</label>
-            <input type="text" class="form-control" name="semester_name" value="{{ $semester->semester_name }}" required>
-        </div>
-        <div class="form-group">
-            <label for="school_year">School Year</label>
-            <input type="text" class="form-control" name="school_year" value="{{ $semester->school_year }}" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-</div>
+    <div class="content-wrappers">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <h3>Edit Semester</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <form method="post" action="{{ route('semesters.update1', $semester->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="name">Semester</label>
+                                    <input type="text" class="form-control" name="semester_name" value="{{ $semester->semester_name }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="school_year">School Year</label>
+                                    <input type="text" class="form-control" name="school_year" value="{{ $semester->school_year }}" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-</div>
-</section>
-</div>
 @endsection

@@ -2,31 +2,27 @@
 
 @section('content')
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const lecPercentageInput = document.querySelector('input[name="lec_percentage"]');
-        const labPercentageInput = document.querySelector('input[name="lab_percentage"]');
-        
-        function validatePercentage() {
-        const lecPercentage = parseFloat(lecPercentageInput.value || 0);
-        const labPercentage = parseFloat(labPercentageInput.value || 0);
-        const totalPercentage = lecPercentage + labPercentage;
-
-        if (lecPercentage > 0 && labPercentage > 0) {
-            if (totalPercentage > 1) {
-                alert('Total percentage exceeds 100%');
-               
-                lecPercentageInput.value = '';
-                labPercentageInput.value = '';
-            } else if (totalPercentage < 1) {
-                alert('Total percentage is less than 100%');
-              
-                lecPercentageInput.value = '';
-                labPercentageInput.value = '';
-            }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const lecPercentageInput = document.querySelector('input[name="lec_percentage"]');
+            const labPercentageInput = document.querySelector('input[name="lab_percentage"]');
+            
+            function validatePercentage() {
+                const lecPercentage = parseFloat(lecPercentageInput.value || 0);
+                const labPercentage = parseFloat(labPercentageInput.value || 0);
+                const totalPercentage = lecPercentage + labPercentage;
+                if (lecPercentage > 0 && labPercentage > 0) {
+                    if (totalPercentage > 1) {
+                        alert('Total percentage exceeds 100%');
+                        lecPercentageInput.value = '';
+                        labPercentageInput.value = '';
+                    } else if (totalPercentage < 1) {
+                        alert('Total percentage is less than 100%');
+                        lecPercentageInput.value = '';
+                        labPercentageInput.value = '';
+                    }
                 }
             }
-
             lecPercentageInput.addEventListener('input', function() {
                 if (parseFloat(this.value) > 0.99) {
                     alert('Please enter a maximum of 0.99');
@@ -34,7 +30,6 @@
                 }
                 validatePercentage();
             });
-
             labPercentageInput.addEventListener('input', function() {
                 if (parseFloat(this.value) > 0.99) {
                     alert('Please enter a maximum of 0.99');
@@ -44,35 +39,22 @@
             });
         });
     </script>
+    <style>
+        .instruction-text {
+            font-size: 14px; 
+        }
+    </style>
 
-
-<style>
-  .instruction-text {
-    font-size: 14px; 
-}
-</style>
-<div class="content-wrappers">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div >
-               
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            
-                <!-- left column -->
-                <div>
-                    <!-- general form elements -->
-                    <div class="card ">
-                        <div class="card-header">
-                            <h3 class="card-title">Create Subject Type for Calculation</h3>
-                        </div>
+    <div class="content-wrappers">
+        <section class="content-header">
+            <h3 >Create Subject Type for Calculation</h3>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card ">
+                    <div class="table-responsive">
                         <div class="card-body">
-                          
                             <form action="{{ route('subject_types.store1') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
@@ -95,9 +77,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-</div>
-
+        </section>
+    </div>
 @endsection

@@ -4,11 +4,7 @@
     <div class="content-wrappers">
         <section class="content-header">
             <div class="container-fluid">
-                <div >
-                    <div  style="text-align: right;">
-                        <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-primary">Past Subjects</a>
-                    </div>
-                </div>
+                <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-primary">Past Subjects</a>
             </div>
         </section>
 

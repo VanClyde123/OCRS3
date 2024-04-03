@@ -6,14 +6,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h2>Semesters</h2>
-            <div  style="text-align: left;">
-                <a href="{{ route('semesters.create1') }}" class="btn btn-success">Add Semester</a>
-            </div>
+            <a href="{{ route('semesters.create1') }}" class="btn btn-success">Add Semester</a>
         </section>
         <section class="content">
             <div class="card">
                 @include('messages')
-                <div class="card-body p-0">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -45,7 +43,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         </section>
     </div>
 @endsection
