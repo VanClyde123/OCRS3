@@ -1065,8 +1065,8 @@ $(document).ready(function() {
                                 <option value="Direct Bonus Grade">Direct Bonus Grade</option>
                             </select>
                         </div>
-                            <div id="assessmentFieldsContainer">
-                            </div>
+                        <div id="assessmentFieldsContainer">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="addAssessmentFieldsBtn">+</button>

@@ -22,6 +22,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $descriptions = $descriptions->sortBy('type'); 
+                            @endphp
                             @forelse($descriptions as $description)
                                 <tr>
                                     <td>{{ $description->type }}</td>
