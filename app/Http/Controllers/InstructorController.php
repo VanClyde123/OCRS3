@@ -222,14 +222,19 @@ class InstructorController extends Controller
     public function removeStudent($enrolledStudentId)
     {
          
-       $enrolledStudent = EnrolledStudents::find($enrolledStudentId);
+        $enrolledStudent = EnrolledStudents::find($enrolledStudentId);
 
-        if ($enrolledStudent) {
-            $enrolledStudent->delete();
-            return redirect()->back()->with('success', 'Student removed successfully.');
+        if (!$enrolledStudent) {
+            return redirect()->back()->with('error', 'Student not found.');
         }
 
-        return redirect()->back()->with('error', 'Student not found.');
+        
+        DB::transaction(function () use ($enrolledStudent) {
+            $enrolledStudent->grades()->delete();
+            $enrolledStudent->delete();
+        });
+
+        return redirect()->back()->with('success', 'Student Removed.');
     }
 
     public function editAssessments($subjectId)
