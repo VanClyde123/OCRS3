@@ -11,6 +11,7 @@ use App\Models\ImportedClasslist;
 use App\Models\Grades;
 use App\Models\Semester;
 use App\Models\Assessment;
+use Illuminate\Support\Facades\DB;
 
 class SecretaryController extends Controller
 {
@@ -48,7 +49,23 @@ public function viewStudentPoints($studentId, $subjectId)
     
     $importedClass = $subject->importedClasses->first();
 
-   
+    $gradingPeriods = DB::table('assessments')->select('grading_period')->distinct()->pluck('grading_period');
+
+
+    $excludedAssessmentTypes = [
+        'Additional Points Quiz',
+        'Additional Points OT',
+        'Additional Points Exam',
+        'Additional Points Lab',
+        'Direct Bonus Grade',
+    ];
+
+    $assessmentTypes = DB::table('assessments')
+        ->select('type')
+        ->distinct()
+        ->whereNotIn('type', $excludedAssessmentTypes)
+        ->pluck('type');
+
     $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
         ->where('imported_classlist_id', $importedClass->id)
         ->first();
@@ -61,12 +78,12 @@ public function viewStudentPoints($studentId, $subjectId)
         ->with('assessment')
         ->get();
 
-       // Fetch the student's grades for each assessment
+       
     $enrolledStudent->load('studentgrades.assessment');
 
     $studentGrades = $enrolledStudent->studentgrades;
 
-    return view('secretary.teacher_list.view_scores', compact('student', 'grades', 'subject', 'studentGrades'));
+    return view('secretary.teacher_list.view_scores', compact('student', 'grades', 'subject', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
 }
 }
 

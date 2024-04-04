@@ -10,7 +10,7 @@ use App\Models\Semester;
 use App\Models\ImportedClasslist;
 use App\Models\EnrolledStudents;
 use App\Models\Assessment;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 
@@ -145,14 +145,33 @@ class AdminController extends Controller
       $student = User::find($studentId);
       $subject = Subject::find($subjectId);
 
-    // Fetch the enrolled student
+
+    $gradingPeriods = DB::table('assessments')->select('grading_period')->distinct()->pluck('grading_period');
+
+
+    $excludedAssessmentTypes = [
+        'Additional Points Quiz',
+        'Additional Points OT',
+        'Additional Points Exam',
+        'Additional Points Lab',
+        'Direct Bonus Grade',
+    ];
+
+    $assessmentTypes = DB::table('assessments')
+        ->select('type')
+        ->distinct()
+        ->whereNotIn('type', $excludedAssessmentTypes)
+        ->pluck('type');
+
+
+  
     $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
         ->whereHas('importedclasses', function ($query) use ($subjectId) {
             $query->where('subjects_id', $subjectId);
         })
         ->first();
 
-    // Fetch the grades for the enrolled student and subject
+    
     $grades = Grades::where('enrolled_student_id', $enrolledStudent->id)
         ->whereHas('assessment', function ($query) use ($subjectId) {
             $query->where('subject_id', $subjectId);
@@ -160,12 +179,12 @@ class AdminController extends Controller
         ->with('assessment') 
         ->get();
 
-       // Fetch the student's grades for each assessment
+    
     $enrolledStudent->load('studentgrades.assessment');
 
     $studentGrades = $enrolledStudent->studentgrades;
 
-    return view('admin.student_list.view_scores', compact('student', 'subject', 'grades', 'studentGrades'));
+    return view('admin.student_list.view_scores', compact('student', 'subject', 'grades', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
     }
 
     public function viewSubjects()

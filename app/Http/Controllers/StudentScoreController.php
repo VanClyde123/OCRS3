@@ -24,7 +24,7 @@ class StudentScoreController extends Controller
 
     $gradingPeriods = DB::table('assessments')->select('grading_period')->distinct()->pluck('grading_period');
     
-    // Define the assessment types to be excluded
+  
     $excludedAssessmentTypes = [
         'Additional Points Quiz',
         'Additional Points OT',
