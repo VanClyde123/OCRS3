@@ -20,18 +20,24 @@ class InstructorController extends Controller
 {
 
     public function listSubjects()
-    {
-    // get subjects taught by the current loggedin instructor
-       $instructorId = Auth::user()->id;
+{
+    // get subjects taught by the current logged-in instructor
+    $instructorId = Auth::user()->id;
 
-        $currentSemester = Semester::where('is_current', true)->first();
-      $subjects = Subject::where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
-        ->whereHas('importedclasses', function ($query) use ($instructorId) {
-            $query->where('instructor_id', $instructorId);
-        })
-        ->get();
-        $subjectTypePercentages = SubjectType::pluck('subject_type')->toArray();
+    $currentSemester = Semester::where('is_current', true)->first();
 
+    if ($currentSemester) {
+        $subjects = Subject::where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
+            ->whereHas('importedclasses', function ($query) use ($instructorId) {
+                $query->where('instructor_id', $instructorId);
+            })
+            ->get();
+    } else {
+      
+        $subjects = [];
+    }
+
+    $subjectTypePercentages = SubjectType::pluck('subject_type')->toArray();
 
     $additionalSubjectTypes = [
         'Lec',
@@ -41,8 +47,8 @@ class InstructorController extends Controller
     // combine additional subject types with the fetched subject types from the db table
     $subjectTypes = array_merge($additionalSubjectTypes, $subjectTypePercentages);
 
-      return view('teacher.list.classlist', compact('subjects','subjectTypes'));
-      }
+    return view('teacher.list.classlist', compact('subjects', 'subjectTypes'));
+}
 
     public function pastlistSubjects()
     {
@@ -50,11 +56,19 @@ class InstructorController extends Controller
        $instructorId = Auth::user()->id;
 
         $currentSemester = Semester::where('is_current', true)->first();
-      $subjects = Subject::where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
-        ->whereHas('importedclasses', function ($query) use ($instructorId) {
+
+     if ($currentSemester) {
+       $subjects = Subject::where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
+         ->whereHas('importedclasses', function ($query) use ($instructorId) {
             $query->where('instructor_id', $instructorId);
-        })
-        ->get();
+         })
+          ->get();
+
+        } else {
+       
+        $subjects = [];
+       }
+
         $subjectTypePercentages = SubjectType::pluck('subject_type')->toArray();
 
 

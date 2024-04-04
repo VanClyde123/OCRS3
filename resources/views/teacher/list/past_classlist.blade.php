@@ -18,6 +18,9 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="table-responsive">
+                              @if (empty($subjects))
+                                    <p>Past subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
+                                @else
                             <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -61,6 +64,7 @@
                                 @endforeach
                             </tbody>
                             </table>
+                             @endif
                         </div>
                     </div>
                 </div>
