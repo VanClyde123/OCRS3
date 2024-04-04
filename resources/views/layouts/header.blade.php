@@ -63,6 +63,11 @@
                         <p>Instructors</p>
                     </a>
                 </li>
+                  <li class="nav-item">
+                    <a href="{{ url('secretary/assessment_description/view_desc')}}" class="nav-link @if (Request::segment(3) == 'view_desc') active @endif">
+                        <p>Assessment Descriptions</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ url('secretary/subject_types/viewtypes')}}" class="nav-link @if (Request::segment(3) == 'viewtypes') active @endif">
                         <p>Class Types</p>

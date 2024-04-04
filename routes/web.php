@@ -231,6 +231,18 @@ Route::group(['middleware' => 'secretary'], function () {
 
     Route::get('secretary/set_semester/set_current', [SemesterController::class, 'setupCurrentSemesterView1'])->name('semesters.setupCurrentView');
     Route::post('/set-current-semester', [SemesterController::class, 'setupCurrentSemester1'])->name('semesters.setupCurrent1');
+
+
+     
+       Route::get('secretary/assessment_description/view_desc', [AssessmentDescriptionController::class, 'viewDesc1']);
+    Route::get('secretary/assessment-descriptions/create', [AssessmentDescriptionController::class, 'create1'])->name('assessment-descriptions.create1');
+    Route::post('secretary/assessment_description/view_desc', [AssessmentDescriptionController::class, 'store1'])->name('assessment-descriptions.store1');
+    Route::get('secretary/assessment-descriptions/{assessment_description}/edit', [AssessmentDescriptionController::class, 'edit1'])->name('assessment-descriptions.edit1');
+    Route::put('secretary/assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'update1'])->name('assessment-descriptions.update1');
+    Route::delete('secretary/assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'destroy1'])->name('assessment-descriptions.destroy1');
+
+
+
     });
 
 
