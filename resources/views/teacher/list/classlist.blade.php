@@ -4,14 +4,8 @@
     <div class="content-wrappers">
         <section class="content-header">
             <div class="container-fluid">
-                <div >
-                    <div >
-                        <h1>Subject List</h1>
-                    </div>
-                    <div >
-                        <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-primary">Past Subjects</a>
-                    </div>
-                </div>
+                <h1>Subject List</h1>
+                <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-primary">Past Subjects</a>
             </div>
         </section>
         <section class="content">
