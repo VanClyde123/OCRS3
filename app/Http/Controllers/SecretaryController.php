@@ -25,10 +25,28 @@ class SecretaryController extends Controller
 public function showInstructorSubjects($instructorId)
 {
     $instructor = User::findOrFail($instructorId);
-    $subjects = $instructor->taughtSubjects;
-    // dd($subjects);
+    $currentSemester = Semester::where('is_current', true)->first();
+    $subjects = $instructor->taughtSubjects()
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        })
+        ->get();
+
 
     return view('secretary.teacher_list.subjects', compact('instructor', 'subjects'));
+}
+
+public function showPastInstructorSubjects($instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $currentSemester = Semester::where('is_current', true)->first();
+    $pastSubjects = $instructor->taughtSubjects()
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        })
+        ->get();
+
+    return view('secretary.teacher_list.past_subjects', compact('instructor', 'pastSubjects'));
 }
 
 public function showEnrolledStudents($subjectId)

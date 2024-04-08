@@ -400,7 +400,7 @@ if ($hasFinalsAssessments) {
                 $assessmentTypeTotals = []; 
                 $lastAssessmentType = null;
         foreach ($assessments as $index => $assessment) {
-            $score = $student->getScore($assessment->id) ?: 'A';
+            $score = $student->getScore($assessment->id) ?: '';
             $assessmentRow[] = $score;
 
             
@@ -411,9 +411,9 @@ if ($hasFinalsAssessments) {
             $isLastColumn = ($index === (count($assessments) - 1));
             $isLastColumnOfType = ($isLastColumn || $assessment->type !== $assessments[$index + 1]->type);
 
-            // Add the total score for each assessment type beside the last column of the same type
+            //// add the total score for each assessment type beside the last column of the same assessmnet typ
             if ($isLastColumnOfType) {
-                $assessmentRow[] = $assessmentTypeTotals[$assessment->type] ?? ''; // Handle the case when there is no numeric score
+                $assessmentRow[] = $assessmentTypeTotals[$assessment->type] ?? ''; 
             }
 
             $lastAssessmentType = $assessment->type;
@@ -439,7 +439,7 @@ if ($hasFinalsAssessments) {
 
           
             if ($isLastColumnOfType) {
-                $assessmentRow[] = $midtermAssessmentTypeTotals[$midtermAssessment->type] ?? ''; // Handle the case when there is no numeric score
+                $assessmentRow[] = $midtermAssessmentTypeTotals[$midtermAssessment->type] ?? ''; 
             }
 
             $lastMidtermAssessmentType = $midtermAssessment->type;
@@ -466,7 +466,7 @@ if ($hasFinalsAssessments) {
 
             
             if ($isLastColumnOfType) {
-                $assessmentRow[] = $finalsAssessmentTypeTotals[$finalsAssessment->type] ?? ''; // Handle the case when there is no numeric score
+                $assessmentRow[] = $finalsAssessmentTypeTotals[$finalsAssessment->type] ?? ''; 
             }
 
             $lastFinalsAssessmentType = $finalsAssessment->type;

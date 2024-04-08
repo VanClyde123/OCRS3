@@ -17,6 +17,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ url('admin/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(3) == 'instructor_list') active @endif">
+                        <p>Instructors</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ url('admin/subject_types/viewtypes')}}" class="nav-link @if (Request::segment(3) == 'viewtypes') active @endif">
                         <p>Class Types</p>
                     </a>

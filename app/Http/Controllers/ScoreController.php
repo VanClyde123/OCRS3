@@ -161,10 +161,10 @@ public function fetchassessmentDetails($enrolledStudentId, $assessmentId)
 
             /////// entered points exceed the maximum points validations
            
-            if ($enteredPoints > $assessment->max_points) {
-                // Store a message in the session
-                session()->flash('warning', 'Inserted points exceed the max points of ' . $assessment->description. ' ,considered as bonus points');
-            }
+           if (is_numeric($enteredPoints) && $enteredPoints > $assessment->max_points) {
+            
+            session()->flash('warning', 'Inserted points exceed the max points of ' . $assessment->description. ', considered as bonus points');
+        }
 
             //// updare or create the record
             $grade = Grades::updateOrCreate(

@@ -52,7 +52,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/admin/edit/{id}', [AdminController::class, 'update']);
     Route::get('admin/admin/delete/{id}', [AdminController::class, 'delete']);
 
-  /////password auth for editing
+  /////password auth for editing role
     Route::get('admin/admin/confirm-password/{id}', [AdminController::class, 'showPasswordConfirmation'])
     ->name('admin.confirm-password')
     ->middleware('auth'); 
@@ -61,6 +61,14 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/admin/edit/{id}', [AdminController::class, 'edit'])
     ->name('admin.edit')
     ->middleware('auth'); 
+
+     Route::get('/admin/teacher_list/instructor_list', [AdminController::class, 'showInstructors']);
+    Route::get('/admin/teacher_list/{instructorId}/subjects', [AdminController::class, 'showInstructorSubjects'])
+    ->name('admin.teacher_list.subjects');
+    Route::get('/admin/teacher_list/{instructorId}/past_subjects', [AdminController::class, 'showPastInstructorSubjects'])
+    ->name('admin.teacher_list.past_subjects');
+    Route::get('/admin/teacher_list/{subject}/students', [AdminController::class, 'showEnrolledStudents'])->name('admin.teacher_list.enrolled_students');
+    Route::get('admin/view-student-points/{studentId}/{subjectId}', [AdminController::class, 'viewStudentPoints'])->name('admin.view.student.points');
    
     Route::get('admin/subject_types/viewtypes', [SubjectTypeController::class, 'viewTypes']);
     Route::get('admin/subject_types/createtypes', [SubjectTypeController::class, 'create'])->name('subject_types.create');
@@ -207,11 +215,11 @@ Route::group(['middleware' => 'secretary'], function () {
     
     Route::get('secretary/dashboard', [DashboardController::class, 'dashboard']);
    Route::get('/secretary/teacher_list/instructor_list', [SecretaryController::class, 'showInstructors']);
-       Route::get('/secretary/teacher_list/{instructorId}/subjects', [SecretaryController::class, 'showInstructorSubjects'])
+    Route::get('/secretary/teacher_list/{instructorId}/subjects', [SecretaryController::class, 'showInstructorSubjects'])
     ->name('secretary.teacher_list.subjects');
-
+    Route::get('/secretary/teacher_list/{instructorId}/past_subjects', [SecretaryController::class, 'showPastInstructorSubjects'])
+    ->name('secretary.teacher_list.past_subjects');
     Route::get('/secretary/teacher_list/{subject}/students', [SecretaryController::class, 'showEnrolledStudents'])->name('secretary.teacher_list.enrolled_students');
-
     Route::get('/view-student-points/{studentId}/{subjectId}', [SecretaryController::class, 'viewStudentPoints'])->name('view.student.points');
 
       Route::get('secretary/subject_types/viewtypes', [SubjectTypeController::class, 'viewTypes1']);
