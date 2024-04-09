@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 class InstructorController extends Controller
 {
 
-    public function listSubjects()
+    public function listSubjects(Request $request)
 {
     // get subjects taught by the current logged-in instructor
     $instructorId = Auth::user()->id;
@@ -27,13 +27,28 @@ class InstructorController extends Controller
     $currentSemester = Semester::where('is_current', true)->first();
 
     if ($currentSemester) {
-        $subjects = Subject::where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
+        $query = Subject::where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
             ->whereHas('importedclasses', function ($query) use ($instructorId) {
                 $query->where('instructor_id', $instructorId);
-            })
-            ->get();
+            });
+
+        // Apply search filter if search query is provided
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('subject_code', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhere('section', 'like', "%$search%")
+                  ->orWhereHas('importedClasses', function ($ic) use ($search) {
+                      $ic->where('days', 'like', "%$search%")
+                         ->orWhere('time', 'like', "%$search%")
+                         ->orWhere('room', 'like', "%$search%");
+                  });
+            });
+        }
+
+        $subjects = $query->get();
     } else {
-      
         $subjects = [];
     }
 
@@ -47,30 +62,49 @@ class InstructorController extends Controller
     // combine additional subject types with the fetched subject types from the db table
     $subjectTypes = array_merge($additionalSubjectTypes, $subjectTypePercentages);
 
+
     return view('teacher.list.classlist', compact('subjects', 'subjectTypes'));
 }
 
-    public function pastlistSubjects()
-    {
-    // get subjects taught by the current loggedin instructor
-       $instructorId = Auth::user()->id;
+    public function pastlistSubjects(Request $request)
+{
+    // get subjects taught by the current logged-in instructor
+    $instructorId = Auth::user()->id;
 
-        $currentSemester = Semester::where('is_current', true)->first();
+    $currentSemester = Semester::where('is_current', true)->first();
 
-     if ($currentSemester) {
-       $subjects = Subject::where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
-         ->whereHas('importedclasses', function ($query) use ($instructorId) {
-            $query->where('instructor_id', $instructorId);
-         })
-          ->get();
+    if ($currentSemester) {
+        $query = Subject::where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
+            ->whereHas('importedclasses', function ($query) use ($instructorId) {
+                $query->where('instructor_id', $instructorId);
+            });
 
-        } else {
-       
+        // Apply search filter if search query is provided
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('subject_code', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhere('section', 'like', "%$search%")
+                  ->orWhereHas('importedClasses', function ($ic) use ($search) {
+                      $ic->where('days', 'like', "%$search%")
+                         ->orWhere('time', 'like', "%$search%")
+                         ->orWhere('room', 'like', "%$search%");
+                  });
+            });
+        }
+
+         if ($request->has('term')) {
+        $term = $request->input('term');
+        $query->where('term','like', "%$term%");
+    }
+
+        $subjects = $query->get();
+    } else {
         $subjects = [];
-       }
+    }
 
-        $subjectTypePercentages = SubjectType::pluck('subject_type')->toArray();
-
+    $subjectTypePercentages = SubjectType::pluck('subject_type')->toArray();
 
     $additionalSubjectTypes = [
         'Lec',

@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="content-wrappers">
-        <section class="content-header">
+
+<div class="content-wrappers">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
             <h2>Edit Assessment Description</h2>
-        </section>
-        <section class="content">
-            <div class="card ">
-                <div class="card-body">
+            <div class="card p-3">
+                <div class="container">
                     <form action="{{ route('assessment-descriptions.update', $assessmentDescription->id) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -20,11 +21,11 @@
                                 <option value="Exam">Exam</option>
                                 <option value="Lab Activity">Lab Activity</option>
                                 <option value="Lab Exam">Lab Exam</option>
-                                <option value="Additional Points Quiz">Additional Points Quiz</option>
+                                 <option value="Additional Points Quiz">Additional Points Quiz</option>
                                 <option value="Additional Points OT">Additional Points Other Activity</option>
-                            <option value="Additional Points Exam">Additional Points Exam</option>
+                               <option value="Additional Points Exam">Additional Points Exam</option>
                                 <option value="Additional Points Lab">Additional Points Lab</option>
-                                <option value="Direct Bonus Grade">Direct Bonus Grade</option>
+                                 <option value="Direct Bonus Grade">Direct Bonus Grade</option>
             
                             </select>
                         </div>
@@ -32,11 +33,12 @@
                             <label for="description">Description:</label>
                             <input type="text" name="description" class="form-control" value="{{ $assessmentDescription->description }}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Description</button>
+                        <button type="submit" class="btn btn-primary">Update Description</button><br><br>
                     </form>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
 @endsection

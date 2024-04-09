@@ -46,7 +46,7 @@
                         </div>
 
                         @if ($scores->isNotEmpty())
-                            <div class="card-body ">
+                            <div class="card-body p-3">
                                 <div id="accordion">
                                     @foreach($gradingPeriods as $gradingPeriod)
                                         <div class="card">

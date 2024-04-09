@@ -3,33 +3,43 @@
 @section('content')
 
     <div class="content-wrappers">
+        <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h3>Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h3>
-        </section>
-        <section class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Subject Name</th>
-                                    <th>Subject Code</th>
-                                    <th>Section</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($subjects as $subject)
+            <div class="container-fluid">
+                <h3>Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Search form -->
+                    <form action="{{ route('secretary.searchInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search by Subject Name, Code, or Section">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
                                     <tr>
-                                    <td>{{ $subject->subject->description }}</td>
-                                    <td>{{ $subject->subject->subject_code }}</td>
-                                        <td>{{ $subject->subject->section }}</td>
-                                    <td>  <a href="{{ route('secretary.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}"class="btn btn-info">View Enrolled Students</a></td>
+                                        <th>Subject Name</th>
+                                        <th>Subject Code</th>
+                                        <th>Section</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach($subjects as $subject)
+                                        <tr>
+                                        <td>{{ $subject->subject->description }}</td>
+                                        <td>{{ $subject->subject->subject_code }}</td>
+                                         <td>{{ $subject->subject->section }}</td>
+                                        <td>  <a href="{{ route('secretary.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}"class="btn btn-info">View Enrolled Students</a></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

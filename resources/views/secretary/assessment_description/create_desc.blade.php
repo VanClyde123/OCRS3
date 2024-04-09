@@ -9,7 +9,7 @@
         <div >
     </section>
     <section class="content">
-        <div class="card ">
+        <div class="card p-3">
             <form action="{{ route('assessment-descriptions.store1') }}" method="POST">
                 @csrf
                     <div class="form-group">

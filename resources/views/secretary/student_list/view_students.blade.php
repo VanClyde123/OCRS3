@@ -11,7 +11,7 @@
                 @include('messages')
 
                 <!-- Search bar -->
-                <form action="{{ route('admin.searchStudents') }}" method="GET" class="mb-3">
+                <form action="{{ route('secretary.searchStudents1') }}" method="GET" class="mb-3">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control" placeholder="Search by ID Number, Last Name, First Name or Middle Name">
                         <div class="input-group-append">
@@ -41,9 +41,9 @@
                                             <td>{{ $student->name }}</td>
                                             <td>{{ $student->middle_name }}</td>
                                             <td>
-                                                <a href="{{ route('admin.viewEnrolledSubjects', ['studentId' => $student->id]) }}" class="btn btn-primary">View Enrolled Subjects</a>
+                                                <a href="{{ route('secretary.viewEnrolledSubjects1', ['studentId' => $student->id]) }}" class="btn btn-primary">View Enrolled Subjects</a>
                                                 <br><br>
-                                                <a href="{{ route('admin.viewPastEnrolledSubjects', ['studentId' => $student->id]) }}" class="btn btn-primary">View Past Semester Subjects</a>
+                                                <a href="{{ route('secretary.viewPastEnrolledSubjects1', ['studentId' => $student->id]) }}" class="btn btn-primary">View Past Semester Subjects</a>
                                             </td>
                                         </tr>
                                     @endforeach

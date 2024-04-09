@@ -16,12 +16,51 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    public function list()
-    {
-     $data['getData'] = User::getAdminList();
+   public function list(Request $request)
+{
+    $query = User::getAdminList();
+
+    
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $lowerSearch = mb_strtolower($search);
+            $q->where(DB::raw('LOWER(name)'), 'like', "%$lowerSearch%")
+              ->orWhere(DB::raw('LOWER(middle_name)'), 'like', "%$lowerSearch%")
+              ->orWhere(DB::raw('LOWER(last_name)'), 'like', "%$lowerSearch%")
+              ->orWhere(function ($q2) use ($lowerSearch) {
+                 
+                  $roleNumber = $this->getRoleNumber($lowerSearch);
+                  $q2->where('role', $roleNumber);
+              });
+        });
+    }
+
+    $data['getData'] = $query->simplePaginate(8);
     $data['header_title'] = "List";
     return view('admin.admin.list', $data);
+}
+
+private function getRoleNumber($roleName) {
+    
+    $roles = [
+        'admin' => 1,
+        'instructor' => 2,
+        'student' => 3,
+        'secretary' => 4,
+    ];
+
+   
+    $lowerRoleName = mb_strtolower($roleName);
+
+   
+    if (isset($roles[$lowerRoleName])) {
+        return $roles[$lowerRoleName];
     }
+
+    
+    return null;
+}
 
      public function add()
     {
@@ -78,21 +117,21 @@ class AdminController extends Controller
 
         return redirect('admin/admin/list')->with('success', "User Updated Successfully");
     }
-    public function delete($id)
-    {
-      $user = User::getSingleList($id);
-      
-      if ($user) {
-              
-          $user->delete();
+     public function delete($id)
+      {
+        $user = User::getSingleList($id);
+        
+        if ($user) {
+                
+            $user->delete();
 
-          //// return a response
-          return redirect('admin/admin/list')->with('success', 'User deleted successfully.');
+            //// return a response
+            return redirect('admin/admin/list')->with('success', 'User deleted successfully.');
+        }
+
+        //// if user not found, handle the error
+        return redirect('admin/admin/list')->with('error', 'User not found.');
       }
-
-      //// if user not found, handle the error
-      return redirect('admin/admin/list')->with('error', 'User not found.');
-    }
       
      public function showPasswordConfirmation($id)
     {
@@ -115,32 +154,76 @@ class AdminController extends Controller
     
     }
 
-    public function viewAllStudents()
-    {
-        $students = User::where('role', 3)->get();
-        return view('admin.student_list.view_students', compact('students'));
-    }
+
+    ////////////////for view student list//////////////////
+
+    public function viewAllStudents(Request $request)
+        {
+            $query = User::where('role', 3);
+
+            // Apply search filter if search query is provided
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $query->where(function ($q) use ($search) {
+                    $q->where('id_number', 'like', "%$search%")
+                      ->orWhere('last_name', 'like', "%$search%")
+                      ->orWhere('name', 'like', "%$search%")
+                      ->orWhere('middle_name', 'like', "%$search%");
+                });
+            }
+
+    $students = $query->get();
+
+    return view('admin.student_list.view_students', compact('students'));
+}
     
-    public function viewEnrolledSubjects($studentId)
+        public function viewEnrolledSubjects(Request $request, $studentId)
     {
         $student = User::find($studentId);
          $currentSemester = Semester::where('is_current', true)->first();
  
-          $enrolledSubjects = $student->enrolledSubjects()
-            ->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
-            ->get();
+          $query = $student->enrolledSubjects()->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+
+            
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $query->where(function ($q) use ($search) {
+                    $q->where('subject_code', 'like', "%$search%")
+                      ->orWhere('description', 'like', "%$search%")
+                      ->orWhere('section', 'like', "%$search%");
+                });
+            }
+
+            $enrolledSubjects = $query->get();
+
         return view('admin.student_list.enrolled_subjects', compact('student', 'enrolledSubjects'));
     }
 
-    public function viewPastEnrolledSubjects($studentId)
-    {
-        $student = User::find($studentId);
-        $currentSemester = Semester::where('is_current', true)->first();
+   public function viewPastEnrolledSubjects(Request $request, $studentId)
+{
+    $student = User::find($studentId);
+    $currentSemester = Semester::where('is_current', true)->first();
 
-        
-        $pastEnrolledSubjects = $student->enrolledSubjects()
-            ->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
-            ->get();
+    $query = $student->enrolledSubjects()
+        ->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+
+   
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('subject_code', 'like', "%$search%")
+              ->orWhere('description', 'like', "%$search%")
+              ->orWhere('section', 'like', "%$search%");
+        });
+    }
+
+     
+    if ($request->has('term')) {
+        $term = $request->input('term');
+        $query->where('term','like', "%$term%");
+    }
+
+    $pastEnrolledSubjects = $query->get();
 
         return view('admin.student_list.view_pastsubjects', compact('student', 'pastEnrolledSubjects'));
     }
@@ -168,12 +251,15 @@ class AdminController extends Controller
         ->whereNotIn('type', $excludedAssessmentTypes)
         ->pluck('type');
 
-    $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
-    ->whereHas('importedclasses', function ($query) use ($subjectId) {
-        $query->where('subjects_id', $subjectId);
-    })
-    ->first();
 
+  
+    $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
+        ->whereHas('importedclasses', function ($query) use ($subjectId) {
+            $query->where('subjects_id', $subjectId);
+        })
+        ->first();
+
+    
     $grades = Grades::where('enrolled_student_id', $enrolledStudent->id)
         ->whereHas('assessment', function ($query) use ($subjectId) {
             $query->where('subject_id', $subjectId);
@@ -181,12 +267,15 @@ class AdminController extends Controller
         ->with('assessment') 
         ->get();
 
+    
     $enrolledStudent->load('studentgrades.assessment');
 
     $studentGrades = $enrolledStudent->studentgrades;
 
     return view('admin.student_list.view_scores', compact('student', 'subject', 'grades', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
     }
+
+    ///////for changeing instructor in a subject/////
 
     public function viewSubjects()
     {
@@ -209,107 +298,150 @@ class AdminController extends Controller
 
     public function changeInstructor($importedClassId, Request $request)
     {
-          // Fetch the selected imported class
+          //// fetch the selected imported class
         $importedClass = ImportedClasslist::findOrFail($importedClassId);
 
-        // Update the instructor_id in the imported class
+        ///// update the instructor_id in the imported class
         $importedClass->instructor_id = $request->input('newInstructor');
         $importedClass->save();
+
 
         return redirect()->route('admin.viewSubjects')->with('success', 'Instructor changed successfully');
     }
 
     ////////for the instructor list(the one in the side bar)//////////////////////
 
-     public function showInstructors()
-    {
-    $instructors = User::where('role', 2)->get();
+     public function showInstructors(Request $request)
+{
+    $query = User::where('role', 2);
+
+   
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%$search%")
+              ->orWhere('middle_name', 'like', "%$search%")
+              ->orWhere('last_name', 'like', "%$search%");
+        });
+    }
+
+    $instructors = $query->get();
 
     return view('admin.teacher_list.instructor_list', compact('instructors'));
+}
+
+public function showInstructorSubjects(Request $request, $instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $currentSemester = Semester::where('is_current', true)->first();
+    $query = $instructor->taughtSubjects()
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        });
+
+    
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->whereHas('subject', function ($sq) use ($search) {
+                $sq->where('description', 'like', "%$search%")
+                   ->orWhere('subject_code', 'like', "%$search%")
+                   ->orWhere('section', 'like', "%$search%");
+            });
+        });
     }
 
-    public function showInstructorSubjects($instructorId)
-    {
-        $instructor = User::findOrFail($instructorId);
-        $currentSemester = Semester::where('is_current', true)->first();
-        $subjects = $instructor->taughtSubjects()
-            ->whereHas('subject', function ($query) use ($currentSemester) {
-                $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
-            })
-            ->get();
+    $subjects = $query->get();
 
+    return view('admin.teacher_list.subjects', compact('instructor', 'subjects'));
+}
 
-        return view('admin.teacher_list.subjects', compact('instructor', 'subjects'));
+public function showPastInstructorSubjects(Request $request, $instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $currentSemester = Semester::where('is_current', true)->first();
+    $query = $instructor->taughtSubjects()
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        });
+
+ 
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->whereHas('subject', function ($sq) use ($search) {
+                $sq->where('description', 'like', "%$search%")
+                   ->orWhere('subject_code', 'like', "%$search%")
+                   ->orWhere('section', 'like', "%$search%");
+            });
+        });
     }
 
-    public function showPastInstructorSubjects($instructorId)
-    {
-        $instructor = User::findOrFail($instructorId);
-        $currentSemester = Semester::where('is_current', true)->first();
-        $pastSubjects = $instructor->taughtSubjects()
-            ->whereHas('subject', function ($query) use ($currentSemester) {
-                $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
-            })
-            ->get();
-
-        return view('admin.teacher_list.past_subjects', compact('instructor', 'pastSubjects'));
+   
+    if ($request->has('term')) {
+        $term = $request->input('term');
+        $query->whereHas('subject', function ($sq) use ($term) {
+            $sq->where('term','like', "%$term%");
+        });
     }
 
-    public function showEnrolledStudents($subjectId)
-    {
-    $subject = ImportedClasslist::findOrFail($subjectId)->subject;
-        $enrolledStudents = EnrolledStudents::where('imported_classlist_id', $subjectId)
-            ->with('student')
-            ->get();
+    $pastSubjects = $query->get();
+    return view('admin.teacher_list.past_subjects', compact('instructor', 'pastSubjects'));
+}
 
-        return view('admin.teacher_list.enrolled_students', compact('subject', 'enrolledStudents'));
-    }
+public function showEnrolledStudents($subjectId)
+{
+  $subject = ImportedClasslist::findOrFail($subjectId)->subject;
+    $enrolledStudents = EnrolledStudents::where('imported_classlist_id', $subjectId)
+        ->with('student')
+        ->get();
 
-    public function viewStudentPoints($studentId, $subjectId)
-    {
-        $student = User::findOrFail($studentId);
-        $subject = Subject::findOrFail($subjectId);
+    return view('admin.teacher_list.enrolled_students', compact('subject', 'enrolledStudents'));
+}
 
-        
-        $importedClass = $subject->importedClasses->first();
+public function viewStudentPoints($studentId, $subjectId)
+{
+     $student = User::findOrFail($studentId);
+    $subject = Subject::findOrFail($subjectId);
 
-        $gradingPeriods = DB::table('assessments')->select('grading_period')->distinct()->pluck('grading_period');
+    
+    $importedClass = $subject->importedClasses->first();
 
-
-        $excludedAssessmentTypes = [
-            'Additional Points Quiz',
-            'Additional Points OT',
-            'Additional Points Exam',
-            'Additional Points Lab',
-            'Direct Bonus Grade',
-        ];
-
-        $assessmentTypes = DB::table('assessments')
-            ->select('type')
-            ->distinct()
-            ->whereNotIn('type', $excludedAssessmentTypes)
-            ->pluck('type');
-
-        $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
-            ->where('imported_classlist_id', $importedClass->id)
-            ->first();
+    $gradingPeriods = DB::table('assessments')->select('grading_period')->distinct()->pluck('grading_period');
 
 
-        $grades = Grades::where('enrolled_student_id', $enrolledStudent->id)
-            ->whereHas('assessment', function ($query) use ($subjectId) {
-                $query->where('subject_id', $subjectId);
-            })
-            ->with('assessment')
-            ->get();
+    $excludedAssessmentTypes = [
+        'Additional Points Quiz',
+        'Additional Points OT',
+        'Additional Points Exam',
+        'Additional Points Lab',
+        'Direct Bonus Grade',
+    ];
 
-        
-        $enrolledStudent->load('studentgrades.assessment');
+    $assessmentTypes = DB::table('assessments')
+        ->select('type')
+        ->distinct()
+        ->whereNotIn('type', $excludedAssessmentTypes)
+        ->pluck('type');
 
-        $studentGrades = $enrolledStudent->studentgrades;
+    $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
+        ->where('imported_classlist_id', $importedClass->id)
+        ->first();
 
-        return view('admin.teacher_list.view_scores', compact('student', 'grades', 'subject', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
-    }
 
-        ////////for the instructor list(the one in the side bar)//////////////////////
+    $grades = Grades::where('enrolled_student_id', $enrolledStudent->id)
+        ->whereHas('assessment', function ($query) use ($subjectId) {
+            $query->where('subject_id', $subjectId);
+        })
+        ->with('assessment')
+        ->get();
+
+       
+    $enrolledStudent->load('studentgrades.assessment');
+
+    $studentGrades = $enrolledStudent->studentgrades;
+
+    return view('admin.teacher_list.view_scores', compact('student', 'grades', 'subject', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
+}
 
 }

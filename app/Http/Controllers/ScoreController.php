@@ -7,6 +7,7 @@ use App\Http\Controllers\Log;
 use App\Models\EnrolledStudents;
 use App\Models\Assessment;
 use App\Models\Grades;
+use App\Models\User;
 use App\Models\SubjectType; 
 use App\Models\AssessmentDescription; 
 use Illuminate\Http\Request;
@@ -161,10 +162,22 @@ public function fetchassessmentDetails($enrolledStudentId, $assessmentId)
 
             /////// entered points exceed the maximum points validations
            
+            $enrolledStudent = EnrolledStudents::find($enrolledStudentId);
+            $studentName = $enrolledStudent->student->name;
+            $studentMiddle = $enrolledStudent->student->middle_name;
+            $studentLast = $enrolledStudent->student->last_name;
+
            if (is_numeric($enteredPoints) && $enteredPoints > $assessment->max_points) {
-            
-            session()->flash('warning', 'Inserted points exceed the max points of ' . $assessment->description. ', considered as bonus points');
-        }
+            //// get the key for specific student
+            $studentKey = 'warning_' . $enrolledStudentId;
+
+            ////// checks if a warning message has been displayed recently for the student
+            if (!session()->has($studentKey)) {
+                ///// if not then display the warning message 
+                session()->flash('warning', 'Inserted points exceeded the max points of ' . $assessment->description . ' for ' . $studentLast . ', ' . $studentName . ' ' . $studentMiddle . ' , considered as bonus points');
+                session()->put($studentKey, true);
+                    }
+                }
 
             //// updare or create the record
             $grade = Grades::updateOrCreate(

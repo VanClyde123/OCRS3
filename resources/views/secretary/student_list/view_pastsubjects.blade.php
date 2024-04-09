@@ -5,7 +5,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h3>Past Semester Subjects of {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h3>
-            <form action="{{ route('admin.viewPastEnrolledSubjects', ['studentId' => $student->id]) }}" method="GET" class="form-inline">
+            <form action="{{ route('secretary.viewPastEnrolledSubjects1', ['studentId' => $student->id]) }}" method="GET" class="form-inline">
                 <div class="form-group">
                     <label for="search">Search:</label>
                     <input type="text" class="form-control" id="search" name="search" placeholder="Search by Subject Code, Description, or Section" size="40">
@@ -41,7 +41,7 @@
                                                 <td>{{ $subject->description }}</td>
                                                 <td>{{ $subject->section }}</td>
                                                 <td>{{ $subject->term }}</td>
-                                                <td><a href="{{ route('admin.viewGrades', ['studentId' => $student->id, 'subjectId' => $subject->id]) }}" class="btn btn-primary">View Scores and Grades</a></td>
+                                                <td><a href="{{ route('secretary.viewGrades1', ['studentId' => $student->id, 'subjectId' => $subject->id]) }}" class="btn btn-primary">View Scores and Grades</a></td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -11,9 +11,9 @@
             </div>
         </section>
         <section class="content">
-            @include('messages')
             <div class="card">
-                <div class="card-body">
+                @include('messages')
+                <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>

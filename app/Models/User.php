@@ -52,10 +52,8 @@ class User extends Authenticatable
     static public function getAdminList()
     {  
             /**('users.*') as in from users table in db*/
-       return self::select('users.*')
-        ->whereIn('role', [1, 2, 4]) // Include roles 1, 2, and 4
-        ->orderBy('id', 'desc')
-        ->get();
+        return self::whereIn('role', [1, 2, 4]) 
+            ->orderBy('id', 'desc');
     }
     /**function for getting a single id from users(admin) in db to update*/
     static public function getSingleList($id)

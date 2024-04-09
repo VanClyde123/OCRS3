@@ -1,5 +1,5 @@
- @extends('layouts.app')
-   
+@extends('layouts.app')
+
 @section('content')
     <div class="content-wrappers">
         <section class="content-header">
@@ -12,12 +12,21 @@
             <div class="container-fluid">
                 <div> 
                     @include('messages')
+                     <form action="{{ route('student.searchEnrolledSubjects') }}" method="GET" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" placeholder="Search by Subject Code, Description, Instructor, Days, Time, or Room">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Enrolled Subjects</h3>
                         </div>
+                       
                         @if ($enrolledStudentSubjects->count() > 0)
-                            <div class="card-body ">
+                            <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
@@ -48,14 +57,11 @@
                                 </div>
                             </div>
                         @else
-                            <p>currently not enrolled in any subjects.</p>
+                            <p>Currently not enrolled in any subjects.</p>
                         @endif
                     </div>
                 </div>
             </div>
         </section>
     </div>
-
 @endsection
-
- 

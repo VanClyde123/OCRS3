@@ -1,59 +1,74 @@
 @extends('layouts.app')
-   
+
 @section('content')
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Subject List</h2>
-            <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-info">Past Subjects</a>
+            <div class="container-fluid">
+                <h1>Subject List</h1>
+                <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-primary">Past Subjects</a>
+            </div>
         </section>
         <section class="content">
-            @include('messages')
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        @if (empty($subjects))
-                            <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
-                        @else
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Subject Code</th>
-                                    <th>Subject Description</th>
-                                    <th>Section</th>
-                                    <th>Days</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                    <th>Class Type</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($subjects as $subject)
-                                    <tr>
-                                        <td>{{ $subject->subject_code }}</td>
-                                        <td>{{ $subject->description }}</td>
-                                        <td>{{ $subject->section }}</td>
-                                        <td>{{ $subject->importedClasses->first()->days }}</td>
-                                        <td>{{ $subject->importedClasses->first()->time }}</td>
-                                        <td>{{ $subject->importedClasses->first()->room }}</td>
-                                        <td>
-                                            <form action="{{ route('teacher.update.subject.type', ['subject' => $subject]) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <select name="subject_type" class="form-control">
-                                                    @foreach ($subjectTypes as $type)
-                                                        <option value="{{ $type }}" {{ $subject->subject_type === $type ? 'selected' : '' }}>{{ $type }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="submit" class="btn btn-primary mt-1">Update</button>
-                                            </form>
-                                        </td>
-                                        <td><a href="{{ route('teacher.list.studentlist', ['subject' => $subject]) }}" class="btn btn-info">View Students</a></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @endif
+            <div class="container-fluid">
+                <div>
+                    @include('messages')
+                     <form action="{{ route('teacher.searchSubjects') }}" method="GET" class="mb-3">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control" placeholder="Search by Subject Code, Description, Section, Days, Time, or Room">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                               
+                                @if (empty($subjects))
+                                    <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
+                                @else
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject Code</th>
+                                                <th>Subject Description</th>
+                                                <th>Section</th>
+                                                <th>Days</th>
+                                                <th>Time</th>
+                                                <th>Room</th>
+                                                <th>Class Type</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($subjects as $subject)
+                                                <tr>
+                                                    <td>{{ $subject->subject_code }}</td>
+                                                    <td>{{ $subject->description }}</td>
+                                                    <td>{{ $subject->section }}</td>
+                                                    <td>{{ $subject->importedClasses->first()->days }}</td>
+                                                    <td>{{ $subject->importedClasses->first()->time }}</td>
+                                                    <td>{{ $subject->importedClasses->first()->room }}</td>
+                                                    <td>
+                                                        <form action="{{ route('teacher.update.subject.type', ['subject' => $subject]) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <select name="subject_type" class="form-control">
+                                                                @foreach ($subjectTypes as $type)
+                                                                    <option value="{{ $type }}" {{ $subject->subject_type === $type ? 'selected' : '' }}>{{ $type }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <button type="submit" class="btn btn-primary mt-1">Update</button>
+                                                        </form>
+                                                    </td>
+                                                    <td><a href="{{ route('teacher.list.studentlist', ['subject' => $subject]) }}" class="btn btn-primary mt-2">View Students</a></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

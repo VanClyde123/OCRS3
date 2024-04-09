@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="content-wrappers">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h2>Create Semester</h2>
-        </section>
-        <section class="content">
+<div class="content-wrappers">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>Create Semester</h1>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
             <div class="card ">
                 <div class="card-body">
                     <form method="post" action="{{ route('semesters.store') }}">
@@ -31,31 +32,32 @@
 
                             </div>
                         </div>
-                        <button  type="submit" class="btn btn-success">Create</button>
+                        <button  type="submit" class="btn btn-primary">Create</button>
                     </form>
                 </div>
             </div>
-        </section>
-    </div>
-    <script>
+        </div>
+    </section>
+</div>
+<script>
 
-        
-        const input1 = document.querySelector('input[name="school_year1"]');
-        const input2 = document.querySelector('input[name="school_year2"]');
-        const yearRange = document.getElementById('yearRange');
+    
+    const input1 = document.querySelector('input[name="school_year1"]');
+    const input2 = document.querySelector('input[name="school_year2"]');
+    const yearRange = document.getElementById('yearRange');
 
-        function updateInput2() {
-            input2.value = parseInt(input1.value) + 1; 
-        }
-        function updateRange() {
-            const year1 = input1.value;
-            const year2 = input2.value;
-            yearRange.value = `${year1} - ${year2}`;
-        }
+    function updateInput2() {
+        input2.value = parseInt(input1.value) + 1; 
+    }
+    function updateRange() {
+        const year1 = input1.value;
+        const year2 = input2.value;
+        yearRange.value = `${year1} - ${year2}`;
+    }
 
-        input1.addEventListener('change', updateInput2);
-        input1.addEventListener('change', updateRange);
-        updateInput2(); 
-        updateRange();
-    </script>
+    input1.addEventListener('change', updateInput2);
+    input1.addEventListener('change', updateRange);
+    updateInput2(); 
+    updateRange();
+</script>
 @endsection

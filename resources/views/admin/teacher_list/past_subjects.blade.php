@@ -9,6 +9,20 @@
                 <h3>List of Past Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h3>
                 <div class="card">
                     <div class="card-body">
+                        <!-- Search form -->
+                         <form action="{{ route('admin.searchPastInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" name="search" class="form-control" placeholder="Search by Subject Code, Description, or Section">
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="term" class="form-control"  placeholder="Search by Semester or School Year">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -16,16 +30,20 @@
                                         <th>Subject Name</th>
                                         <th>Subject Code</th>
                                         <th>Section</th>
+                                        <th>Term</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($pastSubjects as $subject)
                                         <tr>
-                                        <td>{{ $subject->subject->description }}</td>
-                                        <td>{{ $subject->subject->subject_code }}</td>
-                                         <td>{{ $subject->subject->section }}</td>
-                                        <td>  <a href="{{ route('admin.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}"class="btn btn-info">View Enrolled Students</a></td>
+                                            <td>{{ $subject->subject->description }}</td>
+                                            <td>{{ $subject->subject->subject_code }}</td>
+                                            <td>{{ $subject->subject->section }}</td>
+                                            <td>{{ $subject->subject->term }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}" class="btn btn-info">View Enrolled Students</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -37,5 +55,3 @@
         </section>
     </div>
 @endsection
-
- 
