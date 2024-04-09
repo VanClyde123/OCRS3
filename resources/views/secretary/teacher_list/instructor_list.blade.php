@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="content-wrappers">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
+    <div class="content-wrappers">
+        <section class="content-header">
             <h3>Instructors</h3>
+        </section>
+        <section class="content">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
@@ -34,9 +33,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 
 @endsection
 

@@ -17,7 +17,7 @@
                             <h3 class="card-title">Enrolled Subjects</h3>
                         </div>
                         @if ($enrolledStudentSubjects->count() > 0)
-                            <div class="card-body p-0">
+                            <div class="card-body ">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>

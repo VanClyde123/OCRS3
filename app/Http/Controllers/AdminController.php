@@ -31,7 +31,11 @@ class AdminController extends Controller
     
     public function insert(Request $request)
     {
+        $id_number = trim($request->id_number);
 
+        if(User::where('id_number', $id_number)->exists()) {
+          return redirect('admin/admin/list')->with('error', 'ID number already exists');
+        }
         $user = new User;
         $user->name = trim($request->name);
         $user->middle_name = trim($request->middle_name); 
@@ -74,21 +78,21 @@ class AdminController extends Controller
 
         return redirect('admin/admin/list')->with('success', "User Updated Successfully");
     }
-     public function delete($id)
-      {
-        $user = User::getSingleList($id);
-        
-        if ($user) {
-                
-            $user->delete();
+    public function delete($id)
+    {
+      $user = User::getSingleList($id);
+      
+      if ($user) {
+              
+          $user->delete();
 
-            //// return a response
-            return redirect('admin/admin/list')->with('success', 'User deleted successfully.');
-        }
-
-        //// if user not found, handle the error
-        return redirect('admin/admin/list')->with('error', 'User not found.');
+          //// return a response
+          return redirect('admin/admin/list')->with('success', 'User deleted successfully.');
       }
+
+      //// if user not found, handle the error
+      return redirect('admin/admin/list')->with('error', 'User not found.');
+    }
       
      public function showPasswordConfirmation($id)
     {
@@ -107,16 +111,17 @@ class AdminController extends Controller
             return redirect()->route('admin.edit', ['id' => $id]);
         }
 
-        return back()->withErrors(['password' => 'Invalid password']);
+        return back()->with('error', 'Incorrect Password');
+    
     }
 
-        public function viewAllStudents()
+    public function viewAllStudents()
     {
         $students = User::where('role', 3)->get();
         return view('admin.student_list.view_students', compact('students'));
     }
     
-        public function viewEnrolledSubjects($studentId)
+    public function viewEnrolledSubjects($studentId)
     {
         $student = User::find($studentId);
          $currentSemester = Semester::where('is_current', true)->first();
@@ -163,15 +168,12 @@ class AdminController extends Controller
         ->whereNotIn('type', $excludedAssessmentTypes)
         ->pluck('type');
 
-
-  
     $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
-        ->whereHas('importedclasses', function ($query) use ($subjectId) {
-            $query->where('subjects_id', $subjectId);
-        })
-        ->first();
+    ->whereHas('importedclasses', function ($query) use ($subjectId) {
+        $query->where('subjects_id', $subjectId);
+    })
+    ->first();
 
-    
     $grades = Grades::where('enrolled_student_id', $enrolledStudent->id)
         ->whereHas('assessment', function ($query) use ($subjectId) {
             $query->where('subject_id', $subjectId);
@@ -179,7 +181,6 @@ class AdminController extends Controller
         ->with('assessment') 
         ->get();
 
-    
     $enrolledStudent->load('studentgrades.assessment');
 
     $studentGrades = $enrolledStudent->studentgrades;
@@ -215,9 +216,99 @@ class AdminController extends Controller
         $importedClass->instructor_id = $request->input('newInstructor');
         $importedClass->save();
 
-
         return redirect()->route('admin.viewSubjects')->with('success', 'Instructor changed successfully');
     }
+
+    ////////for the instructor list(the one in the side bar)//////////////////////
+
+     public function showInstructors()
+{
+    $instructors = User::where('role', 2)->get();
+
+    return view('admin.teacher_list.instructor_list', compact('instructors'));
+}
+
+public function showInstructorSubjects($instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $currentSemester = Semester::where('is_current', true)->first();
+    $subjects = $instructor->taughtSubjects()
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        })
+        ->get();
+
+
+    return view('admin.teacher_list.subjects', compact('instructor', 'subjects'));
+}
+
+public function showPastInstructorSubjects($instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $currentSemester = Semester::where('is_current', true)->first();
+    $pastSubjects = $instructor->taughtSubjects()
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        })
+        ->get();
+
+    return view('admin.teacher_list.past_subjects', compact('instructor', 'pastSubjects'));
+}
+
+public function showEnrolledStudents($subjectId)
+{
+  $subject = ImportedClasslist::findOrFail($subjectId)->subject;
+    $enrolledStudents = EnrolledStudents::where('imported_classlist_id', $subjectId)
+        ->with('student')
+        ->get();
+
+    return view('admin.teacher_list.enrolled_students', compact('subject', 'enrolledStudents'));
+}
+
+public function viewStudentPoints($studentId, $subjectId)
+{
+     $student = User::findOrFail($studentId);
+    $subject = Subject::findOrFail($subjectId);
+
+    
+    $importedClass = $subject->importedClasses->first();
+
+    $gradingPeriods = DB::table('assessments')->select('grading_period')->distinct()->pluck('grading_period');
+
+
+    $excludedAssessmentTypes = [
+        'Additional Points Quiz',
+        'Additional Points OT',
+        'Additional Points Exam',
+        'Additional Points Lab',
+        'Direct Bonus Grade',
+    ];
+
+    $assessmentTypes = DB::table('assessments')
+        ->select('type')
+        ->distinct()
+        ->whereNotIn('type', $excludedAssessmentTypes)
+        ->pluck('type');
+
+    $enrolledStudent = EnrolledStudents::where('student_id', $studentId)
+        ->where('imported_classlist_id', $importedClass->id)
+        ->first();
+
+
+    $grades = Grades::where('enrolled_student_id', $enrolledStudent->id)
+        ->whereHas('assessment', function ($query) use ($subjectId) {
+            $query->where('subject_id', $subjectId);
+        })
+        ->with('assessment')
+        ->get();
+
+       
+    $enrolledStudent->load('studentgrades.assessment');
+
+    $studentGrades = $enrolledStudent->studentgrades;
+
+    return view('admin.teacher_list.view_scores', compact('student', 'grades', 'subject', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
+}
 
     ////////for the instructor list(the one in the side bar)//////////////////////
 

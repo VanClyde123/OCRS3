@@ -7,7 +7,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <h2>Edit Assessment Description</h2>
-            <div class="card p-3">
+            <div class="card ">
                 <div class="container">
                     <form action="{{ route('assessment-descriptions.update1', $assessmentDescription->id) }}" method="POST">
                         @csrf

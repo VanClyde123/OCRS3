@@ -20,7 +20,7 @@
                             <h3 class="card-title">Subject Type List</h3>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body p-0">
+                        <div class="card-body ">
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>

@@ -7,7 +7,6 @@
             ///// get the assessment descriptions based on the selected type
             $('#assessmentType').change(function () {
                 const selectedType = $(this).val();
-
                 $.ajax({
                     type: 'GET',
                     url: '{{ route('assessment-descriptions.fetch') }}',
@@ -47,24 +46,11 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="container-fluid">
-                <div >
-                <div >
-                    <h1>Edit Assessment</h1>
-                </div>
-                
-                </div>
-            </div><!-- /.container-fluid -->
+            <h2>Edit Assessment</h2>
         </section>
         <section class="content">
-                <div class="container-fluid">
-                    
-                    <!-- left column -->
-                    <div>
-                        <!-- general form elements -->
-                        <div class="card ">
+            <div class="card ">
             
-                
                 <form method="post" action="{{ route('instructor.updateAssessment', ['assessmentId' => $assessment->id]) }}">
                     @csrf
                     @method('PUT')
@@ -108,9 +94,7 @@
                     <div class="card-footer">
                         <button type="submit"  class="btn btn-primary">Update Assessment</button>
                     </div>
-                    </form>
-                    </div>
-                </div>
+                </form>
             </div>
         </section>
     </div>
