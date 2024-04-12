@@ -13,10 +13,14 @@ return new class extends Migration
     {
          Schema::create('assessment_descriptions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('subject_desc_id');
+            $table->string('grading_period');
             $table->string('type');
             $table->string('description');
             $table->timestamps();
-        });
+
+            $table->foreign('subject_desc_id')->references('id')->on('subject_descriptions');
+            });
     }
 
     /**

@@ -25,7 +25,7 @@
                             <div class="table-responsive">
                                
                                 @if (empty($subjects))
-                                    <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
+                                    <p>Subjects will not show since there is no active semester set. Please contact the Admin or Secretary.</p>
                                 @else
                                     <table class="table table-striped">
                                         <thead>

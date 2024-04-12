@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('id_number')->unique();
             $table->string('name');
-            $table->string('middle_name');
-            $table->string('last_name');
-            $table->string('course');
-            $table->string('gender');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('course')->nullable();
+            $table->string('gender')->nullable();
             $table->string('password');
             $table->tinyInteger('role')->comment('1=admin, 2=teacher, 3=student, 4=secretary');
             $table->rememberToken();

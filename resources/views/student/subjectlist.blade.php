@@ -24,7 +24,9 @@
                         <div class="card-header">
                             <h3 class="card-title">Enrolled Subjects</h3>
                         </div>
-                       
+                        @if (empty($enrolledStudentSubjects))
+                                    <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
+                               @else
                         @if ($enrolledStudentSubjects->count() > 0)
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -59,6 +61,7 @@
                         @else
                             <p>Currently not enrolled in any subjects.</p>
                         @endif
+                          @endif
                     </div>
                 </div>
             </div>

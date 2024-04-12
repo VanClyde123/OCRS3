@@ -14,17 +14,17 @@ return new class extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('enrolled_student_id');
-            $table->unsignedBigInteger('assessment_id');
-            $table->string('points');
-            $table->integer('fg_grade');
-            $table->integer('midterms_grade');
-            $table->integer('finals_grade');
+            $table->unsignedBigInteger('assessment_id')->nullable();
+            $table->string('points')->nullable();
+            $table->integer('fg_grade')->nullable();
+            $table->integer('midterms_grade')->nullable();
+            $table->integer('finals_grade')->nullable();
             $table->boolean('published')->default(false);
-            $table->boolean('published_midterms')->default(false);
-            $table->boolean('published_finals')->default(false);
-            $table->string('status');
-            $table->string('midterms_status');
-            $table->string('finals_status');
+            $table->boolean('published_midterms')->default(false)->nullable();
+            $table->boolean('published_finals')->default(false)->nullable();
+            $table->string('status')->nullable();
+            $table->string('midterms_status')->nullable();
+            $table->string('finals_status')->nullable();
             $table->timestamps();
 
             $table->foreign('enrolled_student_id')->references('id')->on('enrolled_students');

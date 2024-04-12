@@ -13,22 +13,7 @@
             @if(Auth::user()->role == 1)
                 <li class="nav-item">
                     <a href="{{ url('admin/admin/list')}}" class="nav-link @if (Request::segment(3) == 'list') active @endif">
-                        <p>User List</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('admin/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(3) == 'instructor_list') active @endif">
-                        <p>Instructors</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('admin/subject_types/viewtypes')}}" class="nav-link @if (Request::segment(3) == 'viewtypes') active @endif">
-                        <p>Class Types</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('admin/assessment_description/view_desc')}}" class="nav-link @if (Request::segment(3) == 'view_desc') active @endif">
-                        <p>Assessment Descriptions</p>
+                        <p>Main User List</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -37,8 +22,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ url('admin/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(3) == 'instructor_list') active @endif">
+                        <p>Instructor List</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ url('admin/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @endif">
-                        <p>Subject List</p>
+                        <p>Subject List(Change Instructor)</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/subject_types/viewtypes')}}" class="nav-link @if (Request::segment(3) == 'viewtypes') active @endif">
+                        <p>Class Types</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('admin/subject_descriptions')}}" class="nav-link @if (Request::segment(3) == 'view_subject_desc') active @endif">
+                        <p>Assessment Descriptions</p>
                     </a>
                 </li>
             
@@ -65,7 +65,7 @@
             @elseif(Auth::user()->role == 4)
                 <li class="nav-item">
                     <a href="{{ url('secretary/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(3) == 'instructor_list') active @endif">
-                        <p>Instructors</p>
+                        <p>Instructor List</p>
                     </a>
                 </li>
                  <li class="nav-item">
@@ -74,7 +74,12 @@
                     </a>
                 </li>
                   <li class="nav-item">
-                    <a href="{{ url('secretary/assessment_description/view_desc')}}" class="nav-link @if (Request::segment(3) == 'view_desc') active @endif">
+                    <a href="{{ url('secretary/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @endif">
+                        <p>Subject List(Change Instructor)</p>
+                    </a>
+                </li>
+                  <li class="nav-item">
+                    <a href="{{ url('secretary/subject_descriptions')}}" class="nav-link @if (Request::segment(3) == 'view_subject_desc') active @endif">
                         <p>Assessment Descriptions</p>
                     </a>
                 </li>
@@ -89,6 +94,7 @@
                     </a>
                 </li>
 
+              
             @endif
             <li class="nav-item">
                 <a href="{{ url('logout')}}" class="nav-link">

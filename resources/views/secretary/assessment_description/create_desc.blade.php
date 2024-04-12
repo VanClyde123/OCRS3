@@ -10,8 +10,18 @@
     </section>
     <section class="content">
         <div class="card p-3">
-            <form action="{{ route('assessment-descriptions.store1') }}" method="POST">
+         <form action="{{ route('assessment-descriptions.store1') }}" method="POST">
                 @csrf
+                <input type="hidden" name="subject_desc_id" value="{{ $subjectDescId }}">
+                     <div class="form-group">
+                        <label for="type">Grading Period:</label>
+                        <select class="form-control" name="grading_period" required>
+                            <option value="" disabled selected>--- Select Grading Period ---</option>
+                                <option value="First Grading">First Grading</option>
+                                <option value="Midterm">Midterm</option>
+                                <option value="Finals">Finals</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="type">Type:</label>
                         <select class="form-control" name="type" required>

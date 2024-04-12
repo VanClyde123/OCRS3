@@ -22,7 +22,9 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
                 <div class="card">
-                   
+                   @if (empty($pastStudentSubjects))
+                                    <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
+                               @else
                     @if ($pastStudentSubjects->count() > 0)
                         <div class="card-body">
                             <div class="table-responsive">
@@ -59,6 +61,7 @@
                     @else
                         <p>No available past semester subjects.</p>
                     @endif
+                     @endif
                 </div>
             </div>
         </section>

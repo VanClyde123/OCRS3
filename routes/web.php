@@ -20,6 +20,7 @@ use App\Http\Controllers\SubjectTypeController;
 use App\Http\Controllers\AssessmentDescriptionController;
 use App\Http\Controllers\SecretaryController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\SubjectDescriptionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,9 +83,18 @@ Route::group(['middleware' => 'admin'], function () {
     Route::put('admin/subject_types/edittypes/{id}', [SubjectTypeController::class, 'update'])->name('subject_types.update');
     Route::delete('admin/subject_types/{id}', [SubjectTypeController::class, 'destroy'])->name('subject_types.destroy');
 
+    /////////routes for subjects descriptions
+    Route::get('admin/subject_descriptions', [SubjectDescriptionController::class, 'viewsubdesc'])->name('subject_descriptions.viewsubdesc');
+    Route::get('admin/subject_descriptions/create', [SubjectDescriptionController::class, 'create'])->name('subject_descriptions.create');
+    Route::post('admin/subject_descriptions', [SubjectDescriptionController::class, 'store'])->name('subject_descriptions.store');
+    Route::get('admin/subject_descriptions/{subjectDescription}/edit', [SubjectDescriptionController::class, 'edit'])->name('subject_descriptions.edit');
+    Route::put('admin/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'update'])->name('subject_descriptions.update');
+    Route::delete('admin/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'destroy'])->name('subject_descriptions.destroy');
+    Route::get('admin/assessment_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'show'])->name('assessment_descriptions.view_desc');
 
-    Route::get('admin/assessment_description/view_desc', [AssessmentDescriptionController::class, 'viewDesc']);
-    Route::get('assessment-descriptions/create', [AssessmentDescriptionController::class, 'create'])->name('assessment-descriptions.create');
+   ///////routes for assessments descriptions
+  Route::get('admin/assessment_description/view_desc/{subjectDescription}', [AssessmentDescriptionController::class, 'viewDesc'])->name('assessment_descriptions.view');
+   Route::get('assessment-descriptions/create/{subjectDescId}', [AssessmentDescriptionController::class, 'create'])->name('assessment-descriptions.create');
     Route::post('admin/assessment_description/view_desc', [AssessmentDescriptionController::class, 'store'])->name('assessment-descriptions.store');
     Route::get('assessment-descriptions/{assessment_description}/edit', [AssessmentDescriptionController::class, 'edit'])->name('assessment-descriptions.edit');
     Route::put('assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'update'])->name('assessment-descriptions.update');
@@ -263,15 +273,29 @@ Route::group(['middleware' => 'secretary'], function () {
     Route::get('secretary/set_semester/set_current', [SemesterController::class, 'setupCurrentSemesterView1'])->name('semesters.setupCurrentView');
     Route::post('/set-current-semester', [SemesterController::class, 'setupCurrentSemester1'])->name('semesters.setupCurrent1');
 
+     
+       /////////routes for subjects descriptions
+    Route::get('secretary/subject_descriptions', [SubjectDescriptionController::class, 'viewsubdesc1'])->name('subject_descriptions.viewsubdesc1');
+    Route::get('secretary/subject_descriptions/create', [SubjectDescriptionController::class, 'create1'])->name('subject_descriptions.create1');
+    Route::post('secretary/subject_descriptions', [SubjectDescriptionController::class, 'store1'])->name('subject_descriptions.store1');
+    Route::get('secretary/subject_descriptions/{subjectDescription}/edit', [SubjectDescriptionController::class, 'edit1'])->name('subject_descriptions.edit1');
+    Route::put('secretary/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'update1'])->name('subject_descriptions.update1');
+    Route::delete('secretary/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'destroy1'])->name('subject_descriptions.destroy1');
+    Route::get('secretary/assessment_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'show1'])->name('assessment_descriptions.view_desc1');
+
 
      
-       Route::get('secretary/assessment_description/view_desc', [AssessmentDescriptionController::class, 'viewDesc1']);
-    Route::get('secretary/assessment-descriptions/create', [AssessmentDescriptionController::class, 'create1'])->name('assessment-descriptions.create1');
+       Route::get('secretary/assessment_description/view_desc/{subjectDescription}', [AssessmentDescriptionController::class, 'viewDesc1'])->name('assessment_descriptions.view1');
+    Route::get('secretary/assessment-descriptions/create/{subjectDescId}', [AssessmentDescriptionController::class, 'create1'])->name('assessment-descriptions.create1');
     Route::post('secretary/assessment_description/view_desc', [AssessmentDescriptionController::class, 'store1'])->name('assessment-descriptions.store1');
     Route::get('secretary/assessment-descriptions/{assessment_description}/edit', [AssessmentDescriptionController::class, 'edit1'])->name('assessment-descriptions.edit1');
     Route::put('secretary/assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'update1'])->name('assessment-descriptions.update1');
     Route::delete('secretary/assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'destroy1'])->name('assessment-descriptions.destroy1');
 
+
+Route::get('/secretary/subject_list/view_subjects',  [SecretaryController::class, 'viewSubjects1'])->name('secretary.viewSubjects1');
+    Route::get('/secretary/subject_list/changeInstructor/{importedClassId}',[SecretaryController::class, 'changeInstructorForm1'])->name('secretary.changeInstructorForm1');
+    Route::post('/secretary/subject_list/changeInstructor/{importedClassId}', [SecretaryController::class, 'changeInstructor1'])->name('secretary.changeInstructor1');
 
 
     });

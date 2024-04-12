@@ -6,7 +6,7 @@
         <section class="content-header">
             <h2>Subject List</h2>
         </section>
-          
+
         <section class="content">
             <div class="container-fluid">
                 <div > 
@@ -15,7 +15,7 @@
                         <!-- /.card-header -->
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                 @if (empty($importedClasses))
+                                 @if (empty($importedClasses ))
                                 <p>Subjects will not show since there is no active semester set. Please set a semester</p>
 
                                   @else
@@ -39,7 +39,7 @@
                                                 <td>{{ $importedClass->subject->term}}</td>
                                                 <td>{{ $importedClass->instructor->name }} {{ $importedClass->instructor->middle_name }} {{ $importedClass->instructor->last_name }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.changeInstructorForm',  ['importedClassId' => $importedClass->id]) }}" class="btn btn-primary">Change Instructor</a>
+                                                    <a href="{{ route('secretary.changeInstructorForm1',  ['importedClassId' => $importedClass->id]) }}" class="btn btn-primary">Change Instructor</a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -150,7 +150,7 @@ private function getRoleNumber($roleName) {
             return redirect()->route('admin.edit', ['id' => $id]);
         }
 
-        return back()->with('error', 'Incorrect Password');
+      return redirect('admin/admin/list')->with('error', 'Incorrect Password');
     
     }
 
@@ -180,8 +180,8 @@ private function getRoleNumber($roleName) {
         public function viewEnrolledSubjects(Request $request, $studentId)
     {
         $student = User::find($studentId);
-         $currentSemester = Semester::where('is_current', true)->first();
- 
+        $currentSemester = Semester::where('is_current', true)->first();
+ if ($currentSemester) {  
           $query = $student->enrolledSubjects()->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
 
             
@@ -196,6 +196,11 @@ private function getRoleNumber($roleName) {
 
             $enrolledSubjects = $query->get();
 
+            } else {
+        $enrolledSubjects = [];
+    }
+
+
         return view('admin.student_list.enrolled_subjects', compact('student', 'enrolledSubjects'));
     }
 
@@ -203,27 +208,31 @@ private function getRoleNumber($roleName) {
 {
     $student = User::find($studentId);
     $currentSemester = Semester::where('is_current', true)->first();
+    if ($currentSemester) {  
+        $query = $student->enrolledSubjects()
+            ->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
 
-    $query = $student->enrolledSubjects()
-        ->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
-
-   
-    if ($request->has('search')) {
-        $search = $request->input('search');
-        $query->where(function ($q) use ($search) {
-            $q->where('subject_code', 'like', "%$search%")
-              ->orWhere('description', 'like', "%$search%")
-              ->orWhere('section', 'like', "%$search%");
-        });
-    }
+       
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('subject_code', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhere('section', 'like', "%$search%");
+            });
+        }
 
      
-    if ($request->has('term')) {
-        $term = $request->input('term');
-        $query->where('term','like', "%$term%");
-    }
+        if ($request->has('term')) {
+            $term = $request->input('term');
+            $query->where('term','like', "%$term%");
+        }
 
     $pastEnrolledSubjects = $query->get();
+
+    } else {
+        $pastEnrolledSubjects = [];
+    }
 
         return view('admin.student_list.view_pastsubjects', compact('student', 'pastEnrolledSubjects'));
     }
@@ -280,11 +289,27 @@ private function getRoleNumber($roleName) {
     public function viewSubjects()
     {
       
-    $importedClasses = ImportedClasslist::with(['subject', 'instructor'])->get();
+      $currentSemester = Semester::where('is_current', true)->first();
+
+   if ($currentSemester) {  
+
+    $importedClasses = ImportedClasslist::with(['subject', 'instructor'])
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            // Filter subjects based on the active semester
+            $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        })
+        ->get();
+
+        } else {
+        $importedClasses = [];
+    }
+
+
 
     return view('admin.subject_list.view_subjects', compact('importedClasses'));
        
     }
+
 
     public function changeInstructorForm($importedClassId)
     {
@@ -334,7 +359,9 @@ public function showInstructorSubjects(Request $request, $instructorId)
 {
     $instructor = User::findOrFail($instructorId);
     $currentSemester = Semester::where('is_current', true)->first();
-    $query = $instructor->taughtSubjects()
+
+    if ($currentSemester) { 
+        $query = $instructor->taughtSubjects()
         ->whereHas('subject', function ($query) use ($currentSemester) {
             $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
         });
@@ -353,6 +380,10 @@ public function showInstructorSubjects(Request $request, $instructorId)
 
     $subjects = $query->get();
 
+    } else {
+        $subjects = [];
+    }
+
     return view('admin.teacher_list.subjects', compact('instructor', 'subjects'));
 }
 
@@ -360,6 +391,8 @@ public function showPastInstructorSubjects(Request $request, $instructorId)
 {
     $instructor = User::findOrFail($instructorId);
     $currentSemester = Semester::where('is_current', true)->first();
+
+    if ($currentSemester) {  
     $query = $instructor->taughtSubjects()
         ->whereHas('subject', function ($query) use ($currentSemester) {
             $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
@@ -386,6 +419,11 @@ public function showPastInstructorSubjects(Request $request, $instructorId)
     }
 
     $pastSubjects = $query->get();
+
+    } else {
+        $pastSubjects = [];
+    }
+
     return view('admin.teacher_list.past_subjects', compact('instructor', 'pastSubjects'));
 }
 

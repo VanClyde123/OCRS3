@@ -39,31 +39,28 @@ $(document).ready(function () {
 
    
     function addAssessmentFields(isNew) {
-     
-        const assessmentCount = $('.assessment-container').length + 1;
-        const assessmentField = `
-            <div class="mb-3 assessment-container" data-is-new="${isNew}">
-                <label for="assessmentType${assessmentCount}">Type</label>
-                <select class="form-control" name="type" disabled>
-                    <option value="${$('#assessmentType').val()}">${$('#assessmentType').val()}</option>
-                </select>
-                <label for="assessmentDescription${assessmentCount}">Description</label>
-                  <select name="description" id="assessmentDescription" class="form-control" required>
-                
+    const assessmentCount = $('.assessment-container').length + 1;
+    const assessmentField = `
+        <div class="mb-3 assessment-container" data-is-new="${isNew}">
+            <label for="assessmentType${assessmentCount}">Type</label>
+            <select class="form-control" name="type" disabled>
+                <option value="${$('#assessmentType').val()}">${$('#assessmentType').val()}</option>
             </select>
-                <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
-                <input type="number" class="form-control" min="1" name="max_points" value="">
-                <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
-                <input type="date" class="form-control" name="activity_date" value="">
-            </div>
-        `;
+            <label for="assessmentDescription${assessmentCount}">Description</label>
+            <select name="description" id="assessmentDescription" class="form-control" required></select>
+            <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
+            <input type="number" class="form-control" min="1" name="max_points" value="">
+            <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
+            <input type="date" class="form-control" name="activity_date" value="">
+        </div>
+    `;
 
-        
-        $('#assessmentFieldsContainer').append(assessmentField);
+    $('#assessmentFieldsContainer').append(assessmentField);
 
      
     const selectedGradingPeriod = $('#gradingPeriod').val();
     const selectedType = $('#assessmentType').val();
+    const selectedSubjectCode = $('#subject_code').val(); 
 
     $.ajax({
         type: 'GET',
@@ -71,6 +68,7 @@ $(document).ready(function () {
         data: {
             grading_period: selectedGradingPeriod,
             type: selectedType,
+            subject_code: selectedSubjectCode 
         },
         success: function (response) {
             const descriptions = response.descriptions;
@@ -86,7 +84,7 @@ $(document).ready(function () {
 
 function updateDescriptionDropdown(descriptions, targetSelector) {
     const $descriptionDropdown = $(targetSelector);
-    $descriptionDropdown.empty();  // Clear existing options
+    $descriptionDropdown.empty();
 
     descriptions.forEach(description => {
         $descriptionDropdown.append($('<option>', {
@@ -166,11 +164,11 @@ function updateDescriptionDropdown(descriptions, targetSelector) {
                         <option value="${assessment.type}">${assessment.type}</option>
                     </select>
                     <label for="assessmentDescription${index}">Description</label>
-                    <input type="text" class="form-control" name="description" value="${assessment.description}">
+                    <input type="text" class="form-control" name="description" value="${assessment.description}" disabled>
                     <label for="assessmentMaxPoints${index}">Max Points</label>
-                   <input type="number" class="form-control assessmentMaxPoints" id="assessmentMaxPoints${index}" min="1" name="assessment_max_points[]" value="${assessment.maxPoints}">
+                   <input type="number" class="form-control assessmentMaxPoints" id="assessmentMaxPoints${index}" min="1" name="assessment_max_points[]" value="${assessment.maxPoints}" disabled>
                    <label for="assessmentActivityDate${index}">Activity Date</label>
-                    <input type="date" class="form-control" name="activity_date" value="${assessment.activity_date}">
+                    <input type="date" class="form-control" name="activity_date" value="${assessment.activity_date}" disabled>
          
                 </div>
             `;
@@ -311,38 +309,53 @@ $(document).ready(function () {
 
 
 <script>
-    $(document).ready(function () {
+   $(document).ready(function () {
         
-        function updateAssessmentTypeOptions() {
-            var subjectType = $('#subject_type').val();
-            var assessmentTypeDropdown = $('#assessmentType');
+    function updateAssessmentTypeOptions() {
+        var subjectType = $('#subject_type').val();
+        var gradingPeriod = $('#gradingPeriod').val(); 
+        var assessmentTypeDropdown = $('#assessmentType');
+        var options = [];
 
-           
-            assessmentTypeDropdown.empty();
-
-            
-            var options = [];
-            if (subjectType === 'Lec') {
-                options = ['Quiz', 'OtherActivity', 'Exam', 'Additional Points Quiz', 'Additional Points OT', 'Additional Points Exam', 'Direct Bonus Grade'];
-            } else if (subjectType === 'Lab') {
-                options = ['Lab Activity', 'Lab Exam', 'Additional Points Lab', 'Direct Bonus Grade'];
-            } else if (subjectType.startsWith('LecLab')) {
-                
-                options = ['Quiz', 'OtherActivity', 'Exam', 'Lab Activity', 'Lab Exam', 'Additional Points Quiz', 'Additional Points OT', 'Additional Points Exam', 'Additional Points Lab', 'Direct Bonus Grade'];
+        
+         
+        if (subjectType === 'Lec') {
+            options = ['Quiz', 'OtherActivity', 'Exam', 'Additional Points Quiz', 'Additional Points OT', 'Additional Points Exam'];
+            if (gradingPeriod === 'Finals') {
+                options.push('Direct Bonus Grade');
             }
-
-            
-            for (var i = 0; i < options.length; i++) {
-                assessmentTypeDropdown.append('<option value="' + options[i] + '">' + options[i] + '</option>');
+        } 
+        
+        else if (subjectType === 'Lab') {
+            options = ['Lab Activity', 'Lab Exam', 'Additional Points Lab'];
+            if (gradingPeriod === 'Finals') {
+                options.push('Direct Bonus Grade');
             }
+        } 
+        
+        else if (subjectType.startsWith('LecLab')) {
+            options = ['Quiz', 'OtherActivity', 'Exam', 'Lab Activity', 'Lab Exam', 'Additional Points Quiz', 'Additional Points OT', 'Additional Points Exam', 'Additional Points Lab'];
+            if (gradingPeriod === 'Finals') {
+                options.push('Direct Bonus Grade');
+            }
+        } 
+
+        
+        assessmentTypeDropdown.empty();
+
+       
+        for (var i = 0; i < options.length; i++) {
+            assessmentTypeDropdown.append('<option value="' + options[i] + '">' + options[i] + '</option>');
         }
+    }
 
-   
-        updateAssessmentTypeOptions();
+  
+    updateAssessmentTypeOptions();
 
-        
-        $('#subject_type').change(updateAssessmentTypeOptions);
-    });
+    ///// binds the change event to update options when grading period and subject type option changes
+    $('#subject_type').change(updateAssessmentTypeOptions);
+    $('#gradingPeriod').change(updateAssessmentTypeOptions);
+});
 </script>
 
 <script>
@@ -1018,6 +1031,7 @@ $(document).ready(function() {
             <div class="modal-content">
                 <form action="{{ route('assessments.store') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="subject_code" id="subject_code" value="{{ $subject->subject_code }}">
                     <div class="modal-header">
                         <h5 class="modal-title" id="assessmentModalLabel">Set Assessment</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1027,11 +1041,12 @@ $(document).ready(function() {
                     <input type="hidden" name="assessment_id" id="assessment_id">
                     <input type="hidden" name="subject_id" id="subject_id" value="{{ $subject->id }}">
                     <input type="hidden" name="subjectType" id="subject_type" value="{{ $subject->subject_type }}">
+
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="gradingPeriod">Grading Period:</label>
                             <select class="form-control" id="gradingPeriod" name="grading_period" required>
-                                <option value="" disabled selected>--- Select Grading ---</option>
+                                <option value="" disabled selected>--- Select Grading Period---</option>
                                 <option value="First Grading">First Grading</option>
                                 <option value="Midterm">Midterm</option>
                                 <option value="Finals">Finals</option>
@@ -1040,17 +1055,7 @@ $(document).ready(function() {
                         <div class="form-group">
                             <label for="assessmentType">Assessment Type:</label>
                             <select class="form-control" id="assessmentType" name="type" required>
-                                <option value="" disabled selected>--- Select Type ---</option>
-                                <option value="Quiz">Quiz</option>
-                                <option value="OtherActivity">Other Activity</option>
-                                <option value="Exam">Exam</option>
-                                <option value="Lab Activity">Lab Activity</option>
-                                <option value="Lab Exam">Lab Exam</option>
-                                <option value="Additional Points Quiz">Additional Points Quiz</option>
-                                <option value="Additional Points OT">Additional Points Other Activity</option>
-                                <option value="Additional Points Exam">Additional Points Exam</option>
-                                <option value="Additional Points Lab">Additional Points Lab</option>
-                                <option value="Direct Bonus Grade">Direct Bonus Grade</option>
+                             
                             </select>
                         </div>
                         <div id="assessmentFieldsContainer">

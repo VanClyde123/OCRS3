@@ -4,31 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AssessmentDescription;
+use App\Models\SubjectDescription;
 
 class AssessmentDescriptionController extends Controller
 {
-     public function viewDesc()
-    {
-        $descriptions = AssessmentDescription::all();
-        return view('admin.assessment_description.view_desc', compact('descriptions'));
-    }
+     public function viewDesc(SubjectDescription $subjectDescription)
+{
+    $subjectDescId = $subjectDescription->id;
+    $assessmentDescriptions = $subjectDescription->assessmentDescriptions;
 
-    public function create()
-    {
-        return view('admin.assessment_description.create_desc');
-    }
+    return view('admin.assessment_description.view_desc', compact('assessmentDescriptions', 'subjectDescId', 'subjectDescription'));
+}
+
+   public function create($subjectDescId)
+{
+    return view('admin.assessment_description.create_desc', compact('subjectDescId'));
+}
 
     public function store(Request $request)
     {
-        $request->validate([
-            'type' => 'required|string',
-            'description' => 'required|string',
-        ]);
+       $request->validate([
+        'grading_period' => 'required|string',
+        'type' => 'required|string',
+        'description' => 'required|string',
+        'subject_desc_id' => 'required|exists:subject_descriptions,id',
+    ]);
 
-        AssessmentDescription::create($request->all());
+    $assessmentDescription = AssessmentDescription::create([
+        'grading_period' => $request->grading_period,
+        'type' => $request->type,
+        'description' => $request->description,
+        'subject_desc_id' => $request->subject_desc_id,
+    ]);
 
-        return redirect('admin/assessment_description/view_desc')
-            ->with('success', 'Assessment description created successfully');
+    return redirect()->route('assessment_descriptions.view', ['subjectDescription' => $assessmentDescription->subject_desc_id])
+        ->with('success', 'Assessment description created successfully');
     }
 
     public function edit(AssessmentDescription $assessmentDescription)
@@ -39,13 +49,14 @@ class AssessmentDescriptionController extends Controller
     public function update(Request $request, AssessmentDescription $assessmentDescription)
     {
         $request->validate([
+            'grading_period' => 'required|string',
             'type' => 'required|string',
             'description' => 'required|string',
         ]);
 
         $assessmentDescription->update($request->all());
 
-        return redirect('admin/assessment_description/view_desc')
+      return redirect()->route('assessment_descriptions.view', ['subjectDescription' => $assessmentDescription->subject_desc_id])
             ->with('success', 'Assessment description updated successfully');
     }
 
@@ -53,16 +64,30 @@ class AssessmentDescriptionController extends Controller
     {
         $assessmentDescription->delete();
 
-        return redirect('admin/assessment_description/view_desc')
+         return redirect()->route('assessment_descriptions.view', ['subjectDescription' => $assessmentDescription->subject_desc_id])
             ->with('success', 'Assessment description deleted successfully');
     }
 
    public function fetch(Request $request)
 {
-   
     $type = $request->input('type');
+    $gradingPeriod = $request->input('grading_period');
+    $subjectCode = $request->input('subject_code');
 
-    $descriptions = AssessmentDescription::where('type', $type)->get();
+    ////////Get the subject code in the record from subject_description table that matches the subject code from the subject table
+    $subjectDescription = SubjectDescription::where('subject_code', $subjectCode)->first();
+
+    if (!$subjectDescription) {
+        return response()->json(['descriptions' => []]);
+    }
+
+    //////// get the  assessment descriptions associated with the matched subject code
+    $descriptions = $subjectDescription->assessmentDescriptions()
+        ->where('type', $type)
+        ->where('grading_period', $gradingPeriod)
+        ->get();
+
+
 
     return response()->json(['descriptions' => $descriptions]);
 }
@@ -70,28 +95,37 @@ class AssessmentDescriptionController extends Controller
 
 ////////secretary side///////////////
 
- public function viewDesc1()
-    {
-        $descriptions = AssessmentDescription::all();
-        return view('secretary.assessment_description.view_desc', compact('descriptions'));
-    }
+ public function viewDesc1(SubjectDescription $subjectDescription)
+{
+    $subjectDescId = $subjectDescription->id;
+    $assessmentDescriptions = $subjectDescription->assessmentDescriptions;
 
-    public function create1()
-    {
-        return view('secretary.assessment_description.create_desc');
-    }
+    return view('secretary.assessment_description.view_desc', compact('assessmentDescriptions', 'subjectDescId', 'subjectDescription'));
+}
+
+   public function create1($subjectDescId)
+{
+    return view('secretary.assessment_description.create_desc', compact('subjectDescId'));
+}
 
     public function store1(Request $request)
     {
-        $request->validate([
-            'type' => 'required|string',
-            'description' => 'required|string',
-        ]);
+       $request->validate([
+        'grading_period' => 'required|string',
+        'type' => 'required|string',
+        'description' => 'required|string',
+        'subject_desc_id' => 'required|exists:subject_descriptions,id',
+    ]);
 
-        AssessmentDescription::create($request->all());
+    $assessmentDescription = AssessmentDescription::create([
+        'grading_period' => $request->grading_period,
+        'type' => $request->type,
+        'description' => $request->description,
+        'subject_desc_id' => $request->subject_desc_id,
+    ]);
 
-        return redirect('secretary/assessment_description/view_desc')
-            ->with('success', 'Assessment description created successfully');
+    return redirect()->route('assessment_descriptions.view1', ['subjectDescription' => $assessmentDescription->subject_desc_id])
+        ->with('success', 'Assessment description created successfully');
     }
 
     public function edit1(AssessmentDescription $assessmentDescription)
@@ -102,13 +136,14 @@ class AssessmentDescriptionController extends Controller
     public function update1(Request $request, AssessmentDescription $assessmentDescription)
     {
         $request->validate([
+            'grading_period' => 'required|string',
             'type' => 'required|string',
             'description' => 'required|string',
         ]);
 
         $assessmentDescription->update($request->all());
 
-        return redirect('secretary/assessment_description/view_desc')
+      return redirect()->route('assessment_descriptions.view1', ['subjectDescription' => $assessmentDescription->subject_desc_id])
             ->with('success', 'Assessment description updated successfully');
     }
 
@@ -116,19 +151,32 @@ class AssessmentDescriptionController extends Controller
     {
         $assessmentDescription->delete();
 
-        return redirect('secretary/assessment_description/view_desc')
+         return redirect()->route('assessment_descriptions.view1', ['subjectDescription' => $assessmentDescription->subject_desc_id])
             ->with('success', 'Assessment description deleted successfully');
     }
 
    public function fetch1(Request $request)
 {
-   
     $type = $request->input('type');
+    $gradingPeriod = $request->input('grading_period');
+    $subjectCode = $request->input('subject_code');
 
-    $descriptions = AssessmentDescription::where('type', $type)->get();
+   ////////Get the subject code in the record from subject_description table that matches the subject code from the subject table
+    $subjectDescription = SubjectDescription::where('subject_code', $subjectCode)->first();
+
+    if (!$subjectDescription) {
+        return response()->json(['descriptions' => []]);
+    }
+
+       //////// get the  assessment descriptions associated with the matched subject code
+    $descriptions = $subjectDescription->assessmentDescriptions()
+        ->where('type', $type)
+        ->where('grading_period', $gradingPeriod)
+        ->get();
+
+
 
     return response()->json(['descriptions' => $descriptions]);
 }
-
 
 }

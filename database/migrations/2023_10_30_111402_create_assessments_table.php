@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('grading_period'); //First Grading/ Midterms/ Finals
             $table->string('type');//Quiz, Project, Essay, Exam
             $table->string('description');
-            $table->decimal('max_points', 5, 2);
+            $table->decimal('max_points', 5, 2)->nullable();
             $table->string('subject_type');
-            $table->date('activity_date');
+            $table->date('activity_date')->nullable();
             $table->boolean('published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

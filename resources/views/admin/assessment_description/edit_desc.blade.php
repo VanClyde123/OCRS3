@@ -12,21 +12,30 @@
                     <form action="{{ route('assessment-descriptions.update', $assessmentDescription->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="form-group">
+
+                    <div class="form-group">
+                        <label for="type">Grading Period:</label>
+                         <select class="form-control" name="grading_period" required>
+                                <option value="" disabled>Select Grading Period</option>
+                                <option value="First Grading" {{ $assessmentDescription->grading_period === 'First Grading' ? 'selected' : '' }}>First Grading</option>
+                                <option value="Midterm" {{ $assessmentDescription->grading_period === 'Midterm' ? 'selected' : '' }}>Midterm</option>
+                                <option value="Finals" {{ $assessmentDescription->grading_period === 'Finals' ? 'selected' : '' }}>Finals</option>
+                            </select>
+                    </div>
+                      <div class="form-group">
                             <label for="type">Type:</label>
                             <select class="form-control" name="type" required>
-                                <option value="" disabled selected>--- Select Type ---</option>
-                                <option value="Quiz">Quiz</option>
-                                <option value="OtherActivity">Other Activity</option>
-                                <option value="Exam">Exam</option>
-                                <option value="Lab Activity">Lab Activity</option>
-                                <option value="Lab Exam">Lab Exam</option>
-                                 <option value="Additional Points Quiz">Additional Points Quiz</option>
-                                <option value="Additional Points OT">Additional Points Other Activity</option>
-                               <option value="Additional Points Exam">Additional Points Exam</option>
-                                <option value="Additional Points Lab">Additional Points Lab</option>
-                                 <option value="Direct Bonus Grade">Direct Bonus Grade</option>
-            
+                                <option value="" disabled>Select Type</option>
+                                <option value="Quiz" {{ $assessmentDescription->type === 'Quiz' ? 'selected' : '' }}>Quiz</option>
+                                <option value="OtherActivity" {{ $assessmentDescription->type === 'OtherActivity' ? 'selected' : '' }}>Other Activity</option>
+                                <option value="Exam" {{ $assessmentDescription->type === 'Exam' ? 'selected' : '' }}>Exam</option>
+                                <option value="Lab Activity" {{ $assessmentDescription->type === 'Lab Activity' ? 'selected' : '' }}>Lab Activity</option>
+                                <option value="Lab Exam" {{ $assessmentDescription->type === 'Lab Exam' ? 'selected' : '' }}>Lab Exam</option>
+                                <option value="Additional Points Quiz" {{ $assessmentDescription->type === 'Additional Points Quiz' ? 'selected' : '' }}>Additional Points Quiz</option>
+                                <option value="Additional Points OT" {{ $assessmentDescription->type === 'Additional Points OT' ? 'selected' : '' }}>Additional Points Other Activity</option>
+                                <option value="Additional Points Exam" {{ $assessmentDescription->type === 'Additional Points Exam' ? 'selected' : '' }}>Additional Points Exam</option>
+                                <option value="Additional Points Lab" {{ $assessmentDescription->type === 'Additional Points Lab' ? 'selected' : '' }}>Additional Points Lab</option>
+                                <option value="Direct Bonus Grade" {{ $assessmentDescription->type === 'Direct Bonus Grade' ? 'selected' : '' }}>Direct Bonus Grade</option>
                             </select>
                         </div>
                         <div class="form-group">

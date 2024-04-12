@@ -32,7 +32,7 @@ class InstructorController extends Controller
                 $query->where('instructor_id', $instructorId);
             });
 
-        // Apply search filter if search query is provided
+     
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -79,7 +79,7 @@ class InstructorController extends Controller
                 $query->where('instructor_id', $instructorId);
             });
 
-        // Apply search filter if search query is provided
+    
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {

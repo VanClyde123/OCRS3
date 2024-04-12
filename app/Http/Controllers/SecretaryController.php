@@ -37,7 +37,11 @@ class SecretaryController extends Controller
 public function showInstructorSubjects(Request $request, $instructorId)
 {
     $instructor = User::findOrFail($instructorId);
+
+   
     $currentSemester = Semester::where('is_current', true)->first();
+
+     if ($currentSemester) {  
     $query = $instructor->taughtSubjects()
         ->whereHas('subject', function ($query) use ($currentSemester) {
             $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
@@ -57,6 +61,10 @@ public function showInstructorSubjects(Request $request, $instructorId)
 
     $subjects = $query->get();
 
+    } else {
+        $subjects = [];
+    }
+
 
     return view('secretary.teacher_list.subjects', compact('instructor', 'subjects'));
 }
@@ -64,7 +72,12 @@ public function showInstructorSubjects(Request $request, $instructorId)
 public function showPastInstructorSubjects(Request $request, $instructorId)
 {
     $instructor = User::findOrFail($instructorId);
+
+    
+
     $currentSemester = Semester::where('is_current', true)->first();
+
+    if ($currentSemester) {  
     $query = $instructor->taughtSubjects()
         ->whereHas('subject', function ($query) use ($currentSemester) {
             $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
@@ -91,6 +104,11 @@ public function showPastInstructorSubjects(Request $request, $instructorId)
     }
 
     $pastSubjects = $query->get();
+
+    } else {
+        $pastSubjects = [];
+    }
+
 
     return view('secretary.teacher_list.past_subjects', compact('instructor', 'pastSubjects'));
 }
@@ -177,6 +195,7 @@ public function viewStudentPoints($studentId, $subjectId)
         $student = User::find($studentId);
          $currentSemester = Semester::where('is_current', true)->first();
  
+ if ($currentSemester) { 
           $query = $student->enrolledSubjects()->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
 
             
@@ -191,6 +210,10 @@ public function viewStudentPoints($studentId, $subjectId)
 
             $enrolledSubjects = $query->get();
 
+            } else {
+        $enrolledSubjects = [];
+    }
+
         return view('secretary.student_list.enrolled_subjects', compact('student', 'enrolledSubjects'));
     }
 
@@ -199,6 +222,7 @@ public function viewStudentPoints($studentId, $subjectId)
     $student = User::find($studentId);
     $currentSemester = Semester::where('is_current', true)->first();
 
+if ($currentSemester) {
     $query = $student->enrolledSubjects()
         ->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
 
@@ -219,6 +243,10 @@ public function viewStudentPoints($studentId, $subjectId)
     }
 
     $pastEnrolledSubjects = $query->get();
+
+    } else {
+        $pastEnrolledSubjects  = [];
+    }
 
         return view('secretary.student_list.view_pastsubjects', compact('student', 'pastEnrolledSubjects'));
     }
@@ -269,5 +297,57 @@ public function viewStudentPoints($studentId, $subjectId)
 
     return view('secretary.student_list.view_scores', compact('student', 'subject', 'grades', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
     }
+
+
+      ///////for changeing instructor in a subject/////
+
+    public function viewSubjects1()
+    {
+      
+      $currentSemester = Semester::where('is_current', true)->first();
+
+   if ($currentSemester) {  
+
+    $importedClasses = ImportedClasslist::with(['subject', 'instructor'])
+        ->whereHas('subject', function ($query) use ($currentSemester) {
+            // Filter subjects based on the active semester
+            $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+        })
+        ->get();
+
+        } else {
+        $importedClasses = [];
+    }
+
+
+
+    return view('secretary.subject_list.view_subjects', compact('importedClasses'));
+       
+    }
+
+
+    public function changeInstructorForm1($importedClassId)
+    {
+       
+        $importedClass = ImportedClasslist::findOrFail($importedClassId);
+
+        
+        $instructors = User::where('role', 2)->get();
+            return view('secretary.subject_list.change_instructor', compact('importedClass', 'instructors'));
+        }
+
+    public function changeInstructor1($importedClassId, Request $request)
+    {
+          //// fetch the selected imported class
+        $importedClass = ImportedClasslist::findOrFail($importedClassId);
+
+        ///// update the instructor_id in the imported class
+        $importedClass->instructor_id = $request->input('newInstructor');
+        $importedClass->save();
+
+
+        return redirect()->route('secretary.viewSubjects1')->with('success', 'Instructor changed successfully');
+    }
+
 }
 

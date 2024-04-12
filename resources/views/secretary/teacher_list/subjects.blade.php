@@ -19,6 +19,10 @@
                         </div>
                     </form>
                         <div class="table-responsive">
+
+                            @if (empty($subjects))
+                                   <p>Subjects will not show since there is no active semester set. Please set a semester</p>
+                               @else
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -39,6 +43,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                             @endif
                         </div>
                     </div>
                 </div>

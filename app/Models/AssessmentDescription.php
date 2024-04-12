@@ -11,5 +11,10 @@ class AssessmentDescription extends Model
 
      protected $table = 'assessment_descriptions';
 
-    protected $fillable = ['type', 'description'];
+    protected $fillable = ['subject_desc_id','grading_period', 'type', 'description'];
+
+    public function subjectDescription()
+{
+    return $this->belongsTo(SubjectDescription::class, 'subject_desc_id');
+}
 }

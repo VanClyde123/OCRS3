@@ -19,13 +19,13 @@ class StudentSubjectsController extends Controller
     $student = Auth::user();
 
     if ($student && $student->role === 3) {
-        // Get the current active semester
+      
         $currentSemester = Semester::where('is_current', true)->first();
-
-        // Check if there's a search query
+       if ($currentSemester) {  
+        
         $search = $request->input('search');
 
-        // Get the enrolled student subjects for the current semester
+        
         $enrolledStudentSubjects = $student->enrolledStudentSubjects()
             ->whereHas('importedclasses.subject', function ($query) use ($currentSemester) {
                 $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
@@ -50,6 +50,10 @@ class StudentSubjectsController extends Controller
             })
             ->get();
 
+            } else {
+        $enrolledStudentSubjects = [];
+    }
+
         return view('student.subjectlist', compact('enrolledStudentSubjects'));
     } else {
         return redirect()->route('login')->with('error', 'Access denied.');
@@ -60,14 +64,14 @@ class StudentSubjectsController extends Controller
     $student = Auth::user();
 
     if ($student && $student->role === 3) {
-        // Get the current active semester
+       
         $currentSemester = Semester::where('is_current', true)->first();
-        
-        // Check if there's a search query
+        if ($currentSemester) {  
+       
         $search = $request->input('search');
          $term = $request->input('term');
 
-        // Get the past student subjects that do not match the current active semester
+       
         $pastStudentSubjects = $student->enrolledStudentSubjects()
             ->whereDoesntHave('importedclasses.subject', function ($query) use ($currentSemester) {
                 $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
@@ -97,6 +101,10 @@ class StudentSubjectsController extends Controller
                 });
             })
             ->get();
+
+            } else {
+        $pastStudentSubjects = [];
+    }
 
         return view('student.past_subjectlist', compact('pastStudentSubjects'));
     } else {
