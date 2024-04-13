@@ -49,11 +49,26 @@ $(document).ready(function () {
             <label for="assessmentDescription${assessmentCount}">Description</label>
             <select name="description" id="assessmentDescription" class="form-control" required></select>
             <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
-            <input type="number" class="form-control" min="1" name="max_points" value="">
+            <input type="number" class="form-control" min="1" max="100" name="max_points" value="">
+            <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert max points</small><br>
             <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
             <input type="date" class="form-control" name="activity_date" value="">
         </div>
     `;
+
+        $(document).on('input', 'input[name="max_points"]', function() {
+            const minValue = parseInt($(this).attr('min'));
+            const maxValue = parseInt($(this).attr('max'));
+            const enteredValue = parseInt($(this).val());
+
+            if (enteredValue > maxValue) {
+                $(this).val(maxValue); 
+                alert('Max points cannot exceed 100.');
+            } else if (enteredValue < minValue) {
+                $(this).val(minValue); 
+                alert('Min points is 1.'); 
+            }
+        });
 
     $('#assessmentFieldsContainer').append(assessmentField);
 
@@ -85,6 +100,14 @@ $(document).ready(function () {
 function updateDescriptionDropdown(descriptions, targetSelector) {
     const $descriptionDropdown = $(targetSelector);
     $descriptionDropdown.empty();
+
+   
+    $descriptionDropdown.append($('<option>', {
+        value: '',
+        text: '------Select Description--------',
+        selected: true,
+        disabled: true, 
+    }));
 
     descriptions.forEach(description => {
         $descriptionDropdown.append($('<option>', {
