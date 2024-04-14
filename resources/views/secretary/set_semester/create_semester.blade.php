@@ -4,7 +4,7 @@
 <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>Create Semester</h1>
+        <h2>Create Semester</h2>
     </section>
     <section class="content">
         <div class="container-fluid">

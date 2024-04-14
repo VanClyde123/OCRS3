@@ -2,20 +2,15 @@
 
 @section('content')
 
-<div class="content-wrappers">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div>
-                <h1>Scores and Grades for {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h1>
-            </div>
-        </div>
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            <div>
-                @include('messages')  
-                <div class="accordion" id="accordionExample">
-                    @foreach($grades->groupBy('assessment.grading_period') as $gradingPeriod => $gradesByGradingPeriod)
+    <div class="content-wrappers">
+        <section class="content-header">
+            <h2>Scores and Grades for {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+        </section>
+        <section class="content">
+            @include('messages')  
+            <div class="accordion" id="accordionExample">
+                @foreach($grades->groupBy('assessment.grading_period') as $gradingPeriod => $gradesByGradingPeriod)
                     <div class="card">
                         <div class="card-header" id="heading{{ $loop->index }}">
                             <h2 class="mb-0">
@@ -24,7 +19,6 @@
                                 </button>
                             </h2>
                         </div>
-
                         <div id="collapse{{ $loop->index }}" class="collapse" aria-labelledby="heading{{ $loop->index }}" data-parent="#accordionExample">
                             <div class="card-body">
                                 <div class="accordion" id="assessmentAccordion{{ $loop->index }}">
@@ -39,7 +33,7 @@
                                         </div>
                                         <div id="assessmentCollapse{{ $loop->parent->index }}{{ $loop->index }}" class="collapse" aria-labelledby="assessmentHeading{{ $loop->parent->index }}{{ $loop->index }}" data-parent="#assessmentAccordion{{ $loop->parent->index }}">
                                             <div class="card-body">
-                                                 <table class="table table-striped">
+                                                <table class="table table-striped">
                                                     <thead>
                                                         <tr>
                                                             <th>Description</th>
@@ -61,34 +55,32 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                      @foreach($studentGrades as $score)
-                                                        @if ($score->fg_grade !== null || $score->midterms_grade !== null || $score->finals_grade !== null)
-                                                            <tr>
-                                                                <td>
-                                                                        @if ($gradingPeriod == "First Grading" && $score->fg_grade !== null )
-                                                                        <strong>First Grading Grade:</strong> {{ $score->fg_grade }}<br>
-                                                                        @endif
-
-                                                                        @if ($gradingPeriod == "Midterm" && $score->midterms_grade !== null )
-                                                                            <strong>Midterm Grade:</strong> {{ $score->midterms_grade }}<br>
-                                                                        @endif
-
-                                                                        @if ($gradingPeriod == "Finals" &&  $score->finals_grade !== null )
-                                                                            <strong>Finals Grade:</strong> {{ $score->finals_grade }}
-                                                                        @endif
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
+                                    @foreach($studentGrades as $score)
+                                        @if ($score->fg_grade !== null || $score->midterms_grade !== null || $score->finals_grade !== null)
+                                            <tr>
+                                                <td>
+                                                        @if ($gradingPeriod == "First Grading" && $score->fg_grade !== null )
+                                                        <strong>First Grading Grade:</strong> {{ $score->fg_grade }}<br>
                                                         @endif
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                                        @if ($gradingPeriod == "Midterm" && $score->midterms_grade !== null )
+                                                            <strong>Midterm Grade:</strong> {{ $score->midterms_grade }}<br>
+                                                        @endif
+
+                                                        @if ($gradingPeriod == "Finals" &&  $score->finals_grade !== null )
+                                                            <strong>Finals Grade:</strong> {{ $score->finals_grade }}
+                                                        @endif
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </div>
-                @endsection
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    </div>
+@endsection

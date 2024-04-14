@@ -11,7 +11,7 @@
             </div>
         </section>
         <section class="content">
-            <div class="card p-0">
+            <div class="card ">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>

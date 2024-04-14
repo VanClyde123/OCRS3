@@ -141,6 +141,7 @@
         <div>
             @include('layouts.header') 
             <div id="main">
+                
                 @yield('content')
                 <br><br><br><br>
                 @include('layouts.footer')

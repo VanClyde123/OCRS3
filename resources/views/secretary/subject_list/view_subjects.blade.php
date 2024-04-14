@@ -13,7 +13,7 @@
                     @include('messages')
                     <div class="card">
                         <!-- /.card-header -->
-                        <div class="card-body p-0">
+                        <div class="card-body ">
                             <div class="table-responsive">
                                  @if (empty($importedClasses ))
                                 <p>Subjects will not show since there is no active semester set. Please set a semester</p>

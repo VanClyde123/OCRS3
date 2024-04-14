@@ -36,14 +36,14 @@
                     @include('messages')
                     <form action="{{ url('login') }}" method="post">
                         {{ csrf_field() }}
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-2">
                         <input type="idnumber" class="form-control" required name="id_number" placeholder="ID Number">
                         <div class="input-group-append">
                             <div class="input-group-text">
                             </div>
                         </div>
                         </div>
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-2">
                         <input type="password" class="form-control"  required name="password" placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text">

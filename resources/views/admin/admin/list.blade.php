@@ -7,35 +7,45 @@
             <div style="text-align: left;">
                 <a href="{{ url('admin/admin/add')}}" class="btn  btn-success">Add User</a>
                 <a href="{{ url('admin/student_list/view_students')}}" class="btn  btn-success">Student List</a>
+                
+                {{-- 
+                <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+                --}}
             </div>
         </section>
+        @include('messages')
         <section class="content">
-            @include('messages')
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">User List</h3>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                <!-- Search form -->
-                    <form action="{{ url('admin/admin/list') }}" method="GET" class="mb-3">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request('search') }}">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                    <div>
+                        <form action="{{ url('admin/admin/list') }}" method="GET" class="mb-2">
+                            <div class="input-group mb-2">
+                                <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request('search') }}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-info">Search</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            <select onchange="this.form.submit()"class="form-control" name="role" id="roleSelect" style="width:20%"  placeholder="--Select Role--">
+                                <option value="" disabled selected>--Select Role--</option>
+                                <option value="">Show All</option>
+                                <option value="1" {{ request('role') == 1 ? 'selected' : '' }}>Admin</option>
+                                <option value="2" {{ request('role') == 2 ? 'selected' : '' }}>Instructor</option>
+                                <option value="4" {{ request('role') == 4 ? 'selected' : '' }}>Secretary</option>
+                            </select>
+                        </form>
                     </div>
                     <div class="table-responsive">
                        @php
-                            $roles = [
-                                    1 => 'Admin',
-                                    2 => 'Instructor',
-                                    3 => 'Student',
-                                    4 => 'Secretary',
-                                ];
-                            @endphp
+                        $roles = [
+                            1 => 'Admin',
+                            2 => 'Instructor',
+                            3 => 'Student',
+                            4 => 'Secretary',
+                        ];
+                        @endphp
                         <table class="table table-striped">
                             <thead>
                                 <th>#</th>
@@ -48,12 +58,12 @@
                             <tbody id="userList">
                                 @foreach($getData as $value)
                                 <tr>
-                                    <td>{{ $value->id }}</td>
-                                    <td>{{ $value->name }}</td>
-                                    <td>{{ $value->middle_name }}</td>
-                                    <td>{{ $value->last_name }}</td>
-                                    <td>{{ $roles[$value->role] }}</td>
-                                    <td>
+                                    <td width="15%">{{ $value->id_number }}</td>
+                                    <td width="15%">{{ $value->name }}</td>
+                                    <td width="15%">{{ $value->middle_name }}</td>
+                                    <td width="15%">{{ $value->last_name }}</td>
+                                    <td width="15%">{{ $roles[$value->role] }}</td>
+                                    <td width="15%">
                                         <a href="{{ url('admin/admin/confirm-password/'.$value->id) }}" class="btn btn-primary">Edit</a>
                                         <a href="{{ url('admin/admin/delete/'.$value->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this user?')">Delete</a>
                                     </td>
@@ -69,7 +79,12 @@
         </section>
     </div>
 
-    
+    <script>
+        const select = document.getElementById('roleSelect');
+        select.addEventListener('change', () => {
+        select.form.submit(); 
+        });
+    </script>
 @endsection
 
 <!-----------------

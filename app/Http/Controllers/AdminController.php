@@ -16,8 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-   public function list(Request $request)
-{
+   public function list(Request $request){
     $query = User::getAdminList();
 
     
@@ -35,9 +34,12 @@ class AdminController extends Controller
               });
         });
     }
-
-    $data['getData'] = $query->simplePaginate(8);
     $data['header_title'] = "List";
+    $role = $request->input('role');
+    if ($role) {
+      $query->where('role', $role);
+    }
+    $data['getData'] = $query->simplePaginate(10);
     return view('admin.admin.list', $data);
 }
 

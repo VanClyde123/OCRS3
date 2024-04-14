@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                          <!-- Search form -->
-                         <form action="{{ route('secretary.searchPastInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-3">
+                         <form action="{{ route('secretary.searchPastInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-2">
                             <div class="row">
                                 <div class="col-md-4">
                                     <input type="text" name="search" class="form-control" placeholder="Search by Subject Code, Description, or Section">
@@ -19,7 +19,7 @@
                                     <input type="text" name="term" class="form-control"  placeholder="Search by Semester or School Year">
                                 </div>
                                 <div class="col-md-4">
-                                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                                    <button class="btn btn-info" type="submit">Search</button>
                                 </div>
                             </div>
                         </form>

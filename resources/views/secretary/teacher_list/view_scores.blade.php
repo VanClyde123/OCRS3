@@ -6,7 +6,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div>
-                <h1>Scores and Grades for {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h1>
+                <h2>Scores and Grades for {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h2>
             </div>
         </div>
     </section>

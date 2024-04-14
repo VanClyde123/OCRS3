@@ -10,10 +10,10 @@
                 <a href="{{ route('semesters.create') }}" class="btn btn-success">Add Semester</a>
             </div>
         </section>
+        @include('messages')
         <section class="content">
             <div class="card">
-                @include('messages')
-                <div class="card-body p-0">
+                <div class="card-body ">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -25,8 +25,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($semesters as $semester)
-                                    <tr>
+                                @foreach ($semesters->sortBy('school_year') as $semester)
+                                <tr>
                                         <td>{{ $semester->id }}</td>
                                         <td>{{ $semester->semester_name }}</td>
                                         <td>{{ $semester->school_year }}</td>

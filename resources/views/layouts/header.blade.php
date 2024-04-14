@@ -12,39 +12,39 @@
             </li>
             @if(Auth::user()->role == 1)
                 <li class="nav-item">
-                    <a href="{{ url('admin/admin/list')}}" class="nav-link @if (Request::segment(3) == 'list') active @endif">
+                    <a href="{{ url('admin/admin/list')}}" class="nav-link @if (Request::segment(3) == 'list') active @elseif (Request::segment(3) == 'view_students') active @elseif (Request::segment(1) == 'admin' && Request::segment(3) == 'add') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'student_list') active @elseif (Request::segment(1) == 'admin' && Request::segment(3) == 'confirm-password') active @elseif (Request::segment(1) == 'admin' && Request::segment(3) == 'edit') active @endif">
                         <p>Main User List</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('admin/set_semester/set_current')}}" class="nav-link @if (Request::segment(3) == 'set_current') active @endif">
+                    <a href="{{ url('admin/set_semester/set_current')}}" class="nav-link @if (Request::segment(1) == 'admin' && Request::segment(3) == 'set_current') active @elseif (Request::segment(1) == 'admin' && Request::segment(3) == 'view_semesters') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'semesters') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'semesters') active @endif">
                         <p>Semester</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('admin/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(3) == 'instructor_list') active @endif">
+                    <a href="{{ url('admin/teacher_list/instructor_list')}}" class="nav-link 
+                    @if (Request::segment(1) == 'admin' && Request::segment(2) == 'teacher_list') active @elseif (Request::segment(1) == 'admin' && Request::segment(4) == 'subjects') active @elseif (Request::segment(1) == 'admin' && Request::segment(4) == 'past_subjects') active @elseif (Request::segment(1) == 'admin' && Request::segment(4) == 'students') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'view-student-points') active @endif"> 
                         <p>Instructor List</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('admin/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @endif">
+                    <a href="{{ url('admin/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(1) == 'admin' && Request::segment(3) == 'view_subjects') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'subject_list') active @endif">
                         <p>Subject List(Change Instructor)</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('admin/subject_types/viewtypes')}}" class="nav-link @if (Request::segment(3) == 'viewtypes') active @endif">
-                        <p>Class Types</p>
+                    <a href="{{ url('admin/subject_types/viewtypes')}}" class="nav-link  @if (Request::segment(1) == 'admin' && Request::segment(2) == 'subject_types') active  @endif">
+                        <p>Class Calculation Types</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('admin/subject_descriptions')}}" class="nav-link @if (Request::segment(3) == 'view_subject_desc') active @endif">
+                    <a href="{{ url('admin/subject_descriptions')}}" class="nav-link @if (Request::segment(1) == 'admin' && Request::segment(2) == 'subject_descriptions') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'assessment_description') active @elseif (Request::segment(1) == 'assessment-descriptions') active @endif">
                         <p>Assessment Descriptions</p>
                     </a>
                 </li>
-            
             @elseif(Auth::user()->role == 2)
                 <li class="nav-item">
-                    <a href="{{ url('teacher/list/classlist')}}"  class="nav-link @if (Request::segment(3) == 'classlist') active @endif">
+                    <a href="{{ url('teacher/list/classlist')}}"  class="nav-link @if (Request::segment(1) == 'teacher' && Request::segment(3) == 'studentlist') active @elseif (Request::segment(1) == 'teacher' && Request::segment(3) == 'past_classlist') active @elseif (Request::segment(1) == 'teacher' && Request::segment(3) == 'classlist') active  @elseif (Request::segment(1) == 'studentlistremove') active @elseif (Request::segment(1) == 'assessments') active @endif">
                     <p>
                         Subject List
                     </p>

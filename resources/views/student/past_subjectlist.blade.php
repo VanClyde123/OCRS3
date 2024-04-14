@@ -19,7 +19,7 @@
                             <label for="term">Term:</label>
                             <input type="text" class="form-control" id="term" name="term" placeholder="Search by Semester or School Year" size="40">
                         </div>
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-info">Search</button>
                     </form>
                 <div class="card">
                    @if (empty($pastStudentSubjects))

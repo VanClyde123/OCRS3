@@ -10,11 +10,11 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Search form -->
-                    <form action="{{ route('secretary.searchInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-3">
+                    <form action="{{ route('secretary.searchInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-2">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" placeholder="Search by Subject Name, Code, or Section">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                                <button class="btn btn-info" type="submit">Search</button>
                             </div>
                         </div>
                     </form>

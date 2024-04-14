@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1>Subject Descriptions</h1>
-        <a href="{{ route('subject_descriptions.create1') }}" class="btn btn-primary mb-3">Create New Subject Description</a>
+        <a href="{{ route('subject_descriptions.create1') }}" class="btn btn-primary mb-2">Create New Subject Description</a>
         <table class="table">
             <thead>
                 <tr>
