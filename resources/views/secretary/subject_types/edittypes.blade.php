@@ -48,38 +48,32 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="container-fluid">
-                <div >
-                    <h3>Edit Subject Type <br>{{ $subjectType->subject_type }}</h3>
-                </div>
-            </div>
+            <h2>Edit Subject Type <br>{{ $subjectType->subject_type }}</h2>
         </section>
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="{{ route('subject_types.update1', $subjectType->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                <label for="subject_type">Class Type:</label>
-                                <input type="text" name="subject_type" class="form-control" value="{{ $subjectType->subject_type }}" required>
-                                <small class="text-muted instruction-text">Example: LecLab2080</small>
-                            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('subject_types.update1', $subjectType->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
                             <div class="form-group">
-                                <label for="lec_percentage">Lec Percentage:</label>
-                                <input min="0.01"type="number" name="lec_percentage" step="0.01" class="form-control" value="{{ $subjectType->lec_percentage }}" required>
-                                <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or .2 for 20%)</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="lab_percentage">Lab Percentage:</label>
-                                <input min="0.01"type="number" name="lab_percentage" step="0.01" class="form-control" value="{{ $subjectType->lab_percentage }}"  required>
-                                <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 .8 for 80%)</small>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </form>
-                    </div>
+                            <label for="subject_type">Class Type:</label>
+                            <input type="text" name="subject_type" class="form-control" value="{{ $subjectType->subject_type }}" required>
+                            <small class="text-muted instruction-text">Example: LecLab2080</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="lec_percentage">Lec Percentage:</label>
+                            <input min="0.01"type="number" name="lec_percentage" step="0.01" class="form-control" value="{{ $subjectType->lec_percentage }}" required>
+                            <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or .2 for 20%)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="lab_percentage">Lab Percentage:</label>
+                            <input min="0.01"type="number" name="lab_percentage" step="0.01" class="form-control" value="{{ $subjectType->lab_percentage }}"  required>
+                            <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 .8 for 80%)</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
                 </div>
             </div>
         </section>

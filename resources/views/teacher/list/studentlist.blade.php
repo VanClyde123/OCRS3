@@ -62,7 +62,6 @@
                             console.error('Error:', error);
                         },
                     });
-
                     assessmentCounter++;
                 }
                 function updateDescriptionDropdown(descriptions, targetSelector) {

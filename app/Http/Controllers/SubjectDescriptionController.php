@@ -57,10 +57,22 @@ class SubjectDescriptionController extends Controller
 
     public function destroy(SubjectDescription $subjectDescription)
     {
-        $subjectDescription->delete();
-        return redirect()->route('subject_descriptions.viewsubdesc')->with('success', 'Subject description deleted successfully.');
+        try {
+            $subjectDescription->delete();
+            return redirect()
+            ->route('subject_descriptions.viewsubdesc')
+            ->with('success', 'Subject description deleted successfully.');
+    
+        } catch (\Exception $e) {
+    
+            return redirect()
+            ->route('subject_descriptions.viewsubdesc')
+            ->with('error', 'Error deleting subject description: ' . $e->getMessage());
+    
+        }
     }
 
+    
     public function show(SubjectDescription $subjectDescription)
     {
         
@@ -105,13 +117,11 @@ class SubjectDescriptionController extends Controller
         return view('secretary.assessment_description.edit_subject_desc', compact('subjectDescription'));
     }
 
-    public function update1(Request $request, SubjectDescription $subjectDescription)
-    {
+    public function update1(Request $request, SubjectDescription $subjectDescription){
         $request->validate([
             'subject_code' => 'required|string',
             'subject_name' => 'required|string',
         ]);
-
         $subjectDescription->update([
             'subject_code' => $request->subject_code,
             'subject_name' => $request->subject_name,
@@ -119,13 +129,17 @@ class SubjectDescriptionController extends Controller
 
         return redirect()->route('subject_descriptions.viewsubdesc1')->with('success', 'Subject description updated successfully.');
     }
-
-    public function destroy1(SubjectDescription $subjectDescription)
-    {
-        $subjectDescription->delete();
-        return redirect()->route('subject_descriptions.viewsubdesc1')->with('success', 'Subject description deleted successfully.');
+    public function destroy1(SubjectDescription $subjectDescription){
+        try {
+            $subjectDescription->delete();
+            
+            return redirect()->route('subject_descriptions.viewsubdesc1')->with('success', 'Subject description deleted successfully.');
+        
+        } catch (\Exception $e) {
+        
+            return redirect()->route('subject_descriptions.viewsubdesc1')->with('error', 'Error deleting subject description: ' . $e->getMessage());
+        }
     }
-
     public function show1(SubjectDescription $subjectDescription)
     {
         // Fetch assessment descriptions associated with the selected subject

@@ -55,11 +55,16 @@
                                                     @method('PUT')
                                                     <select name="subject_type" class="form-control" disabled >
                                                         @foreach ($subjectTypes as $type)
-                                                            <option value="{{ $type }}" {{ $subject->subject_type === $type ? 'selected' : '' }}>{{ $type }}</option>
+                                                            <option value="{{ $subject->subject_type }}" >{{ $subject->subject_type }}</option>
                                                         @endforeach
                                                     </select>
 
                                                     {{-- 
+                                                        <select name="subject_type" class="form-control" disabled >
+                                                        @foreach ($subjectTypes as $type)
+                                                            <option value="{{ $type }}" {{ $subject->subject_type === $type ? 'selected' : '' }}>{{ $type }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     <button type="submit" class="btn btn-primary mt-1">Update</button>
                                                     --}}
 

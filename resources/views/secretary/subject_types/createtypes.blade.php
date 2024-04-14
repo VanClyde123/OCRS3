@@ -47,36 +47,35 @@
 
     <div class="content-wrappers">
         <section class="content-header">
-            <h3 >Create Subject Type for Calculation</h3>
+            <h2 >Create Subject Type for Calculation</h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
         </section>
-        <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
-                <div class="card ">
-                    <div class="table-responsive">
-                        <div class="card-body">
-                            <form action="{{ route('subject_types.store1') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="subject_type">Class Type:</label>
-                                    <input type="text" name="subject_type" class="form-control" required>
-                                    <small class="text-muted instruction-text">Example: LecLab2080</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lec_percentage">Lec Percentage:</label>
-                                    <input type="number" name="lec_percentage" min="0.01"step="0.01" class="form-control" required>
-                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or .2 for 20%)</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lab_percentage">Lab Percentage:</label>
-                                    <input type="number" name="lab_percentage" min="0.01"step="0.01" class="form-control" required>
-                                    <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 or .8 for 80%)</small>
-                                </div>
-                                <button type="submit" class="btn btn-success">Save</button>
-                            </form>
-                        </div>
+            <div class="card ">
+                <div class="table-responsive">
+                    <div class="card-body">
+                        <form action="{{ route('subject_types.store1') }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="subject_type">Class Type:</label>
+                                <input type="text" name="subject_type" class="form-control" required>
+                                <small class="text-muted instruction-text">Example: LecLab2080</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="lec_percentage">Lec Percentage:</label>
+                                <input type="number" name="lec_percentage" min="0.01"step="0.01" class="form-control" required>
+                                <small class="text-muted instruction-text">Enter as decimal (e.g., 0.2 or .2 for 20%)</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="lab_percentage">Lab Percentage:</label>
+                                <input type="number" name="lab_percentage" min="0.01"step="0.01" class="form-control" required>
+                                <small class="text-muted instruction-text">Enter as decimal (e.g., 0.8 or .8 for 80%)</small>
+                            </div>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </form>
                     </div>
                 </div>
+            </div>
         </section>
     </div>
 @endsection

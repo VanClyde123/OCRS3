@@ -64,22 +64,22 @@
                 </li>
             @elseif(Auth::user()->role == 4)
                 <li class="nav-item">
-                    <a href="{{ url('secretary/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(3) == 'instructor_list') active @endif">
+                    <a href="{{ url('secretary/teacher_list/instructor_list')}}" class="nav-link @if (Request::segment(1) == 'secretary' && Request::segment(3) == 'instructor_list') active @elseif (Request::segment(1) == 'secretary' && Request::segment(2) == 'teacher_list') active @elseif (Request::segment(1) == 'view-student-points') active @endif">
                         <p>Instructor List</p>
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a href="{{ url('secretary/student_list/view_students')}}" class="nav-link @if (Request::segment(3) == 'view_students') active @endif">
+                    <a href="{{ url('secretary/student_list/view_students')}}" class="nav-link @if (Request::segment(2) == 'student_list') active @endif">
                         <p>Student List</p>
                     </a>
                 </li>
                   <li class="nav-item">
-                    <a href="{{ url('secretary/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @endif">
+                    <a href="{{ url('secretary/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @elseif (Request::segment(2) == 'subject_list' && Request::segment(3) == 'changeInstructor') active @endif">subject_descriptions
                         <p>Subject List(Change Instructor)</p>
                     </a>
                 </li>
                   <li class="nav-item">
-                    <a href="{{ url('secretary/subject_descriptions')}}" class="nav-link @if (Request::segment(3) == 'view_subject_desc') active @endif">
+                    <a href="{{ url('secretary/subject_descriptions')}}" class="nav-link @if (Request::segment(3) == 'view_subject_desc') active @elseif (Request::segment(1) == 'secretary' && Request::segment(2) == 'subject_descriptions') active  @elseif (Request::segment(1) == 'secretary' && Request::segment(2) == 'assessment_description') active @endif">
                         <p>Assessment Descriptions</p>
                     </a>
                 </li>

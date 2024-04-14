@@ -119,21 +119,21 @@ private function getRoleNumber($roleName) {
 
         return redirect('admin/admin/list')->with('success', "User Updated Successfully");
     }
-     public function delete($id)
-      {
-        $user = User::getSingleList($id);
-        
-        if ($user) {
-                
-            $user->delete();
-
-            //// return a response
-            return redirect('admin/admin/list')->with('success', 'User deleted successfully.');
+     public function delete($id){
+        try {
+            $user = User::getSingleList($id);
+            if ($user) {
+                $user->delete();
+                //// return a response
+                return redirect('admin/admin/list')->with('success', 'User deleted successfully.');
+            }
+        } catch (\Exception $e) {
+    
+            return redirect('admin/admin/list')->with('error', 'Error deleting user: ' . $e->getMessage());
+    
         }
-
-        //// if user not found, handle the error
         return redirect('admin/admin/list')->with('error', 'User not found.');
-      }
+    }
       
      public function showPasswordConfirmation($id)
     {

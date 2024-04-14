@@ -38,13 +38,18 @@
                         </form>
                     </div>
                     <div class="table-responsive">
-                       @php
-                        $roles = [
-                            1 => 'Admin',
-                            2 => 'Instructor',
-                            3 => 'Student',
-                            4 => 'Secretary',
-                        ];
+                        @php
+                            $sortOrder = [
+                                'Admin', 
+                                'Secretary',
+                                'Instructor'
+                            ];
+                            $roles = [
+                                1 => 'Admin',
+                                2 => 'Instructor',
+                                3 => 'Student',
+                                4 => 'Secretary',
+                            ];
                         @endphp
                         <table class="table table-striped">
                             <thead>
@@ -56,7 +61,7 @@
                                 <th>Actions</th>
                             </thead>
                             <tbody id="userList">
-                                @foreach($getData as $value)
+                                @foreach($getData->sortBy('role') as $value)
                                 <tr>
                                     <td width="15%">{{ $value->id_number }}</td>
                                     <td width="15%">{{ $value->name }}</td>
@@ -65,7 +70,13 @@
                                     <td width="15%">{{ $roles[$value->role] }}</td>
                                     <td width="15%">
                                         <a href="{{ url('admin/admin/confirm-password/'.$value->id) }}" class="btn btn-primary">Edit</a>
-                                        <a href="{{ url('admin/admin/delete/'.$value->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this user?')">Delete</a>
+                                        @if($value->role != 1)
+                                            <a href="{{ url('admin/admin/delete/'.$value->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this user?')">Delete</a>
+                                        @else
+                                            <button disabled class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

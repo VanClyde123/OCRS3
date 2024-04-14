@@ -14,6 +14,8 @@
                 <div class="card-body">
                     <form action="{{ route('subject_descriptions.store') }}" method="POST">
                         @csrf
+
+
                         <div class="form-group">
                             <label for="subject_code">Subject Code</label>
                             <input type="text" class="form-control" id="subject_code" name="subject_code">
@@ -22,6 +24,8 @@
                             <label for="subject_name">Subject Name</label>
                             <input type="text" class="form-control" id="subject_name" name="subject_name">
                         </div>
+
+                        
                         <button type="submit" class="btn btn-success">Create</button>
                     </form>
                 </div>

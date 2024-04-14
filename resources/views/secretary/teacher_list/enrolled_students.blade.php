@@ -33,7 +33,7 @@
                                             <td>{{ $enrolledStudent->student->last_name }}, {{ $enrolledStudent->student->name }} {{ $enrolledStudent->student->middle_name }}</td>
                                             <td>{{ $enrolledStudent->student->id_number }}</td>
                                             <td>
-                                                <a href="{{ route('view.student.points', ['studentId' => $enrolledStudent->student->id, 'subjectId' => $subject->id]) }}" class="btn btn-primary">View Scores</a>
+                                                <a href="{{ route('view.student.points', ['studentId' => $enrolledStudent->student->id, 'subjectId' => $subject->id]) }}" class="btn btn-info">View Scores</a>
                                             </td>
                                         </tr>
                                     @endforeach

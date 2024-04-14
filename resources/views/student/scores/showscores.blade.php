@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     @else
-                        <p>No scores available yet.</p>
+                        <p>No activity or grade published yet.</p>
                     @endif
                 </div>
             </div>

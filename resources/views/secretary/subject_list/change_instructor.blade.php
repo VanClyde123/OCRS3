@@ -4,34 +4,28 @@
     <div class="content-wrappers">
    
         <section class="content-header">
-                <h2 >Change Instructor</h2>
-
+            <h2 >Change Instructor</h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
         </section>
-
-
         <section class="content">
-            <div class="container-fluid">
-                <div>
-                    <div class="card ">
-                        <form method="post" action="{{ route('secretary.changeInstructor1', ['importedClassId' => $importedClass->id]) }}">
-                            {{ csrf_field() }}
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="newInstructor">Assign New Instructor:</label>
-                                    <select class="form-control" name="newInstructor" required>
-                                        <option value="" disabled selected>--- Select Instructor ---</option>
-                                        @foreach($instructors as $instructor)
-                                        <option value="{{ $instructor->id }}">{{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Reassign Instructor</button>
-                            </div>
-                        </form>
+            <div class="card ">
+                <form method="post" action="{{ route('secretary.changeInstructor1', ['importedClassId' => $importedClass->id]) }}">
+                    {{ csrf_field() }}
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="newInstructor">Assign New Instructor:</label>
+                            <select class="form-control" name="newInstructor" required>
+                                <option value="" disabled selected>--- Select Instructor ---</option>
+                                @foreach($instructors as $instructor)
+                                <option value="{{ $instructor->id }}">{{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Reassign Instructor</button>
+                    </div>
+                </form>
             </div>
         </section>
     </div>

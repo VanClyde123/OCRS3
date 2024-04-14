@@ -45,19 +45,12 @@
             }
     </style>
 
-<div class="content-wrappers">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div >
-                <div >
-                    <h3>Class List Data</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            @include('messages')
+    <div class="content-wrappers">
+        <section class="content-header">
+            <h2>Class List Data</h2>
+        </section>
+        @include('messages')
+        <section class="content">
             <div class="card">
                 <div class="card-body">
                     <div class="class-info">
@@ -169,11 +162,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
-
-
-
-
+        </section>
+    </div>
 @endsection

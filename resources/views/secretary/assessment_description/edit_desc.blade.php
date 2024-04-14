@@ -5,24 +5,27 @@
 <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="container-fluid">
-            <h2>Edit Assessment Description</h2>
-            <div class="card p-3">
-                <div class="container">
+        <h2>Edit Assessment Description</h2>
+        <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+    </section>
+    <section class="content">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
                     <form action="{{ route('assessment-descriptions.update1', $assessmentDescription->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
-                    <div class="form-group">
-                        <label for="type">Grading Period:</label>
-                         <select class="form-control" name="grading_period" required>
+                        <div class="form-group">
+                            <label for="type">Grading Period:</label>
+                            <select class="form-control" name="grading_period" required>
                                 <option value="" disabled>Select Grading Period</option>
                                 <option value="First Grading" {{ $assessmentDescription->grading_period === 'First Grading' ? 'selected' : '' }}>First Grading</option>
                                 <option value="Midterm" {{ $assessmentDescription->grading_period === 'Midterm' ? 'selected' : '' }}>Midterm</option>
                                 <option value="Finals" {{ $assessmentDescription->grading_period === 'Finals' ? 'selected' : '' }}>Finals</option>
                             </select>
-                    </div>
-                      <div class="form-group">
+                        </div>
+                        <div class="form-group">
                             <label for="type">Type:</label>
                             <select class="form-control" name="type" required>
                                 <option value="" disabled>Select Type</option>
