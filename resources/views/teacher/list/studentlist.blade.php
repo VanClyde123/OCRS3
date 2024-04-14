@@ -32,7 +32,8 @@
                             <label for="assessmentDescription${assessmentCount}">Description</label>
                             <select name="description" id="assessmentDescription" class="form-control" required></select>
                             <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
-                            <input type="number" class="form-control" min="1" name="max_points" value="">
+                            <input type="number" class="form-control" min="1" max="100" name="max_points" value="">
+                            <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert max points</small><br>
                             <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
                             <input type="date" class="form-control" name="activity_date" value="">
                         </div>
@@ -67,7 +68,12 @@
                 function updateDescriptionDropdown(descriptions, targetSelector) {
                     const $descriptionDropdown = $(targetSelector);
                     $descriptionDropdown.empty();
-
+                    $descriptionDropdown.append($('<option>', {
+                        value: '',
+                        text: '------Select Description--------',
+                        selected: true,
+                        disabled: true, 
+                    }));
                     descriptions.forEach(description => {
                         $descriptionDropdown.append($('<option>', {
                             value: description.description,
@@ -75,16 +81,19 @@
                         }));
                     });
                 }
+
                 function resetIsNewFlag() {
                 $('.assessment-container').each(function () {
                     $(this).data('isNew', false);
                 });
                 }
+
+                
                 function populateAssessmentFields(assessments) {
             
                     assessments.forEach(function (assessment, index) {
                         const assessmentField = `
-                            <div class="mb-2 assessment-container">
+                            <div class="mb-3 assessment-container">
                                 <label for="assessmentType${index}">Type</label>
                                 <select class="form-control" name="type" >
                                     <option value="${assessment.type}">${assessment.type}</option>
@@ -98,7 +107,8 @@
                     
                             </div>
                         `;
-
+                        $('#assessmentFieldsContainer').append(assessmentField);
+                        $(`#assessmentMaxPoints${index}`).val(assessment.maxPoints);
                         $('#assessmentFieldsContainer').append(assessmentField);
                     });
                 }
@@ -194,52 +204,52 @@
         </script>
 
         <script> 
-        $(document).ready(function () {
-        console.log('Score Modal script is running.');
-        $('.score-button').on('click', function (event) {
-                const enrolledStudentId = $(this).data('enrolled-student-id');
-                const modal = $(`#scoreModal-${enrolledStudentId}`);
-                let isSaving = false; 
-                $('.save-score').on('click', function (event) {
-                    event.preventDefault();
+            $(document).ready(function () {
+            console.log('Score Modal script is running.');
+            $('.score-button').on('click', function (event) {
+                    const enrolledStudentId = $(this).data('enrolled-student-id');
+                    const modal = $(`#scoreModal-${enrolledStudentId}`);
+                    let isSaving = false; 
+                    $('.save-score').on('click', function (event) {
+                        event.preventDefault();
 
-                    if (isSaving) {
-                        return; 
-                    }
-
-                    isSaving = true;
-
-                    //console.log('save button clicked');
-
-                    const assessmentId = modal.find('#assessment').val();
-                    const points = modal.find('#points').val();
-
-                
-                    const url = `{{ route('insert.score', '') }}/${enrolledStudentId}`;
-
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            enrolledStudentId: enrolledStudentId,
-                            assessmentId: assessmentId,
-                            points: points
-                        },
-                        success: function (response) {
-                            console.log('Score saved successfully');
-                            modal.modal('hide');
-                            isSaving = false; 
-                            location.reload(); 
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
-                            isSaving = false; 
+                        if (isSaving) {
+                            return; 
                         }
+
+                        isSaving = true;
+
+                        //console.log('save button clicked');
+
+                        const assessmentId = modal.find('#assessment').val();
+                        const points = modal.find('#points').val();
+
+                    
+                        const url = `{{ route('insert.score', '') }}/${enrolledStudentId}`;
+
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                enrolledStudentId: enrolledStudentId,
+                                assessmentId: assessmentId,
+                                points: points
+                            },
+                            success: function (response) {
+                                console.log('Score saved successfully');
+                                modal.modal('hide');
+                                isSaving = false; 
+                                location.reload(); 
+                            },
+                            error: function (error) {
+                                console.error('Error:', error);
+                                isSaving = false; 
+                            }
+                        });
                     });
                 });
             });
-        });
         </script>
 
         <script>
@@ -269,6 +279,7 @@
                 }
             }
         </script>
+        
         <script>
             $(document).ready(function () {   
                 function updateAssessmentTypeOptions() {
@@ -392,6 +403,7 @@
                 }
             });
         </script>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 document.querySelectorAll('.btn-publish-grades').forEach(function (btn) {
