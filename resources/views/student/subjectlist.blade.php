@@ -4,7 +4,8 @@
     <div class="content-wrappers">
         <section class="content-header">
             <div class="container-fluid">
-                <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-primary">Past Subjects</a>
+                <h3>Enrolled Subjects</h3>
+                <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-info">Past Subjects</a>
             </div>
         </section>
 
@@ -51,7 +52,7 @@
                                                     <td>{{ $enrolledSubject->importedclasses->days }}</td>
                                                     <td>{{ $enrolledSubject->importedclasses->time }}</td>
                                                     <td>{{ $enrolledSubject->importedclasses->room }}</td>
-                                                    <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-primary">View Scores</a></td>
+                                                    <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-info">View Scores</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

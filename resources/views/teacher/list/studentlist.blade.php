@@ -635,61 +635,61 @@ $(document).ready(function() {
 
                         <form action="{{ route('insert.scores') }}" method="post">
                             @csrf
-                                <div class="form-row mb-3">
-                                </div>
-                                <style>
-                                    .table-scroll-container {
-                                        overflow-x: auto;
-                                        max-width: 100%;
-                                    }
+                            <div class="form-row mb-3">
+                            </div>
+                            <style>
+                                .table-scroll-container {
+                                    overflow-x: auto;
+                                    max-width: 100%;
+                                }
 
-                                    .table-container table {
-                                        width: auto;
-                                    } 
+                                .table-container table {
+                                    width: auto;
+                                } 
+
+                            
+                                table, th, td {
+                                    border: 1px solid #000; 
+                                    border-collapse: collapse;
+                                }
+
+                                .fixed-column {
+                                    position: sticky;
+                                    left: 0;
+                                    z-index: 1;
+                                    border: 1px solid #000; 
+                                }
+
+                                .assessment-column {
+                                    text-align: center;
+                                    width: 80px;
+                                    border: 1px solid #000; 
+                                    
+                                }
+
+                                .assessment-type-header,
+                                .grading-period-header,
+                                .gender-header {
+                                    background-color: #f2f2f2;
+                                    border: 1px solid #000; 
+
+                                }
 
                                 
-                                    table, th, td {
-                                        border: 1px solid #000; 
-                                        border-collapse: collapse;
-                                    }
+                                .table-container thead th {
+                                    border-top: 1px solid #000; 
+                                    border-bottom: 1px solid #000; 
+                                }
 
-                                    .fixed-column {
-                                        position: sticky;
-                                        left: 0;
-                                        z-index: 1;
-                                        border: 1px solid #000; 
-                                    }
-
-                                    .assessment-column {
-                                        text-align: center;
-                                        width: 80px;
-                                        border: 1px solid #000; 
-                                        
-                                    }
-
-                                    .assessment-type-header,
-                                    .grading-period-header,
-                                    .gender-header {
-                                        background-color: #f2f2f2;
-                                        border: 1px solid #000; 
-
-                                    }
-
-                                    
-                                    .table-container thead th {
-                                        border-top: 1px solid #000; 
-                                        border-bottom: 1px solid #000; 
-                                    }
-
-                                    
-                                    .table-container tbody tr:first-child td {
-                                        border-top: 1px solid #000; 
-                                        border-bottom: 1px solid #000; 
-                                    }
+                                
+                                .table-container tbody tr:first-child td {
+                                    border-top: 1px solid #000; 
+                                    border-bottom: 1px solid #000; 
+                                }
 
 
-                                    
-                                </style>
+                                
+                            </style>
                             <div class="table-container" class="table-scroll-container" >
                             <table class="table" >
                                 <thead>

@@ -51,14 +51,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('teacher/list/importexcel')}}" class="nav-link @if (Request::segment(4) == 'importexcel') active @endif">
+                    <a href="{{ url('teacher/list/importexcel')}}" class="nav-link @if (Request::segment(3) == 'importexcel') active @elseif (Request::segment(3) == 'imported-data') active @elseif (Request::segment(1) == 'save-data') active @endif">
                         <p>Import </p>
                     </a>
                 </li>
 
             @elseif(Auth::user()->role == 3)
                 <li class="nav-item">
-                    <a  href="{{ url('student/subjectlist', ['studentId' => Auth::user()->id]) }}" class="nav-link @if (Request::segment(3) == 'subjectlist') active @endif">
+                    <a  href="{{ url('student/subjectlist', ['studentId' => Auth::user()->id]) }}" class="nav-link @if (Request::segment(2) == 'subjectlist') active @elseif (Request::segment(2) == 'past_subjectlist') active @endif">
                         <p>Subjects</p>
                     </a>
                 </li>
