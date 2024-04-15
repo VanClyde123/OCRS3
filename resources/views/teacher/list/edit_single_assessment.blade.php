@@ -3,44 +3,52 @@
 @section('content')
 
     <script>
-        $(document).ready(function () {
-            ///// get the assessment descriptions based on the selected type
-            $('#assessmentType').change(function () {
-                const selectedType = $(this).val();
+    $(document).ready(function () {
+    ///// get the assessment descriptions based on the selected type and grading period
+    $('#assessmentType, #gradingPeriod').change(function () {
+        const selectedType = $('#assessmentType').val();
+        const selectedGradingPeriod = $('#gradingPeriod').val();
+        const selectedSubjectCode = $('#subject_code').val(); 
 
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ route('assessment-descriptions.fetch') }}',
-                    data: {
-                        type: selectedType,
-                    },
-                    success: function (response) {
-                        const descriptions = response.descriptions;
-                        updateDescriptionDropdown(descriptions, '{{ $assessment->description }}');
-                    },
-                    error: function (error) {
-                        console.error('Error:', error);
-                    },
-                });
-            });
-
-            //// update the description dropdown
-            function updateDescriptionDropdown(descriptions, currentDescriptionId) {
-                const $descriptionDropdown = $('#assessmentDescription');
-                $descriptionDropdown.empty();
-
-                descriptions.forEach(description => {
-                    const $option = $('<option>', {
-                        value: description.description,
-                        text: description.description,
-                        selected: description.description == currentDescriptionId,
-                    });
-                    $descriptionDropdown.append($option);
-                });
-            }
-            //// to initially get and update on page load
-            $('#assessmentType').change();
+        $.ajax({
+            type: 'GET',
+            url: '{{ route('assessment-descriptions.fetch') }}',
+            data: {
+                type: selectedType,
+                grading_period: selectedGradingPeriod,
+                subject_code: selectedSubjectCode 
+            },
+            success: function (response) {
+                const descriptions = response.descriptions;
+                updateDescriptionDropdown(descriptions, '#assessmentDescription');
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            },
         });
+    });
+
+    //// update the description dropdown
+    function updateDescriptionDropdown(descriptions, targetSelector) {
+        const $descriptionDropdown = $(targetSelector);
+        $descriptionDropdown.empty();
+        $descriptionDropdown.append($('<option>', {
+            value: '',
+            text: '------Select Description--------',
+            selected: true,
+            disabled: true, 
+        }));
+        descriptions.forEach(description => {
+            $descriptionDropdown.append($('<option>', {
+                value: description.description,
+                text: description.description,
+            }));
+        });
+    }
+
+    //// to initially get and update on page load
+    $('#assessmentType, #gradingPeriod').change();
+});
     </script>
 
 
@@ -68,11 +76,13 @@
                 <form method="post" action="{{ route('instructor.updateAssessment', ['assessmentId' => $assessment->id]) }}">
                     @csrf
                     @method('PUT')
+                  <input type="hidden" id="subject_code" value="{{ $subjectCode }}">
+
                     <div class="table-responsive">
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="gradingPeriod">Grading Period</label>
-                                <input type="text"  class="form-control"  name="grading_period" value="{{ $assessment->grading_period }}" readonly>
+                                <input type="text"  class="form-control" id="gradingPeriod" name="grading_period" value="{{ $assessment->grading_period }}" readonly>
                             </div>
 
                             <div class="form-group">
@@ -89,9 +99,8 @@
 
                             <div class="form-group">
                                 <label for="type">Description</label>
-                                <select name="description" class="form-control" id="assessmentDescription" required>
-                                <!-- Leave this empty for now, it will be populated dynamically -->
-                                </select>
+                              <input type="description"  class="form-control"  name="description" value="{{ $assessment->description }}" required>
+                                <!--   <select name="description" class="form-control" id="assessmentDescription" required> </select>  -->
                             </div>
 
                             <div class="form-group">

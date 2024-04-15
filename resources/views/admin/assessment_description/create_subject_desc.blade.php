@@ -15,16 +15,20 @@
                     <form action="{{ route('subject_descriptions.store') }}" method="POST">
                         @csrf
 
-
                         <div class="form-group">
                             <label for="subject_code">Subject Code</label>
-                            <input type="text" class="form-control" id="subject_code" name="subject_code">
-                        </div>
-                        <div class="form-group">
-                            <label for="subject_name">Subject Name</label>
-                            <input type="text" class="form-control" id="subject_name" name="subject_name">
+                            <select class="form-control" id="subject_code" name="subject_code">
+                                <option value="" selected disabled>-----Select Subject Code----</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->subject_code }}">{{ $subject->subject_code }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
+                        <div class="form-group">
+                            <label for="subject_name">Subject Name</label>
+                            <input type="text" class="form-control" id="subject_name" name="subject_name" readonly>
+                        </div>
                         
                         <button type="submit" class="btn btn-success">Create</button>
                     </form>
@@ -32,4 +36,19 @@
             </div>
         </section>
     </div>
+
+    <script>
+        // Function to update the subject name based on the selected subject code
+        $(document).ready(function() {
+            $('#subject_code').change(function() {
+                var selectedCode = $(this).val();
+                var selectedSubject = {!! json_encode($subjects) !!}.find(subject => subject.subject_code === selectedCode);
+                if (selectedSubject) {
+                    $('#subject_name').val(selectedSubject.description);
+                } else {
+                    $('#subject_name').val('');
+                }
+            });
+        });
+    </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubjectDescription;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class SubjectDescriptionController extends Controller
@@ -15,7 +16,8 @@ class SubjectDescriptionController extends Controller
 
     public function create()
     {
-        return view('admin.assessment_description.create_subject_desc');
+         $subjects = Subject::select('subject_code', 'description')->distinct()->get();
+        return view('admin.assessment_description.create_subject_desc', compact('subjects'));
     }
 
     public function store(Request $request)
@@ -81,6 +83,8 @@ class SubjectDescriptionController extends Controller
          return redirect()->route('assessment_descriptions.view', $subjectDescription->id);
     }
 
+
+
     //////////////secretary side/////////////////////
 
 
@@ -92,7 +96,8 @@ class SubjectDescriptionController extends Controller
 
     public function create1()
     {
-        return view('secretary.assessment_description.create_subject_desc');
+        $subjects = Subject::select('subject_code', 'description')->distinct()->get();
+        return view('secretary.assessment_description.create_subject_desc', compact('subjects'));
     }
 
     public function store1(Request $request)

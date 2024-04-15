@@ -91,7 +91,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::put('admin/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'update'])->name('subject_descriptions.update');
     Route::delete('admin/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'destroy'])->name('subject_descriptions.destroy');
     Route::get('admin/assessment_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'show'])->name('assessment_descriptions.view_desc');
-
+     
    ///////routes for assessments descriptions
   Route::get('admin/assessment_description/view_desc/{subjectDescription}', [AssessmentDescriptionController::class, 'viewDesc'])->name('assessment_descriptions.view');
    Route::get('assessment-descriptions/create/{subjectDescId}', [AssessmentDescriptionController::class, 'create'])->name('assessment-descriptions.create');
@@ -123,6 +123,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/subject_list/view_subjects',  [AdminController::class, 'viewSubjects'])->name('admin.viewSubjects');
     Route::get('/admin/subject_list/changeInstructor/{importedClassId}',[AdminController::class, 'changeInstructorForm'])->name('admin.changeInstructorForm');
     Route::post('/admin/subject_list/changeInstructor/{importedClassId}', [AdminController::class, 'changeInstructor'])->name('admin.changeInstructor');
+
+
+   
+
 
     });
 //teacher side

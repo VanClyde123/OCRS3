@@ -6,6 +6,7 @@ use App\Models\EnrolledStudents;
 use App\Models\ImportedClasslist;
 use App\Models\Assessment;
 use App\Models\AssessmentDescription;
+use App\Models\SubjectDescription;
 use App\Models\User;
 use App\Models\Grades;
 use App\Models\SubjectType;
@@ -296,8 +297,13 @@ class InstructorController extends Controller
     public function editSingleAssessment($assessmentId)
     {
           $assessment = Assessment::find($assessmentId);
+        
+        $subjectCode = DB::table('assessments')
+                        ->join('subjects', 'assessments.subject_id', '=', 'subjects.id')
+                        ->where('assessments.id', $assessmentId)
+                        ->value('subjects.subject_code');
 
-        return view('teacher.list.edit_single_assessment', compact('assessment'));
+        return view('teacher.list.edit_single_assessment', compact('assessment', 'subjectCode'));
     }
 
     public function updateAssessment($assessmentId, Request $request)
@@ -317,11 +323,24 @@ class InstructorController extends Controller
         return redirect()->route('instructor.editAssessments', ['subjectId' => $assessment->subject_id])->with('success', 'Assessment updated successfully');
     }
 
-    public function getAssessmentDescriptions($type)
-        {
+    public function getAssessmentDescriptions(Request $request)
+    {
+        $type = $request->input('type');
+        $gradingPeriod = $request->input('grading_period');
+        $subjectCode = $request->input('subject_code');
 
-            $type = $request->input('type');
-            $descriptions = AssessmentDescription::where('type', $type)->get();
+       ////////Get the subject code in the record from subject_description table that matches the subject code from the subject table
+        $subjectDescription = SubjectDescription::where('subject_code', $subjectCode)->first();
+
+        if (!$subjectDescription) {
+            return response()->json(['descriptions' => []]);
+        }
+
+           //////// get the  assessment descriptions associated with the matched subject code
+        $descriptions = $subjectDescription->assessmentDescriptions()
+            ->where('type', $type)
+            ->where('grading_period', $gradingPeriod)
+            ->get();
 
             return response()->json(['descriptions' => $descriptions]);
         }

@@ -15,6 +15,7 @@
                 $('#addAssessmentFieldsBtn').click(function () {
                     addAssessmentFields(true);
                 });
+                
                 function fetchAssessments(gradingPeriod, type) {
                     const filteredAssessments = assessments.filter(
                         assessment => assessment.grading_period === gradingPeriod && assessment.type === type
@@ -24,19 +25,22 @@
                 function addAssessmentFields(isNew) {
                     const assessmentCount = $('.assessment-container').length + 1;
                     const assessmentField = `
-                        <div class="mb-2 assessment-container" data-is-new="${isNew}">
-                            <label for="assessmentType${assessmentCount}">Type</label>
-                            <select class="form-control" name="type" disabled>
-                                <option value="${$('#assessmentType').val()}">${$('#assessmentType').val()}</option>
-                            </select>
-                            <label for="assessmentDescription${assessmentCount}">Description</label>
-                            <select name="description" id="assessmentDescription" class="form-control" required></select>
-                            <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
-                            <input type="number" class="form-control" min="1" max="100" name="max_points" value="">
-                            <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert max points</small><br>
-                            <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
-                            <input type="date" class="form-control" name="activity_date" value="">
-                        </div>
+                       <div class="mb-2 assessment-container" data-is-new="${isNew}">
+                        <label for="assessmentType${assessmentCount}">Type</label>
+                        <select class="form-control" name="type" disabled>
+                            <option value="${$('#assessmentType').val()}">${$('#assessmentType').val()}</option>
+                        </select>
+                        <label for="assessmentDescription${assessmentCount}">Description</label>
+                        <select name="description" id="assessmentDescription" class="form-control" required></select>
+                        <label for="manualDescription${assessmentCount}">Description (Manual)</label>
+                        <input type="text" class="form-control" name="manual_description">
+                           <small class="text-muted instruction-text">In case the description for the assessment does not exists in the dropdown, use manual input</small><br>
+                        <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
+                        <input type="number" class="form-control" min="1" max="100" name="max_points" value="">
+                        <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert max points</small><br>
+                        <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
+                        <input type="date" class="form-control" name="activity_date" value="">
+                    </div>
                     `;
 
                     $('#assessmentFieldsContainer').append(assessmentField);
@@ -168,10 +172,11 @@
                         const gradingPeriod = $('#gradingPeriod').val();
                         const type = $(this).find('.form-control[name="type"]').val();
                         const description = $(this).find('.form-control[name="description"]').val();
+                        const manualDescription = $(this).find('.form-control[name="manual_description"]').val(); 
                         const max_points = $(this).find('.form-control[name="max_points"]').val();
                         const activity_date = $(this).find('.form-control[name="activity_date"]').val();
 
-                        assessments.push({ isNew, grading_period: gradingPeriod, type, description, max_points, activity_date });
+                        assessments.push({ isNew, grading_period: gradingPeriod, type, description, manual_description: manualDescription, max_points, activity_date });
                     });
 
                     console.log('Assessments to save:', assessments);
@@ -963,7 +968,7 @@
                                 <a href="{{ route('generateExcelReport', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank">Records Report</a>
                                 <a href="{{ route('export.gradeslist', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank">Grades List</a>
                                 <a href="{{ route('export.summary', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank"> Summary</a>      
-                                <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('teacher.list.studentlistremove', ['subjectId' => $subject->id]) }}" class="btn btn-info{{ $isPastSubjectList ? ' disabled' : '' }}">View Student List <br>Remove Students</a>
+                                <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('teacher.list.studentlistremove', ['subjectId' => $subject->id]) }}" class="btn btn-info{{ $isPastSubjectList ? ' disabled' : '' }}">View Student List <br>(Remove Students)</a>
 
                                 <button type="submit" class="btn btn-primary" {{ $isPastSubjectList ? 'disabled' : '' }}>Save Scores</button>
                             </form>
@@ -1005,6 +1010,7 @@
                              
                             </select>
                         </div>
+
                         <div id="assessmentFieldsContainer">
                         </div>
                     </div>

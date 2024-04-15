@@ -48,7 +48,12 @@ class ScoreController extends Controller
             $newAssessment->subject_id = $subject_id;
             $newAssessment->grading_period = $assessment->grading_period;
             $newAssessment->type = $assessment->type;
-            $newAssessment->description = $assessment->description;
+              
+            if (!empty($assessment->manual_description)) {
+                $newAssessment->description = $assessment->manual_description;
+            } else {
+                $newAssessment->description = $assessment->description;
+            }
 
             if (
                 $assessment->type !== 'Additional Points Quiz' &&

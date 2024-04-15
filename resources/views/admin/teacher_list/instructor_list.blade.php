@@ -36,8 +36,7 @@
                                     <td>{{ $instructor->middle_name }}</td>
                                     <td>{{ $instructor->last_name }}</td>
                                     <td>  
-                                        <a href="{{ route('admin.teacher_list.subjects', ['instructorId' => $instructor->id]) }}"class="btn btn-info mb-2">View Current Subjects</a>
-                                        <a href="{{ route('admin.teacher_list.past_subjects', ['instructorId' => $instructor->id]) }}" class="btn btn-info">View Past Semester Subjects</a>
+                                        <a href="{{ route('admin.teacher_list.subjects', ['instructorId' => $instructor->id]) }}"class="btn btn-info">View Current Subjects</a> <a href="{{ route('admin.teacher_list.past_subjects', ['instructorId' => $instructor->id]) }}" class="btn btn-info">View Past Semester Subjects</a>
                                     </td>
                                     </tr>
                                 @endforeach
