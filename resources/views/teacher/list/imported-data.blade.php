@@ -20,9 +20,6 @@
     </script>
     @endpush
     <style>
-
-        
-
             h2 {
                 margin-bottom: 10px;
             }
@@ -47,7 +44,7 @@
 
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Class List Data</h2>
+            <h2 class="mb-5">Class List Data</h2>
         </section>
         @include('messages')
         <section class="content">
