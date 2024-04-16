@@ -32,9 +32,11 @@
                         </select>
                         <label for="assessmentDescription${assessmentCount}">Description</label>
                         <select name="description" id="assessmentDescription" class="form-control" required></select>
-                        <label for="manualDescription${assessmentCount}">Description (Manual)</label>
-                        <input type="text" class="form-control" name="manual_description">
-                           <small class="text-muted instruction-text">In case the description for the assessment does not exists in the dropdown, use manual input</small><br>
+                        <div id="custom" style="display:none;">
+                            <label for="manualDescription${assessmentCount}">Description (Manual)</label>
+                            <input type="text" class="form-control" name="manual_description">
+                            <small class="text-muted instruction-text">In case the description for the assessment does not exists in the dropdown, use manual input</small><br>
+                        </div>
                         <label for="assessmentMaxPoints${assessmentCount}">Max Points</label>
                         <input type="number" class="form-control" min="1" max="100" name="max_points" value="">
                         <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert max points</small><br>
@@ -77,11 +79,24 @@
                         selected: true,
                         disabled: true, 
                     }));
+                    $descriptionDropdown.append($('<option>', {
+                        value: 'custom', // use a string value 
+                        text: 'Custom Description',
+                        selected: false,
+                        disabled: false, 
+                    }));
                     descriptions.forEach(description => {
                         $descriptionDropdown.append($('<option>', {
                             value: description.description,
                             text: description.description,
                         }));
+                    });
+                    $descriptionDropdown.on('change', function() {
+                        if ($(this).val() === 'custom') {
+                            $('#custom').show(); 
+                        } else {
+                            $('#custom').hide();
+                        }
                     });
                 }
 
@@ -580,7 +595,7 @@
                     <div class="card-header">
                         <h3 class="card-title">List of Enrolled Students</h3>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive ">
                         <div class="card-body">
                             <button type="button" class="btn btn-success" id="assessmentModalButton" data-toggle="modal" data-target="#assessmentModal" {{ $isPastSubjectList ? 'disabled' : '' }}>Add Assessment</button>
                             <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('instructor.editAssessments', ['subjectId' => $subject->id]) }}" class="btn btn-primary{{ $isPastSubjectList ? ' disabled' : '' }}">Edit Assessments</a>
@@ -642,328 +657,328 @@
 
                                     
                                 </style>
-                                <div class="table-container" class="table-scroll-container" >
-                                <table class="table" >
-                                    <thead>
-                                        <tr>
-                                            <th class="fixed-column"></th>
-                                            <th class="fixed-column"></th>
-                                            <th class="fixed-column"></th>
-                                            <th class="fixed-column"></th> 
-                                            @php
-                                                $gradingPeriods = $assessments->pluck('grading_period')->unique();
-                                                $assessmentTypes = $assessments->pluck('type')->unique();
-                                            @endphp
-                                            @foreach ($gradingPeriods as $gradingPeriod)
+                                <div class="table-container table-striped" class="table-scroll-container" >
+                                    <table class="table ">
+                                        <thead>
+                                            <tr>
+                                                <th class="fixed-column"></th>
+                                                <th class="fixed-column"></th>
+                                                <th class="fixed-column"></th>
+                                                <th class="fixed-column"></th> 
                                                 @php
-                                                    $gradingPeriodAssessmentTypes = $assessments
-                                                        ->where('grading_period', $gradingPeriod)
-                                                        ->pluck('type')
-                                                        ->unique();
-                                                    $colspan = $gradingPeriodAssessmentTypes->reduce(function ($carry, $assessmentType) use ($assessments, $gradingPeriod) {
-                                                        return $carry + $assessments
-                                                            ->where('grading_period', $gradingPeriod)
-                                                            ->where('type', $assessmentType)
-                                                            ->count() + 1;
-                                                    }, 0);
+                                                    $gradingPeriods = $assessments->pluck('grading_period')->unique();
+                                                    $assessmentTypes = $assessments->pluck('type')->unique();
                                                 @endphp
-                                                <th colspan="{{ $colspan + 1 }}" class="text-center grading-period-header">
-                                                    {{ $gradingPeriod }}
-                                                </th>
-                                            @endforeach
-                                        </tr>
-                                        <tr>
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            @foreach ($gradingPeriods as $gradingPeriod)
-                                                @php
-                                                    $gradingPeriodAssessmentTypes = $assessments
-                                                        ->where('grading_period', $gradingPeriod)
-                                                        ->pluck('type')
-                                                        ->unique();
-                                                @endphp
-                                                @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
-
-                                                    <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
-                                                        {{ $assessmentType }}
-                                                    </th>
-                                                    <th class="text-center">Total </th>
-
-                                                @endforeach
-                                                @if ($gradingPeriod == "First Grading")
-                                                    <th class="text-center">FG Grade</th>
-                                                @endif
-                                                @if ($gradingPeriod == "Midterm")
-                                                    <th class="text-center">Midterm Grade</th>
-                                                @endif
-                                                @if ($gradingPeriod == "Finals")
-                                                    <th class="text-center">Finals Grade</th>
-                                                @endif
-                                            @endforeach
-                                        </tr>
-                                        <tr>
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            @foreach ($gradingPeriods as $gradingPeriod)
-                                                @foreach ($assessmentTypes as $assessmentType)
+                                                @foreach ($gradingPeriods as $gradingPeriod)
                                                     @php
-                                                        $gradingPeriodAssessments = $assessments
+                                                        $gradingPeriodAssessmentTypes = $assessments
                                                             ->where('grading_period', $gradingPeriod)
-                                                            ->where('type', $assessmentType)
-                                                            ->sortBy(function ($assessment) {
-                                                                $typeOrder = [
-                                                                    'Quiz' => 1,
-                                                                    'Additional Points Quiz' => 1,
-                                                                    'OtherActivity' => 2,
-                                                                    'Additional Points OT' => 2,
-                                                                    'Exam' => 3,
-                                                                    'Additional Points Exam' => 3,
-                                                                    'Lab Activity' => 4,
-                                                                    'Additional Points Lab' => 4,
-                                                                    'Lab Exam' => 5,
-                                                                    'Direct Bonus Grade' => 6,
-                                                                ];
-                                                                return [
-                                                                    'type_order' => $typeOrder[$assessment->type] ?? 999,
-                                                                'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
-                                                                ];
-                                                            });
-                                                        $maxPointsTotal = $gradingPeriodAssessments->sum('max_points');
-                                                        $hasAssessments = $gradingPeriodAssessments->isNotEmpty();
+                                                            ->pluck('type')
+                                                            ->unique();
+                                                        $colspan = $gradingPeriodAssessmentTypes->reduce(function ($carry, $assessmentType) use ($assessments, $gradingPeriod) {
+                                                            return $carry + $assessments
+                                                                ->where('grading_period', $gradingPeriod)
+                                                                ->where('type', $assessmentType)
+                                                                ->count() + 1;
+                                                        }, 0);
                                                     @endphp
-                                                    @foreach ($gradingPeriodAssessments as $assessment)
-                                                        <th class="assessment-column">
-                                                            <p class="assessment-description"
-                                                                data-grading-period="{{ $assessment->grading_period }}"
-                                                                data-type="{{ $assessment->type }}"
-                                                                data-description="{{ $assessment->description }}">
-                                                                {{ $assessment->abbreviation }} <br> {{ number_format($assessment->max_points, $assessment->max_points == intval($assessment->max_points) ? 0 : 2) }}
-                                                            </p>
-                                                        </th>    
+                                                    <th colspan="{{ $colspan + 1 }}" class="text-center grading-period-header">
+                                                        {{ $gradingPeriod }}
+                                                    </th>
+                                                @endforeach
+                                            </tr>
+                                            <tr>
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                @foreach ($gradingPeriods as $gradingPeriod)
+                                                    @php
+                                                        $gradingPeriodAssessmentTypes = $assessments
+                                                            ->where('grading_period', $gradingPeriod)
+                                                            ->pluck('type')
+                                                            ->unique();
+                                                    @endphp
+                                                    @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
+
+                                                        <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
+                                                            {{ $assessmentType }}
+                                                        </th>
+                                                        <th class="text-center">Total </th>
+
                                                     @endforeach
-                                                    @if ($hasAssessments)    
-                                                        <td class="assessment-column">
-                                                            <p class="assessment-description"
-                                                                data-grading-period="{{ $gradingPeriod }}"
-                                                                data-type="{{ $assessmentType }}"
-                                                                data-description="Total Max Points">
-                                                                {{ $maxPointsTotal }}
-                                                            </p>
-                                                        </td>
+                                                    @if ($gradingPeriod == "First Grading")
+                                                        <th class="text-center">FG Grade</th>
+                                                    @endif
+                                                    @if ($gradingPeriod == "Midterm")
+                                                        <th class="text-center">Midterm Grade</th>
+                                                    @endif
+                                                    @if ($gradingPeriod == "Finals")
+                                                        <th class="text-center">Finals Grade</th>
                                                     @endif
                                                 @endforeach
-                                                @if ($gradingPeriod == "First Grading")
-                                                    <th class="text-center"></th>
-                                                @endif
-                                                @if ($gradingPeriod == "Midterm")
-                                                    <th class="text-center"></th>
-                                                @endif
-                                                @if ($gradingPeriod == "Finals")
-                                                    <th class="text-center"></th>
-                                                @endif
-                                            @endforeach
-                                        </tr>
-                                        <tr>
-                                            <th >No.</th> 
-                                            <th >ID</th> 
-                                            <th >Name</th> 
-                                            <th >Course</th> 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $studentNumberMale = 1;
-                                            $studentNumberFemale = 1;
-                                        @endphp
-                                        @foreach ($sortedStudents as $gender => $students)
-                                            <tr>
-                                                <td colspan="{{ count($gradingPeriods) + 99 }}" class="gender-header">
-                                                    {{ $gender }}
-                                                </td>
                                             </tr>
-                                            @foreach ($students as $enrolledStudent)
+                                            <tr>
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                @foreach ($gradingPeriods as $gradingPeriod)
+                                                    @foreach ($assessmentTypes as $assessmentType)
+                                                        @php
+                                                            $gradingPeriodAssessments = $assessments
+                                                                ->where('grading_period', $gradingPeriod)
+                                                                ->where('type', $assessmentType)
+                                                                ->sortBy(function ($assessment) {
+                                                                    $typeOrder = [
+                                                                        'Quiz' => 1,
+                                                                        'Additional Points Quiz' => 1,
+                                                                        'OtherActivity' => 2,
+                                                                        'Additional Points OT' => 2,
+                                                                        'Exam' => 3,
+                                                                        'Additional Points Exam' => 3,
+                                                                        'Lab Activity' => 4,
+                                                                        'Additional Points Lab' => 4,
+                                                                        'Lab Exam' => 5,
+                                                                        'Direct Bonus Grade' => 6,
+                                                                    ];
+                                                                    return [
+                                                                        'type_order' => $typeOrder[$assessment->type] ?? 999,
+                                                                    'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
+                                                                    ];
+                                                                });
+                                                            $maxPointsTotal = $gradingPeriodAssessments->sum('max_points');
+                                                            $hasAssessments = $gradingPeriodAssessments->isNotEmpty();
+                                                        @endphp
+                                                        @foreach ($gradingPeriodAssessments as $assessment)
+                                                            <th class="assessment-column">
+                                                                <p class="assessment-description"
+                                                                    data-grading-period="{{ $assessment->grading_period }}"
+                                                                    data-type="{{ $assessment->type }}"
+                                                                    data-description="{{ $assessment->description }}">
+                                                                    {{ $assessment->abbreviation }} <br> {{ number_format($assessment->max_points, $assessment->max_points == intval($assessment->max_points) ? 0 : 2) }}
+                                                                </p>
+                                                            </th>    
+                                                        @endforeach
+                                                        @if ($hasAssessments)    
+                                                            <td class="assessment-column">
+                                                                <p class="assessment-description"
+                                                                    data-grading-period="{{ $gradingPeriod }}"
+                                                                    data-type="{{ $assessmentType }}"
+                                                                    data-description="Total Max Points">
+                                                                    {{ $maxPointsTotal }}
+                                                                </p>
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+                                                    @if ($gradingPeriod == "First Grading")
+                                                        <th class="text-center"></th>
+                                                    @endif
+                                                    @if ($gradingPeriod == "Midterm")
+                                                        <th class="text-center"></th>
+                                                    @endif
+                                                    @if ($gradingPeriod == "Finals")
+                                                        <th class="text-center"></th>
+                                                    @endif
+                                                @endforeach
+                                            </tr>
+                                            <tr>
+                                                <th >No.</th> 
+                                                <th >ID</th> 
+                                                <th >Name</th> 
+                                                <th >Course</th> 
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $studentNumberMale = 1;
+                                                $studentNumberFemale = 1;
+                                            @endphp
+                                            @foreach ($sortedStudents as $gender => $students)
                                                 <tr>
-                                                    <td >{{ $gender == 'Male' ? $studentNumberMale++ : $studentNumberFemale++ }}</td>
-                                                    <td >{{ $enrolledStudent->student->id_number }}</td>
-                                                    <td class="fixed-column" style="background-color:white; height" >{{ $enrolledStudent->student->last_name }}, {{ $enrolledStudent->student->name }} {{ $enrolledStudent->student->middle_name }}</td>
-                                                    <td >{{ $enrolledStudent->student->course }}</td>
-                                                    @php
-                                                        $totalPointsForAssessmentType = 0;
-                                                        $currentColIndex = 1; // Start from the first column
-                                                        foreach ($gradingPeriods as $gradingPeriod) {
-                                                            foreach ($assessmentTypes as $assessmentType) {
-                                                                $gradingPeriodAssessments = $assessments
-                                                                    ->where('grading_period', $gradingPeriod)
-                                                                    ->where('type', $assessmentType)
-                                                                    ->sortBy(function ($assessment) {
-                                                                        $typeOrder = [
-                                                                            'Quiz' => 1,
-                                                                            'Additional Points Quiz' => 2,
-                                                                            'OtherActivity' => 3,
-                                                                            'Additional Points OT' => 4,
-                                                                            'Exam' => 5,
-                                                                            'Additional Points Exam' => 6,
-                                                                            'Lab Activity' => 7,
-                                                                            'Lab Exam' => 8,
-                                                                            'Additional Points Lab' => 9,
-                                                                            'Direct Bonus Grade' => 10,
-                                                                        ];
-                                                                        return [
-                                                                            'type_order' => $typeOrder[$assessment->type] ?? 999,
-                                                                            'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
-                                                                        ];
-                                                                    });
-                                                                foreach ($gradingPeriodAssessments as $assessment) {
-                                                                    $textboxName = "points[{$enrolledStudent->id}][{$assessment->id}]";
-                                                                    $textboxValue = is_null($enrolledStudent->getScore($assessment->id)) ? '' : $enrolledStudent->getScore($assessment->id);
+                                                    <td colspan="{{ count($gradingPeriods) + 99 }}" class="gender-header">
+                                                        {{ $gender }}
+                                                    </td>
+                                                </tr>
+                                                @foreach ($students as $enrolledStudent)
+                                                    <tr>
+                                                        <td >{{ $gender == 'Male' ? $studentNumberMale++ : $studentNumberFemale++ }}</td>
+                                                        <td >{{ $enrolledStudent->student->id_number }}</td>
+                                                        <td class="fixed-column" style="background-color:white; height" >{{ $enrolledStudent->student->last_name }}, {{ $enrolledStudent->student->name }} {{ $enrolledStudent->student->middle_name }}</td>
+                                                        <td >{{ $enrolledStudent->student->course }}</td>
+                                                        @php
+                                                            $totalPointsForAssessmentType = 0;
+                                                            $currentColIndex = 1; // Start from the first column
+                                                            foreach ($gradingPeriods as $gradingPeriod) {
+                                                                foreach ($assessmentTypes as $assessmentType) {
+                                                                    $gradingPeriodAssessments = $assessments
+                                                                        ->where('grading_period', $gradingPeriod)
+                                                                        ->where('type', $assessmentType)
+                                                                        ->sortBy(function ($assessment) {
+                                                                            $typeOrder = [
+                                                                                'Quiz' => 1,
+                                                                                'Additional Points Quiz' => 2,
+                                                                                'OtherActivity' => 3,
+                                                                                'Additional Points OT' => 4,
+                                                                                'Exam' => 5,
+                                                                                'Additional Points Exam' => 6,
+                                                                                'Lab Activity' => 7,
+                                                                                'Lab Exam' => 8,
+                                                                                'Additional Points Lab' => 9,
+                                                                                'Direct Bonus Grade' => 10,
+                                                                            ];
+                                                                            return [
+                                                                                'type_order' => $typeOrder[$assessment->type] ?? 999,
+                                                                                'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
+                                                                            ];
+                                                                        });
+                                                                    foreach ($gradingPeriodAssessments as $assessment) {
+                                                                        $textboxName = "points[{$enrolledStudent->id}][{$assessment->id}]";
+                                                                        $textboxValue = is_null($enrolledStudent->getScore($assessment->id)) ? '' : $enrolledStudent->getScore($assessment->id);
 
-                                                                    $disabled = $isPastSubjectList ? 'disabled' : ''; // Check if the subject is in the past subject list view
+                                                                        $disabled = $isPastSubjectList ? 'disabled' : ''; // Check if the subject is in the past subject list view
 
-                                                                    echo '<td class="assessment-column">
-                                                                    <input type="text" name="' . $textboxName . '" class="form-control" ' . $disabled . '
-                                                                        data-grading-period="' . $assessment->grading_period . '"
-                                                                        data-type="' . $assessment->type . '"
-                                                                        value="' . $textboxValue . '"
-                                                                        style="width: 80px; text-align: center;">
-                                                                </td>';
-                                                                    $totalPointsForAssessmentType += is_numeric($textboxValue) ? $textboxValue : 0;
-                                                                    $currentColIndex++; 
-                                                                }
-                                                                if ($gradingPeriodAssessments->isNotEmpty()) {
-                                                                
-                                                                    echo '<td class="assessment-column">
-                                                                        <p class="assessment-description" data-type="' . $assessmentType . '" data-description="Total Points">
-                                                                            ' . $totalPointsForAssessmentType . '
-                                                                        </p>
+                                                                        echo '<td class="assessment-column">
+                                                                        <input type="text" name="' . $textboxName . '" class="form-control" ' . $disabled . '
+                                                                            data-grading-period="' . $assessment->grading_period . '"
+                                                                            data-type="' . $assessment->type . '"
+                                                                            value="' . $textboxValue . '"
+                                                                            style="width: 80px; text-align: center;">
                                                                     </td>';
+                                                                        $totalPointsForAssessmentType += is_numeric($textboxValue) ? $textboxValue : 0;
+                                                                        $currentColIndex++; 
+                                                                    }
+                                                                    if ($gradingPeriodAssessments->isNotEmpty()) {
+                                                                    
+                                                                        echo '<td class="assessment-column">
+                                                                            <p class="assessment-description" data-type="' . $assessmentType . '" data-description="Total Points">
+                                                                                ' . $totalPointsForAssessmentType . '
+                                                                            </p>
+                                                                        </td>';
 
-                                                                    $currentColIndex++; // Move to the next column
+                                                                        $currentColIndex++; // Move to the next column
+                                                                    }
+                                                                    $totalPointsForAssessmentType = 0; // Reset total points for the next assessment type
                                                                 }
-                                                                $totalPointsForAssessmentType = 0; // Reset total points for the next assessment type
-                                                            }
-                                                            if ($gradingPeriod == "First Grading") {
+                                                                if ($gradingPeriod == "First Grading") {
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->fg_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                            echo '<span class="displayed-value">' . number_format($grade->fg_grade, $grade->fg_grade == intval($grade->fg_grade) ? 0 : 2) . '</span>';
+                                                                            
+                                                                            }
+                                                                        }
+                                                                    echo '</td>';
+                                                                }
+                                                                if ($gradingPeriod == "Midterm") {
                                                                     echo '<td class="grade-column">';
                                                                     foreach ($enrolledStudent->grades as $grade) {
-                                                                        if ($grade->fg_grade !== null) {
+                                                                        if ($grade->midterms_grade !== null) {
                                                                             echo '<div class="grade-dropdown displayed-value">';
-                                                                        echo '<span class="displayed-value">' . number_format($grade->fg_grade, $grade->fg_grade == intval($grade->fg_grade) ? 0 : 2) . '</span>';
+                                                                        echo '<span class="displayed-value">' . number_format($grade->midterms_grade, $grade->midterms_grade == intval($grade->midterms_grade) ? 0 : 2) . '</span>';
                                                                         
                                                                         }
                                                                     }
-                                                                echo '</td>';
-                                                            }
-                                                            if ($gradingPeriod == "Midterm") {
-                                                                echo '<td class="grade-column">';
-                                                                foreach ($enrolledStudent->grades as $grade) {
-                                                                    if ($grade->midterms_grade !== null) {
+                                                                    echo '</td>';
+                                                                }
+                                                                if ($gradingPeriod == "Finals") {
+                                                                    echo '<td class="grade-column">';
+                                                                    foreach ($enrolledStudent->grades as $grade) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
-                                                                    echo '<span class="displayed-value">' . number_format($grade->midterms_grade, $grade->midterms_grade == intval($grade->midterms_grade) ? 0 : 2) . '</span>';
-                                                                    
+                                                                        if ($grade->finals_grade !== null) {
+                                                                            echo '<span class="displayed-value">' . number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . '</span>';
+                                                                        echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
+                                                                                echo '<option value="DEFAULT">Grade </option>';
+                                                                                echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
+                                                                                    echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
+                                                                                    echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
+                                                                                    echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
+                                                                                    echo '</select>';
+                                                                                echo '</div>';
+                                                                                echo '<br>';
+                                                                        }
                                                                     }
+                                                                    echo '</td>';
                                                                 }
-                                                                echo '</td>';
                                                             }
-                                                            if ($gradingPeriod == "Finals") {
-                                                                echo '<td class="grade-column">';
-                                                                foreach ($enrolledStudent->grades as $grade) {
-                                                                    echo '<div class="grade-dropdown displayed-value">';
-                                                                    if ($grade->finals_grade !== null) {
-                                                                        echo '<span class="displayed-value">' . number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . '</span>';
-                                                                    echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
-                                                                            echo '<option value="DEFAULT">Grade </option>';
-                                                                            echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                                echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                                echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
-                                                                                echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
-                                                                                echo '</select>';
-                                                                            echo '</div>';
-                                                                            echo '<br>';
-                                                                    }
-                                                                }
-                                                                echo '</td>';
-                                                            }
-                                                        }
-                                                    @endphp
-                                                </tr>
+                                                        @endphp
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
-                                        @endforeach
-                                        <!----for the date appear below---->
-                                        <tr>
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            <th class="fixed-column"></th> 
-                                            @php
-                                                $currentColIndex = 1; // Start from the first column
-                                                foreach ($gradingPeriods as $gradingPeriod) {
-                                                    foreach ($assessmentTypes as $assessmentType) {
-                                                        $gradingPeriodAssessments = $assessments
-                                                            ->where('grading_period', $gradingPeriod)
-                                                            ->where('type', $assessmentType)
-                                                            ->sortBy(function ($assessment) {
-                                                                $typeOrder = [
-                                                                    'Quiz' => 1,
-                                                                            'Additional Points Quiz' => 2,
-                                                                            'OtherActivity' => 3,
-                                                                            'Additional Points OT' => 4,
-                                                                            'Exam' => 5,
-                                                                            'Additional Points Exam' => 6,
-                                                                            'Lab Activity' => 7,
-                                                                            'Lab Exam' => 8,
-                                                                            'Additional Points Lab' => 9,
-                                                                            'Direct Bonus Grade' => 10,
-                                                                ];
-                                                                return [
-                                                                                    'type_order' => $typeOrder[$assessment->type] ?? 999,
-                                                                                'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
-                                                                                
-                                                                                ];
-                                                            });
-
-                                                        
-                                                        foreach ($gradingPeriodAssessments as $assessment) {
-                                                            echo '<th class="assessment-column">
-                                                                <p class="assessment-description"
-                                                                    data-grading-period="' . $assessment->grading_period . '"
-                                                                    data-type="' . $assessment->type . '"
-                                                                    data-description="' . $assessment->description . '">
-                                                                    ' . ($assessment->activity_date ?? '') . '
-                                                                </p>
-                                                                <button class="btn btn-sm btn-publish publish-button btn-primary" data-assessment-id="' . $assessment->id . '" data-published="' . ($assessment->published ? 'true' : 'false') . '"' . ($isPastSubjectList ? ' disabled' : '') . '>
-                                                                        ' . ($assessment->published ? 'Hide Scores' : 'Show Scores') . '
-                                                                    </button>
-
-                                                            </th>';
+                                            <!----for the date appear below---->
+                                            <tr>
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                <th class="fixed-column"></th> 
+                                                @php
+                                                    $currentColIndex = 1; // Start from the first column
+                                                    foreach ($gradingPeriods as $gradingPeriod) {
+                                                        foreach ($assessmentTypes as $assessmentType) {
+                                                            $gradingPeriodAssessments = $assessments
+                                                                ->where('grading_period', $gradingPeriod)
+                                                                ->where('type', $assessmentType)
+                                                                ->sortBy(function ($assessment) {
+                                                                    $typeOrder = [
+                                                                        'Quiz' => 1,
+                                                                                'Additional Points Quiz' => 2,
+                                                                                'OtherActivity' => 3,
+                                                                                'Additional Points OT' => 4,
+                                                                                'Exam' => 5,
+                                                                                'Additional Points Exam' => 6,
+                                                                                'Lab Activity' => 7,
+                                                                                'Lab Exam' => 8,
+                                                                                'Additional Points Lab' => 9,
+                                                                                'Direct Bonus Grade' => 10,
+                                                                    ];
+                                                                    return [
+                                                                                        'type_order' => $typeOrder[$assessment->type] ?? 999,
+                                                                                    'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
+                                                                                    
+                                                                                    ];
+                                                                });
 
                                                             
-                                                            $currentColIndex++; ///// move to the next column
-                                                        }
+                                                            foreach ($gradingPeriodAssessments as $assessment) {
+                                                                echo '<th class="assessment-column">
+                                                                    <p class="assessment-description"
+                                                                        data-grading-period="' . $assessment->grading_period . '"
+                                                                        data-type="' . $assessment->type . '"
+                                                                        data-description="' . $assessment->description . '">
+                                                                        ' . ($assessment->activity_date ?? '') . '
+                                                                    </p>
+                                                                    <button class="btn btn-sm btn-publish publish-button btn-primary" data-assessment-id="' . $assessment->id . '" data-published="' . ($assessment->published ? 'true' : 'false') . '"' . ($isPastSubjectList ? ' disabled' : '') . '>
+                                                                            ' . ($assessment->published ? 'Hide Scores' : 'Show Scores') . '
+                                                                        </button>
 
-                                                    
-                                                        if ($gradingPeriodAssessments->isNotEmpty()) {
-                                                            //// Empty th for Total Points
-                                                            echo '<th class="assessment-column"></th>';
-                                                            $currentColIndex++; 
+                                                                </th>';
+
+                                                                
+                                                                $currentColIndex++; ///// move to the next column
+                                                            }
+
+                                                        
+                                                            if ($gradingPeriodAssessments->isNotEmpty()) {
+                                                                //// Empty th for Total Points
+                                                                echo '<th class="assessment-column"></th>';
+                                                                $currentColIndex++; 
+                                                            }
                                                         }
+                                                        $subjectId = $subject->id;
+                                                            ///// Empty th for grades column under 
+                                                        echo '<th class="grade-column">
+                                                            <button class="btn btn-sm btn-publish-grades btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '"
+                                                                data-grading-period="' . $gradingPeriod . '"
+                                                                data-subject-id="' . $subjectId . '"'
+                                                                . ($isPastSubjectList ? ' disabled' : '') . '>Grades</button>
+                                                            </th>';
+                                                        $currentColIndex++;
                                                     }
-                                                    $subjectId = $subject->id;
-                                                        ///// Empty th for grades column under 
-                                                    echo '<th class="grade-column">
-                                                        <button class="btn btn-sm btn-publish-grades btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '"
-                                                            data-grading-period="' . $gradingPeriod . '"
-                                                            data-subject-id="' . $subjectId . '"'
-                                                            . ($isPastSubjectList ? ' disabled' : '') . '>Grades</button>
-                                                        </th>';
-                                                    $currentColIndex++;
-                                                }
-                                            @endphp
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                @endphp
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <a href="{{ route('generateExcelReport', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank">Records Report</a>
                                 <a href="{{ route('export.gradeslist', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank">Grades List</a>
