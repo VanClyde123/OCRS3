@@ -16,8 +16,8 @@
                     <div class="table-responsive">
                     <form action="{{ route('teacher.list.imported-data') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="file" name="file" accept=".xlsx,.xls">
-                        <button type="submit" class="btn btn-primary">Import</button>
+                        <input id="fileInput" type="file" name="file" accept=".xlsx,.xls">
+                        <button id="importBtn" disabled type="submit" class="btn btn-primary">Import</button>
                     </form>
                     @if(isset($subjectExists) && isset($importedClasslistExists))
                         <p>Subject: {{ $subjectExists }}</p>
@@ -27,8 +27,20 @@
             </div>
         </div>
     </div>
+    
     <div id="imported-data-container">
 
     </div>
-
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const importBtn = document.getElementById('importBtn');
+        
+        fileInput.addEventListener('change', () => {
+          if (fileInput.files.length > 0) {
+            importBtn.disabled = false; 
+          } else {
+            importBtn.disabled = true;
+          }
+        });
+    </script>
 @endsection

@@ -102,22 +102,32 @@ private function getRoleNumber($roleName) {
       }
 
     }
-    public function update($id, Request $request)
-      {
-        $user = User::getSingleList($id);
-        $user->name = trim($request->name);
-        $user->middle_name = trim($request->middle_name); 
-        $user->last_name = trim($request->last_name); 
-        $user->id_number = trim($request->id_number);
-        $user->role = ($request->role);
-        if(!empty($request->password))
-        {
-            $user->password = Hash::make($request->password);
+    public function update($id, Request $request) {
+        $user = User::find($id);
+
+        if(!$user) {
+        return redirect()->back()->withErrors(['User not found']);
         }
-        
+
+        $existingUser = User::where('id_number', $request->id_number)->where('id', '!=', $id)->first();
+
+        if($existingUser) {
+            return redirect('admin/admin/list')->withErrors(['ID number already exists']); 
+          }
+
+        $user->name = trim($request->name);
+        $user->middle_name = trim($request->middle_name);
+        $user->last_name = trim($request->last_name);
+        $user->id_number = trim($request->id_number);
+        $user->role = $request->role;
+
+        if(!empty($request->password)) {
+        $user->password = Hash::make($request->password);
+        }
+
         $user->save();
 
-        return redirect('admin/admin/list')->with('success', "User Updated Successfully");
+        return redirect('admin/admin/list')->with('success', 'User updated successfully');
     }
      public function delete($id){
         try {

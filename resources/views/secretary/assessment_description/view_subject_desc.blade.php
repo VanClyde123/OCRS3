@@ -27,7 +27,7 @@
                                         <td>{{ $subjectDescription->subject_code }}</td>
                                         <td>{{ $subjectDescription->subject_name }}</td>
                                         <td>
-                                            <a href="{{ route('assessment_descriptions.view1', $subjectDescription->id) }}" class="btn btn-primary">View Assessments Descriptions</a>
+                                            <a href="{{ route('assessment_descriptions.view1', $subjectDescription->id) }}" class="btn btn-info">View Assessments Descriptions</a>
                                             <a href="{{ route('subject_descriptions.edit1', $subjectDescription->id) }}" class="btn btn-primary">Edit</a>
                                             <form action="{{ route('subject_descriptions.destroy1', $subjectDescription->id) }}" method="POST" style="display: inline;">
                                                 @csrf

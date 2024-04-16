@@ -6,6 +6,7 @@
         <section class="content-header">
             <h2>Assessment Descriptions for {{ $subjectDescription->subject_code }} {{ $subjectDescription->subject_name }}</h2>
             <div  style="text-align: left;">
+                <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
                 <a href="{{ route('assessment-descriptions.create1', ['subjectDescId' => $subjectDescId]) }}" class="btn btn-success">Create New Description</a>
             </div>
         </section>

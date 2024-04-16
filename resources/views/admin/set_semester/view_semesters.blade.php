@@ -7,6 +7,7 @@
         <section class="content-header">
             <h2>Semesters</h2>
             <div  style="text-align: left;">
+                <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
                 <a href="{{ route('semesters.create') }}" class="btn btn-success">Add Semester</a>
             </div>
         </section>

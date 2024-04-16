@@ -29,7 +29,7 @@
             </div>
                 <div class="form-group">
                 <label>ID Number</label>
-                <input type="number" class="form-control" name="id_number" value="{{ $getData->id_number }}" required placeholder="ID Number">
+                <input disabled type="number" class="form-control" name="id_number" value="{{ $getData->id_number }}" required placeholder="ID Number">
                 </div>
                 <div class="form-group">
                     <label>Role</label>
