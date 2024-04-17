@@ -29,11 +29,11 @@ class ClassRecordController extends Controller
              $request->validate([
                 'file' => 'required|file|mimes:xlsx,xls',
              ]);
-           // load the excel file and get the active sheets 
+           ///// load the excel file and get the active sheets 
              $file = $this->getFile($request->file('file'));
             $classList = $file->getSheet(0);  
            
-         // Fetch subject types from the subject_type_percentage table
+         ///// Fetch subject types from the subject_type_percentage table
     $subjectTypePercentages = SubjectType::pluck('subject_type')->toArray();
 
 
@@ -339,7 +339,7 @@ private function extractInformation($text, $searchString)
                 'middle_name' => $studentInfo['middle_name'],
                 'last_name' => $studentInfo['last_name'],
                 'course' => $studentInfo['course'],
-                'password' => bcrypt('12345'), 
+                'password' => bcrypt('student12345'), 
                 'role' => 3,
                 'gender' => $gender,
             ]);
