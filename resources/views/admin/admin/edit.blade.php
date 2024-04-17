@@ -29,12 +29,12 @@
             </div>
                 <div class="form-group">
                 <label>ID Number</label>
-                <input disabled type="number" class="form-control" name="id_number" value="{{ $getData->id_number }}" required placeholder="ID Number">
+                <input type="number" class="form-control" name="id_number" value="{{ $getData->id_number }}" required>
                 </div>
                 <div class="form-group">
                     <label>Role</label>
-                    <input  class="form-control"type="text" value= @if ($getData->role == 1) Admin @elseif ($getData->role == 2) Instructor @elseif ($getData->role == 3) Student @elseif ($getData->role == 4) Secretary @endif disabled>
-                    <select class="form-control" name="role" hidden>
+                   
+                    <select class="form-control" name="role">
                         <option value="1" {{ $getData->role == 1 ? 'selected' : '' }}>Admin</option>
                         <option value="4" {{ $getData->role == 4 ? 'selected' : '' }}>Secretary</option>
                         <option value="2" {{ $getData->role == 2 ? 'selected' : '' }}>Instructor</option>

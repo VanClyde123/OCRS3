@@ -307,7 +307,7 @@ private function getRoleNumber($roleName) {
 
     $importedClasses = ImportedClasslist::with(['subject', 'instructor'])
         ->whereHas('subject', function ($query) use ($currentSemester) {
-            // Filter subjects based on the active semester
+            
             $query->where('term', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
         })
         ->get();

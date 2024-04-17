@@ -29,7 +29,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('admin/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(1) == 'admin' && Request::segment(3) == 'view_subjects') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'subject_list') active @endif">
-                        <p>Subject List(Change Instructor)</p>
+                        <p>Change Instructor</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -75,7 +75,7 @@
                 </li>
                   <li class="nav-item">
                     <a href="{{ url('secretary/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @elseif (Request::segment(2) == 'subject_list' && Request::segment(3) == 'changeInstructor') active @endif">
-                        <p>Subject List(Change Instructor)</p>
+                        <p>Change Instructor</p>
                     </a>
                 </li>
                   <li class="nav-item">

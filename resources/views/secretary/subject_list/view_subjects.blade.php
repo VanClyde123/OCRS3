@@ -35,7 +35,11 @@
                                         <td>{{ $importedClass->subject->description }}</td>
                                         <td>{{ $importedClass->subject->section}}</td>
                                         <td>{{ $importedClass->subject->term}}</td>
-                                        <td>{{ $importedClass->instructor->name }} {{ $importedClass->instructor->middle_name }} {{ $importedClass->instructor->last_name }}</td>
+                                        <td>@if ($importedClass->instructor && $importedClass->instructor->role == 2)
+                                                    {{ $importedClass->instructor->name }} {{ $importedClass->instructor->middle_name }} {{ $importedClass->instructor->last_name }}
+                                                @else
+                                                   No Assigned
+                                                @endif</td>
                                         <td>
                                             <a href="{{ route('secretary.changeInstructorForm1',  ['importedClassId' => $importedClass->id]) }}" class="btn btn-primary">Change Instructor</a>
                                         </td>
