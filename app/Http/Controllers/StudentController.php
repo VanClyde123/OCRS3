@@ -7,6 +7,9 @@ use App\Models\Subject;
 use App\Models\Student;
 use App\Models\Users;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 class StudentController extends Controller
 {
    
@@ -16,6 +19,36 @@ class StudentController extends Controller
       //$student = Student::find($Id);
        return view('teacher.list.studentlist', compact('students', 'subject'));
     }
+
+ public function showChangePasswordForm3()
+    {
+        return view('student.change_password');
+    }
+
+    public function changePassword3(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+         ], [
+           'new_password.confirmed' => 'The new password and confirmation password do not match.',
+        ]);
+
+        $user = Auth::user();
+
+       
+        if (!Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()->with('error', 'Your old password is incorrect.');
+        }
+
+    
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', ' Your password changed successfully.');
+    }
+
+
  public function getname()
 {
 

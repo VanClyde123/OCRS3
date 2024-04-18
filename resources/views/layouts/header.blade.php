@@ -42,6 +42,12 @@
                         <p>Assessment Descriptions</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('change-password') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                        <p>Change Password</p>
+                    </a>
+                </li>
+
             @elseif(Auth::user()->role == 2)
                 <li class="nav-item">
                     <a href="{{ url('teacher/list/classlist')}}"  class="nav-link @if (Request::segment(1) == 'teacher' && Request::segment(3) == 'studentlist') active @elseif (Request::segment(1) == 'teacher' && Request::segment(3) == 'past_classlist') active @elseif (Request::segment(1) == 'teacher' && Request::segment(3) == 'classlist') active  @elseif (Request::segment(1) == 'studentlistremove') active @elseif (Request::segment(1) == 'assessments') active @endif">
@@ -55,11 +61,21 @@
                         <p>Import </p>
                     </a>
                 </li>
+                 <li class="nav-item">
+                    <a href="{{ route('change-password2') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                        <p>Change Password</p>
+                    </a>
+                </li>
 
             @elseif(Auth::user()->role == 3)
                 <li class="nav-item">
                     <a  href="{{ url('student/subjectlist', ['studentId' => Auth::user()->id]) }}" class="nav-link @if (Request::segment(2) == 'subjectlist') active @elseif (Request::segment(2) == 'past_subjectlist') active @endif">
                         <p>Subjects</p>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a href="{{ route('change-password3') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                        <p>Change Password</p>
                     </a>
                 </li>
             @elseif(Auth::user()->role == 4)
@@ -91,6 +107,11 @@
                 <li class="nav-item">
                     <a href="{{ url('secretary/set_semester/set_current')}}" class="nav-link @if (Request::segment(3) == 'set_current') active @endif">
                         <p>Semester</p>
+                    </a>
+                </li>
+                   <li class="nav-item">
+                    <a href="{{ route('change-password1') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                        <p>Change Password</p>
                     </a>
                 </li>
 

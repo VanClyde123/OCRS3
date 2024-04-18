@@ -41,14 +41,20 @@
                         <option value="3" {{ $getData->role == 3 ? 'selected' : '' }}>Student</option>
                     </select>
                 </div>
-                <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Password"
-                            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                            title="Password must contain at least 8 characters, including atleast one letter and one number.">
-                
-
+               <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" name="password" id="password" required 
+                            placeholder="Password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" 
+                            title="Password must contain at least 8 characters, including at least one letter and one number.">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
                 
             </div>
             <!-- /.card-body -->
@@ -61,5 +67,24 @@
     </section>
     <!-- /.content -->
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            togglePasswordVisibility(passwordInput, togglePassword);
+        });
+
+        function togglePasswordVisibility(inputElement, toggleButton) {
+            const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputElement.setAttribute('type', type);
+            toggleButton.querySelector('i').classList.toggle('fa-eye-slash');
+            toggleButton.querySelector('i').classList.toggle('fa-eye');
+        }
+    });
+</script>
+
 
   @endsection

@@ -12,6 +12,8 @@ use App\Models\Grades;
 use App\Models\Semester;
 use App\Models\Assessment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class SecretaryController extends Controller
 {
@@ -347,6 +349,34 @@ if ($currentSemester) {
 
 
         return redirect()->route('secretary.viewSubjects1')->with('success', 'Instructor changed successfully');
+    }
+
+     public function showChangePasswordForm1()
+    {
+        return view('secretary.change_password');
+    }
+
+    public function changePassword1(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+         ], [
+           'new_password.confirmed' => 'The new password and confirmation password do not match.',
+        ]);
+
+        $user = Auth::user();
+
+       
+        if (!Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()->with('error', 'Your old password is incorrect.');
+        }
+
+    
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', ' Your password changed successfully.');
     }
 
 }
