@@ -500,6 +500,9 @@
                         case 'INC':
                             displayedValue = 'INC';
                             break;
+                        case 'NFE':
+                            displayedValue = 'NFE';
+                            break;
                         default:
                             displayedValue = actualGrade;
                             break;
