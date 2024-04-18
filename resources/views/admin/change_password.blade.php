@@ -3,13 +3,13 @@
 @section('content')
 <div class="content-wrappers">
     <section class="content-header">
-        <h2>Change Password</h2>
+        <h2 class="mb-5">Change Password</h2>
     </section>
 
+    @include('messages')
     <section class="content">
         <div class="card">
             <div class="card-body">
-                @include('messages')
                     @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
