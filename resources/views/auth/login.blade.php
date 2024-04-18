@@ -43,14 +43,15 @@
                             </div>
                         </div>
                         </div>
-                        <div class="input-group mb-2">
-                        <input type="password" class="form-control"  required name="password" placeholder="Password">
+                      <div class="input-group mb-2">
+                        <input type="password" class="form-control" required name="password" id="password" placeholder="Password">
                         <div class="input-group-append">
-                            <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                            </div>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
                         </div>
-                        </div>
+                    </div>
+
                         
                         <div class="col-8">
                             <div class="icheck-primary">
@@ -75,3 +76,20 @@
     </body>
 </html>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            togglePasswordVisibility(passwordInput, togglePassword);
+        });
+
+        function togglePasswordVisibility(inputElement, toggleButton) {
+            const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputElement.setAttribute('type', type);
+            toggleButton.querySelector('i').classList.toggle('fa-eye-slash');
+            toggleButton.querySelector('i').classList.toggle('fa-eye');
+        }
+    });
+</script>
