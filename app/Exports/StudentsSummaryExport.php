@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use App\Models\Subject;
 use App\Models\EnrolledStudents;
 use App\Models\ImportedClasslist;
@@ -20,7 +21,7 @@ use App\Models\SubjectType;
 use App\Models\Semester;
 
 
-class StudentsSummaryExport implements FromCollection, WithEvents
+class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
 {
       use Exportable;
 
@@ -29,6 +30,15 @@ class StudentsSummaryExport implements FromCollection, WithEvents
     public function __construct($subjectId)
     {
         $this->subjectId = $subjectId;
+    }
+
+     public function title(): string
+    {
+        
+        $subject = Subject::findOrFail($this->subjectId);
+
+        
+        return $subject->subject_code . ' - ' . $subject->section;
     }
 
     public function collection()

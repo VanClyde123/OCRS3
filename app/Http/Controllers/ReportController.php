@@ -124,7 +124,12 @@ class ReportController extends Controller
 
     public function generateExcelReport($subjectId)
     {
-        $exportFileName = 'student_report.xlsx';
+         
+        $subject = Subject::findOrFail($subjectId);
+
+        
+        $exportFileName = $subject->term . '_' . $subject->subject_code . '_' . $subject->section . '_records.xlsx';
+
 
         return Excel::download(new StudentReportExport($subjectId), $exportFileName);
     }
@@ -145,13 +150,21 @@ class ReportController extends Controller
 
         $sortedStudents = collect($students)->groupBy('student.gender');
 
-        return Excel::download(new StudentGradeExport($subject, $students, $sortedStudents), 'gradeslist.xlsx');
+        
+        $exportFileName = $subject->term . '_' . $subject->subject_code . '_' . $subject->section . '_grade_list.xlsx';
+
+
+        return Excel::download(new StudentGradeExport($subject, $students, $sortedStudents),  $exportFileName);
     }
 
    public function generateSummaryReport($subjectId)
 {
 
-    return Excel::download(new StudentsSummaryExport($subjectId), 'summary_report.xlsx');
+    $subject = Subject::findOrFail($subjectId);
+
+    $exportFileName = $subject->term . '_' . $subject->subject_code . '_' . $subject->section . '_summary.xlsx';
+
+    return Excel::download(new StudentsSummaryExport($subjectId), $exportFileName);
 }
 
 

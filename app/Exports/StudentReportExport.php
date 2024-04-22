@@ -15,13 +15,14 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
 use App\Models\EnrolledStudents;
 use App\Models\Assessment;
 use App\Models\Subject;
 use App\Models\ImportedClasslist;
 
-class StudentReportExport implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithEvents
+class StudentReportExport implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithEvents, WithTitle
 {
    
 
@@ -32,18 +33,27 @@ class StudentReportExport implements FromCollection, WithHeadings, WithColumnFor
         $this->subjectId = $subjectId;
     }
 
+    public function title(): string
+    {
+        
+        $subject = Subject::findOrFail($this->subjectId);
+
+        
+        return $subject->subject_code . ' - ' . $subject->section;
+    }
+
    protected function getAssessmentAbbreviations($assessments, $gradingPeriod)
 {
     $typeAbbreviations = [
         'Quiz' => 'Q',
         'OtherActivity' => 'OT',
         'Exam' => 'E',
-        'Lab Activity' => 'L',
-        'Lab Exam' => 'E',
-        'Additional Points Quiz' => 'APQ',
-        'Additional Points OT' => 'APOAT',
-        'Additional Points Exam' => 'APE',
-        'Additional Points Lab' => 'APL',
+        'Lab Activity' => 'LA',
+        'Lab Exam' => 'LE',
+        'Additional Points Quiz' => 'BQ',
+        'Additional Points OT' => 'BOT',
+        'Additional Points Exam' => 'BE',
+        'Additional Points Lab' => 'BL',
         'Direct Bonus Grade' => 'FG',
     ];
 
@@ -621,11 +631,33 @@ if ($hasFinalsAssessments) {
             $event->sheet->setCellValue('A' . ($lastDataRow + 2), "Legends:");
             $event->sheet->setCellValue('A' . ($lastDataRow + 3), "A - ABSENT");
             $event->sheet->setCellValue('A' . ($lastDataRow + 4), "E - EXCUSED");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 5), "Q - Quiz");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 6), "OT - OtherActivity");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 7), "E - Exam");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 8), "LA - Lab Activity");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 9), "LE - Lab Exam");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 10), "BQ - Additional Total Quiz");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 11), "BOT - Additional Total OtherActivity");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 12), "BE - Additional Total Exam");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 13), "BL - Additional Total Lab Activity");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 14), "FG - Direct Bonus to Finals Grade");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 15), "T - Total");
 
           
             $event->sheet->mergeCells('A' . ($lastDataRow + 2) . ':B' . ($lastDataRow + 2));
             $event->sheet->mergeCells('A' . ($lastDataRow + 3) . ':B' . ($lastDataRow + 3));
             $event->sheet->mergeCells('A' . ($lastDataRow + 4) . ':B' . ($lastDataRow + 4));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 5) . ':B' . ($lastDataRow + 5));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 6) . ':B' . ($lastDataRow + 6));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 7) . ':B' . ($lastDataRow + 7));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 8) . ':B' . ($lastDataRow + 8));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 9) . ':B' . ($lastDataRow + 9));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 10) . ':B' . ($lastDataRow + 10));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 11) . ':B' . ($lastDataRow + 11));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 12) . ':B' . ($lastDataRow + 12));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 13) . ':B' . ($lastDataRow + 13));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 14) . ':B' . ($lastDataRow + 14));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 15) . ':B' . ($lastDataRow + 15));
 
             $borderStyle = [
                 'borders' => [
@@ -636,10 +668,10 @@ if ($hasFinalsAssessments) {
                 ],
             ];
 
-            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':B' . ($lastDataRow + 4))->applyFromArray($borderStyle);
+            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':B' . ($lastDataRow + 15))->applyFromArray($borderStyle);
 
            
-            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':Z' . ($lastDataRow + 4))->applyFromArray([
+            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':Z' . ($lastDataRow + 15))->applyFromArray([
                 'font' => [
                     'bold' => true,
                 ],

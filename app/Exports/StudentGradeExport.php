@@ -8,13 +8,14 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
 use App\Models\EnrolledStudents;
 use App\Models\Assessment;
 use App\Models\Subject;
 use App\Models\ImportedClasslist;
 
-class StudentGradeExport implements FromCollection, WithHeadings, WithStyles
+class StudentGradeExport implements FromCollection, WithHeadings, WithStyles, WithTitle
 {
     protected $subject;
     protected $students;
@@ -25,6 +26,11 @@ class StudentGradeExport implements FromCollection, WithHeadings, WithStyles
         $this->subject = $subject;
         $this->students = $students;
         $this->sortedStudents = $sortedStudents;
+    }
+
+    public function title(): string
+    {
+        return $this->subject->subject_code . '_' . $this->subject->section;
     }
 
     public function collection()
@@ -44,7 +50,7 @@ class StudentGradeExport implements FromCollection, WithHeadings, WithStyles
 
        
         foreach ($this->sortedStudents as $gender => $students) {
-            $data[] = [$gender, '', '', '', '', '']; 
+            //$data[] = [$gender, '', '', '', '', '']; 
             foreach ($students as $student) {
                 $rowData = [
                     $student->student->id_number,

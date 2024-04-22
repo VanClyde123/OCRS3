@@ -75,61 +75,86 @@
                                 <td colspan="3">{{ $subjectDescription }}</td>
                             </tr>
                         </table>
+
+
+                    @php
+                        $maleCount = 0;
+                        $femaleCount = 0;
+                        foreach ($maleStudentValues as $male_student) {
+                            $maleCount++;
+                        }
+                        foreach ($femaleStudentValues as $female_student) {
+                            $femaleCount++;
+                        }
+                    @endphp
+
+                  
+                    <p><b>Total Students:</b> {{ $maleCount + $femaleCount }} </br>
+                    <b>Male:</b> {{ $maleCount }}
+                    <b>Female:</b> {{ $femaleCount }}</p>
+
                     </div>
-                    <div class="table-responsive">
-                            <div class="student-lists">
-                                <div class="male-students">
-                                    <p><b>Male Students:</b></p>
-                                    <table>
-                                        <thead>
+                   <div class="table-responsive">
+                        <div class="student-lists">
+                            <div class="male-students">
+                                <p><b>Male Students:</b></p>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ID Number</th>
+                                            <th>Last Name</th>
+                                            <th>Name</th>
+                                            <th>Middle Initial</th>
+                                            <th>Course</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $maleCount = 1 @endphp 
+                                        @foreach ($maleStudentValues as $male_student)
                                             <tr>
-                                                <th>ID Number</th>
-                                                <th>Last Name</th>
-                                                <th>Name</th>
-                                                <th>Middle Name</th>
-                                                <th>Course</th>
+                                                <td>{{ $maleCount++ }}</td> 
+                                                <td>{{ $male_student['id_number'] }}</td>
+                                                <td>{{ $male_student['last_name'] }}</td>
+                                                <td>{{ $male_student['name'] }}</td>
+                                                <td>{{ $male_student['middle_name'] }}</td>
+                                                <td>{{ $male_student['course'] }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($maleStudentValues as $male_student)
-                                                <tr>
-                                                    <td>{{ $male_student['id_number'] }}</td>
-                                                    <td>{{ $male_student['last_name'] }}</td>
-                                                    <td>{{ $male_student['name'] }}</td>
-                                                    <td>{{ $male_student['middle_name'] }}</td>
-                                                    <td>{{ $male_student['course'] }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="female-students">
-                                    <p><b>Female Students:</b></p>
-                                    <table>
-                                        <thead>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="female-students">
+                                <p><b>Female Students:</b></p>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ID Number</th>
+                                            <th>Last Name</th>
+                                            <th>Name</th>
+                                            <th>Middle Name</th>
+                                            <th>Course</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $femaleCount = 1 @endphp 
+                                        @foreach ($femaleStudentValues as $female_student)
                                             <tr>
-                                                <th>ID Number</th>
-                                                <th>Last Name</th>
-                                                <th>Name</th>
-                                                <th>Middle Name</th>
-                                                <th>Course</th>
+                                                <td>{{ $femaleCount++ }}</td> 
+                                                <td>{{ $female_student['id_number'] }}</td>
+                                                <td>{{ $female_student['last_name'] }}</td>
+                                                <td>{{ $female_student['name'] }}</td>
+                                                <td>{{ $female_student['middle_name'] }}</td>
+                                                <td>{{ $female_student['course'] }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($femaleStudentValues as $female_student)
-                                                <tr>
-                                                    <td>{{ $female_student['id_number'] }}</td>
-                                                    <td>{{ $female_student['last_name'] }}</td>
-                                                    <td>{{ $female_student['name'] }}</td>
-                                                    <td>{{ $female_student['middle_name'] }}</td>
-                                                    <td>{{ $female_student['course'] }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                    </div>
+
                     <div class="form-row mb-2">
                         <div class="col-md-2">
                             <div class="subject-type-select">

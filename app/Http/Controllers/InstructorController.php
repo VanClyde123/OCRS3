@@ -152,12 +152,12 @@ class InstructorController extends Controller
                 'Quiz' => 'Q',
                 'OtherActivity' => 'OT',
                 'Exam' => 'E',
-                'Lab Activity' => 'L',
-                'Lab Exam' => 'E',
-                'Additional Points Quiz' => 'APQ',
-                'Additional Points OT' => 'APOAT',
-                'Additional Points Exam' => 'APE',
-                'Additional Points Lab' => 'APL',
+                'Lab Activity' => 'LA',
+                'Lab Exam' => 'LE',
+                'Additional Points Quiz' => 'BQ',
+                'Additional Points OT' => 'BOT',
+                'Additional Points Exam' => 'BE',
+                'Additional Points Lab' => 'BL',
                 'Direct Bonus Grade' => 'FG',
 
 
