@@ -146,6 +146,8 @@ public function fetchassessmentDetails($enrolledStudentId, $assessmentId)
     }
 }
 
+/////////////inserted  score////////////////////////
+
   public function insertScore(Request $request)
    {
 
@@ -300,6 +302,7 @@ if ($subjectType === 'Lec') {
 
         if ($existingRecord) {
             ////update if there is an existing record
+            $existingRecord->tentative_fg_grade = $totalPointsRaw;
             $existingRecord->fg_grade = $fgOfficialGrade;
             $existingRecord->save();
         } else {
@@ -308,8 +311,11 @@ if ($subjectType === 'Lec') {
             $newRecord->enrolled_student_id = $enrolledStudentId;
             $newRecord->assessment_id = null;
             $newRecord->points = null; //
+            $newRecord->tentative_fg_grade = $totalPointsRaw;
             $newRecord->fg_grade = $fgOfficialGrade;
+            $newRecord->tentative_midterms_grade =  null;
             $newRecord->midterms_grade = null;
+            $newRecord->tentative_finals_grade = null;
             $newRecord->finals_grade = null;
             $newRecord->save();
         }
@@ -412,6 +418,7 @@ if ($subjectType === 'Lec') {
                     ->first();
 
                 if ($existingRecord) {
+                    $existingRecord->tentative_midterms_grade = $totalPointsMidtermsRaw;
                     $existingRecord->midterms_grade = $midtermsOfficialGrade;
                     $existingRecord->save();
                 } else {
@@ -419,8 +426,11 @@ if ($subjectType === 'Lec') {
                     $newRecord->enrolled_student_id = $enrolledStudentId;
                     $newRecord->assessment_id = null;
                     $newRecord->points = null;
+                    $newRecord->tentative_fg_grade = null;
                     $newRecord->fg_grade = null;
+                    $newRecord->tentative_midterms_grade = $totalPointsMidtermsRaw;
                     $newRecord->midterms_grade = $midtermsOfficialGrade;
+                    $newRecord->tentative_finals_grade = null;
                     $newRecord->finals_grade = null;
                     $newRecord->save();
                 }
@@ -538,6 +548,7 @@ if ($subjectType === 'Lec') {
                     ->first();
 
                 if ($existingRecord) {
+                    $existingRecord->tentative_finals_grade = $totalPointsFinalsRaw;
                     $existingRecord->finals_grade = $finalsOfficialGrade;
                     $existingRecord->save();
                 } else {
@@ -545,8 +556,11 @@ if ($subjectType === 'Lec') {
                     $newRecord->enrolled_student_id = $enrolledStudentId;
                     $newRecord->assessment_id = null;
                     $newRecord->points = null;
+                    $newRecord->tentative_fg_grade = null;
                     $newRecord->fg_grade = null;
+                    $newRecord->tentative_midterms_grade =  null;
                     $newRecord->midterms_grade = null;
+                    $newRecord->tentative_finals_grade = $totalPointsFinalsRaw;
                     $newRecord->finals_grade = $finalsOfficialGrade;
                     $newRecord->save();
                 }

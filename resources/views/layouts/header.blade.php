@@ -1,5 +1,5 @@
 <div id="mySidebar" class="sidebars">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  
     {{-- DO NOT TOUCH --}}
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -7,6 +7,7 @@
                 <div>
                     <div >
                         <a class="nav-link" style="color:white;">{{ Auth::user()->name }}</a><hr>
+                          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><<</a>
                     </div>
                 </div>
             </li>

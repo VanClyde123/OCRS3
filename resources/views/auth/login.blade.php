@@ -20,8 +20,8 @@
                 Test Accounts
             </div>
             <div class="card-body" style="align-items: center;">
-                <h4 class="card-title">This card is here until after tests</h4>
-                <p class="card-text">Admin Account:  admin <br>Admin Password: 12345<br>Secretary Account:  00001000<br>Teacher Account: 10001000<br>Student Account:  20151110<br>Passwords: a1234567</p>
+                <h4 class="card-title">Updated database(still going to be updated)</h4>
+                <p class="card-text">Admin Account:  admin <br>Admin Password: admin12345<br>Secretary Account:  00001000<br>Sec Password: rachel123<br>Teacher Account: 10001000<br>Teacher Password: richard123<br>Student Account:  20151000<br>Student Password: student123</p>
             </div>
         </div>
 
