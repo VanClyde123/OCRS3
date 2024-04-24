@@ -686,9 +686,15 @@
                                                                 ->count() + 1;
                                                         }, 0);
                                                     @endphp
-                                                    <th colspan="{{ $colspan + 3 }}" class="text-center grading-period-header">
-                                                        {{ $gradingPeriod }}
-                                                    </th>
+                                                  @if ($gradingPeriod == "First Grading")
+                                                        <th colspan="{{ $colspan + 2 }}" class="text-center grading-period-header">
+                                                            {{ $gradingPeriod }}
+                                                        </th>
+                                                    @else
+                                                        <th colspan="{{ $colspan + 3 }}" class="text-center grading-period-header">
+                                                            {{ $gradingPeriod }}
+                                                        </th>
+                                                    @endif
                                                 @endforeach
                                             </tr>
                                             <tr>
@@ -711,17 +717,16 @@
                                                         <th class="text-center">Total</th>
                                                     @endforeach
                                                     @if ($gradingPeriod == "First Grading")
-                                                        <th class="text-center">Total FG Grade</th>
-                                                        <th class="text-center">Tentative FG Grade</th>
+                                                        <th class="text-center">Over All Total</th>
                                                         <th class="text-center">FG Grade</th>
                                                     @endif
                                                     @if ($gradingPeriod == "Midterm")
-                                                        <th class="text-center">Total Midterm Grade</th>
+                                                        <th class="text-center">Over All Total</th>
                                                         <th class="text-center">Tentative Midterm Grade</th>
                                                         <th class="text-center">Midterm Grade</th>
                                                     @endif
                                                     @if ($gradingPeriod == "Finals")
-                                                        <th class="text-center">Total Finals Grade</th>
+                                                        <th class="text-center">Over All Total</th>
                                                         <th class="text-center">Tentative Finals Grade</th>
                                                         <th class="text-center">Finals Grade</th>
                                                     @endif
@@ -783,7 +788,7 @@
                                                     @if ($gradingPeriod == "First Grading")
                                                         <th class="text-center"></th>
                                                         <th class="text-center"></th>
-                                                         <th class="text-center"></th>
+                                                         
                                                     @endif
                                                     @if ($gradingPeriod == "Midterm")
                                                         <th class="text-center"></th>
@@ -886,18 +891,6 @@
                                                                             }
                                                                         }
                                                                         echo '</td>';
-
-                                                                        ////column for tentative grade
-                                                                        echo '<td class="grade-column">';
-                                                                        foreach ($enrolledStudent->grades as $grade) {
-                                                                            if ($grade->tentative_fg_grade !== null) {
-                                                                                echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->tentative_fg_grade . '</span>';
-                                                                                echo '</div>';
-                                                                            }
-                                                                        }
-                                                                        echo '</td>';
-
 
 
                                                                         echo '<td class="grade-column">';
@@ -1054,15 +1047,22 @@
                                                         }
                                                         $subjectId = $subject->id;
                                                             ///// Empty th for grades column under 
-                                                        echo '
-                                                        <th class="grade-column"></th>
-                                                        <th class="grade-column"></th>
-                                                        <th class="grade-column">
-                                                            <button class="btn btn-sm btn-publish-grades btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '"
-                                                                data-grading-period="' . $gradingPeriod . '"
-                                                                data-subject-id="' . $subjectId . '"'
-                                                                . ($isPastSubjectList ? ' disabled' : '') . '>Grades</button>
-                                                            </th>';
+                                                      
+
+                                                    if ($gradingPeriod == "First Grading") {
+                                                        echo '<th class="grade-column"></th>';
+                                                    } else {
+                                                        echo '<th class="grade-column"></th>
+                                                              <th class="grade-column"></th>';
+                                                    }
+
+                                                    echo '
+                                                    <th class="grade-column">
+                                                        <button class="btn btn-sm btn-publish-grades btn-primary' . ($isPastSubjectList ? ' disabled' : '') . '"
+                                                            data-grading-period="' . $gradingPeriod . '"
+                                                            data-subject-id="' . $subjectId . '"'
+                                                            . ($isPastSubjectList ? ' disabled' : '') . '>Grades</button>
+                                                    </th>';
                                                         $currentColIndex++;
                                                     }
                                                 @endphp

@@ -631,7 +631,7 @@ if ($hasLabActivityRecords) {
         ->first();
 
     if ($existingRecord) {
-        $existingRecord->tentative_fg_grade = $actualTotalPointsLab;
+        $existingRecord->total_fg_grade = $actualTotalPointsLab;
         $existingRecord->fg_grade = $fgOfficialGradeLab;
         $existingRecord->save();
     } else {
@@ -640,9 +640,14 @@ if ($hasLabActivityRecords) {
         $newRecord->enrolled_student_id = $enrolledStudentId;
         $newRecord->assessment_id = null;
         $newRecord->points = null;
-        $newRecord->tentative_fg_grade =  $actualTotalPointsLab;
+        $newRecord->total_fg_grade =  $actualTotalPointsLab;
+        $newRecord->tentative_fg_grade = null;
         $newRecord->fg_grade = $fgOfficialGradeLab;
+        $newRecord->total_midterms_grade = null;
+        $newRecord->tentative_midterms_grade = null;
         $newRecord->midterms_grade = null;
+        $newRecord->total_finals_grade = null;
+        $newRecord->tentative_finals_grade = null;
         $newRecord->finals_grade = null;
         $newRecord->save();
     }
@@ -697,7 +702,8 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         ->first();
 
     if ($existingRecord) {
-      
+        $existingRecord->total_midterms_grade  = $actualTotalPointsLabMidterms;
+        $existingRecord->tentative_midterms_grade = $MidtermsTentativeGradeLab;
         $existingRecord->midterms_grade = $MidtermsOfficialGradeLab;
         $existingRecord->save();
     } else {
@@ -706,8 +712,14 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         $newRecord->enrolled_student_id = $enrolledStudentId;
         $newRecord->assessment_id = null;
         $newRecord->points = null;
+        $newRecord->total_fg_grade =  null;
+        $newRecord->tentative_fg_grade = null;
         $newRecord->fg_grade = null;
+        $newRecord->total_midterms_grade = $actualTotalPointsLabMidterms;
+        $newRecord->tentative_midterms_grade = $MidtermsTentativeGradeLab;
         $newRecord->midterms_grade = $MidtermsOfficialGradeLab;
+        $newRecord->total_finals_grade = null;
+        $newRecord->tentative_finals_grade = null;
         $newRecord->finals_grade = null;
         $newRecord->save();
     }
@@ -776,7 +788,8 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         ->first();
 
     if ($existingRecord) {
-     
+        $existingRecord->total_finals_grade  = $actualTotalPointsLabFinals;
+        $existingRecord->tentative_finals_grade = $FinalsTentativeGradeLab;
         $existingRecord->finals_grade = $FinalsOfficialGradeLab;
         $existingRecord->save();
     } else {
@@ -785,8 +798,14 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         $newRecord->enrolled_student_id = $enrolledStudentId;
         $newRecord->assessment_id = null;
         $newRecord->points = null;
+        $newRecord->total_fg_grade =  null;
+        $newRecord->tentative_fg_grade = null;
         $newRecord->fg_grade = null;
+        $newRecord->total_midterms_grade = null;
+        $newRecord->tentative_midterms_grade = null;
         $newRecord->midterms_grade = null;
+        $newRecord->total_finals_grade = $actualTotalPointsLabFinals;
+        $newRecord->tentative_finals_grade = $FinalsTentativeGradeLab;
         $newRecord->finals_grade = $FinalsOfficialGradeLab;
         $newRecord->save();
     }
