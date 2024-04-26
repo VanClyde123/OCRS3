@@ -686,14 +686,26 @@
                                                                 ->count() + 1;
                                                         }, 0);
                                                     @endphp
-                                                  @if ($gradingPeriod == "First Grading")
-                                                        <th colspan="{{ $colspan + 2 }}" class="text-center grading-period-header">
-                                                            {{ $gradingPeriod }}
-                                                        </th>
-                                                    @else
-                                                        <th colspan="{{ $colspan + 3 }}" class="text-center grading-period-header">
-                                                            {{ $gradingPeriod }}
-                                                        </th>
+                                                    @if ($gradingPeriod == "First Grading")
+                                                        @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th colspan="{{ $colspan + 5 }}" class="text-center grading-period-header">
+                                                                {{ $gradingPeriod }}
+                                                            </th>
+                                                        @else
+                                                            <th colspan="{{ $colspan + 2 }}" class="text-center grading-period-header">
+                                                                {{ $gradingPeriod }}
+                                                            </th>
+                                                        @endif
+                                                    @else 
+                                                          @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th colspan="{{ $colspan + 6 }}" class="text-center grading-period-header">
+                                                                {{ $gradingPeriod }}
+                                                            </th>
+                                                        @else
+                                                            <th colspan="{{ $colspan + 3 }}" class="text-center grading-period-header">
+                                                                {{ $gradingPeriod }}
+                                                            </th>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                             </tr>
@@ -710,26 +722,79 @@
                                                             ->pluck('type')
                                                             ->unique();
                                                     @endphp
-                                                    @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
+                                                @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
+                                                   @if ($assessmentType === 'Exam')
                                                         <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
                                                             {{ $assessmentType }}
                                                         </th>
                                                         <th class="text-center">Total</th>
+                                                       @if ($gradingPeriod == "First Grading")
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center">Total Lec</th>
+                                                                <th class="text-center">Lec Grade</th>
+                                                            @endif
+                                                        @endif
+                                                         @if ($gradingPeriod == "Midterm")
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center">Total Midterm Lec</th>
+                                                                <th class="text-center">Midterm Lec Grade</th>
+                                                            @endif
+                                                        @endif
+                                                         @if ($gradingPeriod == "Finals")
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center">Total Finals Lec</th>
+                                                                <th class="text-center">Finals Lec Grade</th>
+                                                            @endif
+                                                        @endif
+
+                                                      @else
+                                                        <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
+                                                            {{ $assessmentType }}
+                                                        </th>
+                                                        <th class="text-center">Total</th>
+                                                    @endif
                                                     @endforeach
-                                                    @if ($gradingPeriod == "First Grading")
-                                                        <th class="text-center">Over All Total</th>
-                                                        <th class="text-center">FG Grade</th>
+
+                                                    @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                        @if ($gradingPeriod == "First Grading")
+                                                            <th class="text-center">Total Lab</th>
+                                                            <th class="text-center">Lab Grade</th>
+                                                            <th class="text-center">FG Grade</th>
+                                                        @endif
+                                                        @else
+                                                            @if ($gradingPeriod == "First Grading")
+                                                                <th class="text-center">Over All Total</th>
+                                                                <th class="text-center">FG Grade</th>
+                                                            @endif
+                                                    @endif 
+                                                    @if (strpos($subject->subject_type, 'LecLab') !== false)      
+                                                        @if ($gradingPeriod == "Midterm")
+                                                            <th class="text-center">Total Midterm Lab</th>
+                                                            <th class="text-center">Midterm Lab Grade</th>
+                                                            <th class="text-center">Tentative Midterm Grade</th>
+                                                            <th class="text-center">Midterm Grade</th>
+                                                        @endif
+                                                        @else
+                                                            @if ($gradingPeriod == "Midterm")
+                                                                <th class="text-center">Over All Total</th>
+                                                                <th class="text-center">Tentative Midterm Grade</th>
+                                                                <th class="text-center">Midterm Grade</th>
+                                                             @endif
                                                     @endif
-                                                    @if ($gradingPeriod == "Midterm")
-                                                        <th class="text-center">Over All Total</th>
-                                                        <th class="text-center">Tentative Midterm Grade</th>
-                                                        <th class="text-center">Midterm Grade</th>
-                                                    @endif
-                                                    @if ($gradingPeriod == "Finals")
-                                                        <th class="text-center">Over All Total</th>
-                                                        <th class="text-center">Tentative Finals Grade</th>
-                                                        <th class="text-center">Finals Grade</th>
-                                                    @endif
+                                                    @if (strpos($subject->subject_type, 'LecLab') !== false)    
+                                                        @if ($gradingPeriod == "Finals")
+                                                            <th class="text-center">Total Finals Lab</th>
+                                                            <th class="text-center">Finals Lab Grade</th>
+                                                            <th class="text-center">Tentative Finals Grade</th>
+                                                            <th class="text-center">Final Grade</th>
+                                                        @endif
+                                                        @else
+                                                            @if ($gradingPeriod == "Finals")
+                                                            <th class="text-center">Over All Total</th>
+                                                            <th class="text-center">Tentative Final Grade</th>
+                                                            <th class="text-center">Final Grade</th>
+                                                        @endif
+                                                     @endif
                                                 @endforeach
                                             </tr>
                                             <tr>
@@ -784,21 +849,71 @@
                                                                 </p>
                                                             </td>
                                                         @endif
+
+                                                      @if ($gradingPeriod == "First Grading")
+                                                        @if ($assessmentType === 'Exam')
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+                                                        @endif
+                                                      @endif
+
+                                                     @if ($gradingPeriod == "Midterm")
+                                                        @if ($assessmentType === 'Exam')
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+                                                        @endif
+                                                      @endif
+
+                                                      @if ($gradingPeriod == "Finals")
+                                                        @if ($assessmentType === 'Exam')
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+                                                        @endif
+                                                      @endif
+
+
                                                     @endforeach
                                                     @if ($gradingPeriod == "First Grading")
-                                                        <th class="text-center"></th>
-                                                        <th class="text-center"></th>
-                                                         
+                                                           @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                
+                                                            @else
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+
                                                     @endif
                                                     @if ($gradingPeriod == "Midterm")
-                                                        <th class="text-center"></th>
-                                                        <th class="text-center"></th>
-                                                        <th class="text-center"></th>
+                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @else
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
                                                     @endif
                                                     @if ($gradingPeriod == "Finals")
-                                                        <th class="text-center"></th>
-                                                        <th class="text-center"></th>
-                                                        <th class="text-center"></th>
+                                                          @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @else
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
                                                     @endif
                                                 @endforeach
                                             </tr>
@@ -879,9 +994,141 @@
                                                                         $currentColIndex++; //// move to the next column
                                                                     }
                                                                     $totalPointsForAssessmentType = 0; //// reset the total points for the next assessment type
+
+                                                      /////////////////leclab- total and lec grade////////////////
+
+                                                               if ($gradingPeriod == "First Grading") {
+                                                                    if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                        if ($assessmentType === 'Exam') {
+                                                                            //// column for total lec grade
+                                                                            echo '<td class="grade-column">';
+                                                                            foreach ($enrolledStudent->grades as $grade) {
+                                                                                if ($grade->total_fg_lec !== null) {
+                                                                                    echo '<div class="grade-dropdown displayed-value">';
+                                                                                    echo '<span class="displayed-value">' . $grade->total_fg_lec . '</span>';
+                                                                                    echo '</div>';
+                                                                                }
+                                                                            }
+                                                                            echo '</td>';
+
+                                                                            //// column for lec grade
+                                                                            echo '<td class="grade-column">';
+                                                                            foreach ($enrolledStudent->grades as $grade) {
+                                                                                if ($grade->lec_fg_grade !== null) {
+                                                                                    echo '<div class="grade-dropdown displayed-value">';
+                                                                                    echo '<span class="displayed-value">' . $grade->lec_fg_grade . '</span>';
+                                                                                    echo '</div>';
+                                                                                }
+                                                                            }
+                                                                            echo '</td>';
+                                                                        }
+                                                                    }
+                                                                }
+
+
+                                                               if ($gradingPeriod == "Midterm") {
+                                                                    if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                        if ($assessmentType === 'Exam') {
+                                                                            //// column for total mid lec grade
+                                                                            echo '<td class="grade-column">';
+                                                                            foreach ($enrolledStudent->grades as $grade) {
+                                                                                if ($grade->total_midterms_lec !== null) {
+                                                                                    echo '<div class="grade-dropdown displayed-value">';
+                                                                                    echo '<span class="displayed-value">' . $grade->total_midterms_lec . '</span>';
+                                                                                    echo '</div>';
+                                                                                }
+                                                                            }
+                                                                            echo '</td>';
+
+                                                                            //// column for mid lec grade
+                                                                            echo '<td class="grade-column">';
+                                                                            foreach ($enrolledStudent->grades as $grade) {
+                                                                                if ($grade->lec_midterms_grade !== null) {
+                                                                                    echo '<div class="grade-dropdown displayed-value">';
+                                                                                    echo '<span class="displayed-value">' . $grade->lec_midterms_grade . '</span>';
+                                                                                    echo '</div>';
+                                                                                }
+                                                                            }
+                                                                            echo '</td>';
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                 if ($gradingPeriod == "Finals") {
+                                                                    if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                        if ($assessmentType === 'Exam') {
+                                                                            //// column for total fn lec grade
+                                                                            echo '<td class="grade-column">';
+                                                                            foreach ($enrolledStudent->grades as $grade) {
+                                                                                if ($grade->total_finals_lec !== null) {
+                                                                                    echo '<div class="grade-dropdown displayed-value">';
+                                                                                    echo '<span class="displayed-value">' . $grade->total_finals_lec . '</span>';
+                                                                                    echo '</div>';
+                                                                                }
+                                                                            }
+                                                                            echo '</td>';
+
+                                                                            //// column for mid fn grade
+                                                                            echo '<td class="grade-column">';
+                                                                            foreach ($enrolledStudent->grades as $grade) {
+                                                                                if ($grade->lec_finals_grade !== null) {
+                                                                                    echo '<div class="grade-dropdown displayed-value">';
+                                                                                    echo '<span class="displayed-value">' . $grade->lec_finals_grade . '</span>';
+                                                                                    echo '</div>';
+                                                                                }
+                                                                            }
+                                                                            echo '</td>';
+                                                                        }
+                                                                    }
+                                                                }
+
+
+
+                                                            
+
+                                                       ////////////////lec, lab - total/tentative/official grade, leclab - total lab/lab grade/tentative/official grade/////////////
                                                                 }
                                                                 if ($gradingPeriod == "First Grading") {
-                                                                     ////column for total grade
+                                                                    if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                       
+
+                                                                        //// column for total lab grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->total_fg_lab !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->total_fg_lab . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                        //// column for lab grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->lab_fg_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->lab_fg_grade . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                        //// column for fg grade
+                                                                         echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->fg_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . number_format($grade->fg_grade, $grade->fg_grade == intval($grade->fg_grade) ? 0 : 2) . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+
+                                                                       
+                                                                    } else {
+                                                                        //// default columns for Lec type/Lab type total grade and fg grade
                                                                         echo '<td class="grade-column">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_fg_grade !== null) {
@@ -892,18 +1139,67 @@
                                                                         }
                                                                         echo '</td>';
 
-
                                                                         echo '<td class="grade-column">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->fg_grade !== null) {
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                            echo '<span class="displayed-value">' . number_format($grade->fg_grade, $grade->fg_grade == intval($grade->fg_grade) ? 0 : 2) . '</span>';
-                                                                            
+                                                                                echo '<span class="displayed-value">' . number_format($grade->fg_grade, $grade->fg_grade == intval($grade->fg_grade) ? 0 : 2) . '</span>';
+                                                                                echo '</div>';
                                                                             }
                                                                         }
-                                                                    echo '</td>';
+                                                                        echo '</td>';
+                                                                    }
                                                                 }
                                                                 if ($gradingPeriod == "Midterm") {
+                                                                     if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                       
+
+                                                                        //// column for total md lab grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->total_midterms_lab !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->total_midterms_lab . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                        //// column for md lab grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->lab_midterms_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->lab_midterms_grade . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                    //// column for tentative  mid grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->tentative_midterms_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->tentative_midterms_grade  . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+
+                                                                    echo '<td class="grade-column">';
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        if ($grade->midterms_grade !== null) {
+                                                                            echo '<div class="grade-dropdown displayed-value">';
+                                                                        echo '<span class="displayed-value">' . number_format($grade->midterms_grade, $grade->midterms_grade == intval($grade->midterms_grade) ? 0 : 2) . '</span>';
+                                                                        
+                                                                        }
+                                                                    }
+                                                                    echo '</td>';
+
+                                                                       
+                                                                    } else {
 
                                                                       //// column for total  mid grade
                                                                         echo '<td class="grade-column">';
@@ -938,7 +1234,66 @@
                                                                     }
                                                                     echo '</td>';
                                                                 }
+                                                            }
+
                                                                 if ($gradingPeriod == "Finals") {
+                                                                    if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                       
+
+                                                                        //// column for total fn lab grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->total_finals_lab !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->total_finals_lab . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                        //// column for fn lab grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->lab_finals_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->lab_finals_grade . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                    //// column for tentative fn grade
+                                                                        echo '<td class="grade-column">';
+                                                                        foreach ($enrolledStudent->grades as $grade) {
+                                                                            if ($grade->tentative_finals_grade !== null) {
+                                                                                echo '<div class="grade-dropdown displayed-value">';
+                                                                                echo '<span class="displayed-value">' . $grade->tentative_finals_grade  . '</span>';
+                                                                                echo '</div>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+
+                                                                     //// column for  fn grade
+                                                                      echo '<td class="grade-column">';
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        echo '<div class="grade-dropdown displayed-value">';
+                                                                        if ($grade->finals_grade !== null) {
+                                                                            echo '<span class="displayed-value">' . number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . '</span>';
+                                                                        echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
+                                                                                echo '<option value="DEFAULT">Grade </option>';
+                                                                                echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
+                                                                                    echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
+                                                                                    echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
+                                                                                    echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
+                                                                                    echo '</select>';
+                                                                                echo '</div>';
+                                                                                echo '<br>';
+                                                                        }
+                                                                    }
+                                                                    echo '</td>';
+
+                                                                       
+                                                                    } else {
 
                                                                       //// column for total fin grade
                                                                         echo '<td class="grade-column">';
@@ -981,6 +1336,7 @@
                                                                     }
                                                                     echo '</td>';
                                                                 }
+                                                              }
                                                             }
                                                         @endphp
                                                     </tr>
@@ -1038,7 +1394,31 @@
                                                                 $currentColIndex++; ///// move to the next column
                                                             }
 
-                                                        
+                                                           if ($gradingPeriod == "First Grading" && strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            if ($assessmentType === 'Exam') {
+                                                                echo '<th class="assessment-column"></th>
+                                                                      <th class="assessment-column"></th>';
+                                                                        $currentColIndex++; ///// move to the next column
+                                                                     }
+                                                                   }
+
+                                                           if ($gradingPeriod == "Midterm" && strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            if ($assessmentType === 'Exam') {
+                                                                echo '<th class="assessment-column"></th>
+                                                                      <th class="assessment-column"></th>';
+                                                                        $currentColIndex++; ///// move to the next column
+                                                                     }
+                                                                   }
+
+                                                            if ($gradingPeriod == "Finals" && strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            if ($assessmentType === 'Exam') {
+                                                                echo '<th class="assessment-column"></th>
+                                                                      <th class="assessment-column"></th>';
+                                                                        $currentColIndex++; ///// move to the next column
+                                                                     }
+                                                                   }
+
+
                                                             if ($gradingPeriodAssessments->isNotEmpty()) {
                                                                 //// Empty th for Total Points
                                                                 echo '<th class="assessment-column"></th>';
@@ -1049,11 +1429,27 @@
                                                             ///// Empty th for grades column under 
                                                       
 
-                                                    if ($gradingPeriod == "First Grading") {
-                                                        echo '<th class="grade-column"></th>';
+                                                   if ($gradingPeriod == "First Grading") {
+                                                        if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            //// for LecLab subject type
+                                                            echo '<th class="grade-column"></th>
+                                                                  <th class="grade-column"></th>';
+                                                        } else {
+                                                            //// for Lec and Lab type
+                                                            echo '<th class="grade-column"></th>';
+                                                        }
                                                     } else {
-                                                        echo '<th class="grade-column"></th>
-                                                              <th class="grade-column"></th>';
+                                                        //// for Midterms and Finals
+                                                       if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            //// for LecLab subject type
+                                                            echo '<th class="grade-column"></th>
+                                                                  <th class="grade-column"></th>
+                                                                  <th class="grade-column"></th>';
+                                                        } else {
+                                                            //// for Lec and Lab type
+                                                            echo '<th class="grade-column"></th>
+                                                                  <th class="grade-column"></th>';
+                                                        }
                                                     }
 
                                                     echo '

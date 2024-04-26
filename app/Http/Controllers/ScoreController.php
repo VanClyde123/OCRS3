@@ -312,12 +312,27 @@ if ($subjectType === 'Lec') {
             $newRecord->enrolled_student_id = $enrolledStudentId;
             $newRecord->assessment_id = null;
             $newRecord->points = null; 
+
+            $newRecord->total_fg_lec = null; 
+            $newRecord->lec_fg_grade = null; 
+            $newRecord->total_fg_lab = null; 
+            $newRecord->lab_fg_grade = null; 
             $newRecord->total_fg_grade = $totalPointsRaw;
             $newRecord->tentative_fg_grade = $totalPoints;
             $newRecord->fg_grade = $fgOfficialGrade;
+
+            $newRecord->total_midterms_lec = null; 
+            $newRecord->lec_midterms_grade = null; 
+            $newRecord->total_midterms_lab = null; 
+            $newRecord->lab_midterms_grade = null; 
             $newRecord->total_midterms_grade = null;
             $newRecord->tentative_midterms_grade = null;
             $newRecord->midterms_grade = null;
+
+            $newRecord->total_finals_lec = null; 
+            $newRecord->lec_finals_grade = null; 
+            $newRecord->total_finals_lab = null; 
+            $newRecord->lab_finals_grade = null; 
             $newRecord->total_finals_grade = null;
             $newRecord->tentative_finals_grade = null;
             $newRecord->finals_grade = null;
@@ -431,12 +446,27 @@ if ($subjectType === 'Lec') {
                     $newRecord->enrolled_student_id = $enrolledStudentId;
                     $newRecord->assessment_id = null;
                     $newRecord->points = null;
+
+                    $newRecord->total_fg_lec = null; 
+                    $newRecord->lec_fg_grade = null; 
+                    $newRecord->total_fg_lab = null; 
+                    $newRecord->lab_fg_grade = null; 
                     $newRecord->total_fg_grade = null;
                     $newRecord->tentative_fg_grade = null;
                     $newRecord->fg_grade = null;
+
+                    $newRecord->total_midterms_lec = null; 
+                    $newRecord->lec_midterms_grade = null; 
+                    $newRecord->total_midterms_lab = null; 
+                    $newRecord->lab_midterms_grade = null; 
                     $newRecord->total_midterms_grade = $totalPointsMidtermsRaw;
                     $newRecord->tentative_midterms_grade = $tentativeMidtermGrade;
                     $newRecord->midterms_grade = $midtermsOfficialGrade;
+
+                    $newRecord->total_finals_lec = null; 
+                    $newRecord->lec_finals_grade = null; 
+                    $newRecord->total_finals_lab = null; 
+                    $newRecord->lab_finals_grade = null; 
                     $newRecord->total_finals_grade = null;
                     $newRecord->tentative_finals_grade = null;
                     $newRecord->finals_grade = null;
@@ -565,12 +595,27 @@ if ($subjectType === 'Lec') {
                     $newRecord->enrolled_student_id = $enrolledStudentId;
                     $newRecord->assessment_id = null;
                     $newRecord->points = null;
+
+                    $newRecord->total_fg_lec = null; 
+                    $newRecord->lec_fg_grade = null; 
+                    $newRecord->total_fg_lab = null; 
+                    $newRecord->lab_fg_grade = null; 
                     $newRecord->total_fg_grade = null;
                     $newRecord->tentative_fg_grade = null;
                     $newRecord->fg_grade = null;
+
+                    $newRecord->total_midterms_lec = null; 
+                    $newRecord->lec_midterms_grade = null; 
+                    $newRecord->total_midterms_lab = null; 
+                    $newRecord->lab_midterms_grade = null; 
                     $newRecord->total_midterms_grade = null;
                     $newRecord->tentative_midterms_grade = null;
                     $newRecord->midterms_grade = null;
+
+                    $newRecord->total_finals_lec = null; 
+                    $newRecord->lec_finals_grade = null; 
+                    $newRecord->total_finals_lab = null; 
+                    $newRecord->lab_finals_grade = null; 
                     $newRecord->total_finals_grade = $totalPointsFinalsRaw;
                     $newRecord->tentative_finals_grade = $tentativeFinalsGrade;
                     $newRecord->finals_grade = $finalsOfficialGrade;
@@ -640,12 +685,27 @@ if ($hasLabActivityRecords) {
         $newRecord->enrolled_student_id = $enrolledStudentId;
         $newRecord->assessment_id = null;
         $newRecord->points = null;
+
+        $newRecord->total_fg_lec = null; 
+        $newRecord->lec_fg_grade = null; 
+        $newRecord->total_fg_lab = null; 
+        $newRecord->lab_fg_grade = null;
         $newRecord->total_fg_grade =  $actualTotalPointsLab;
         $newRecord->tentative_fg_grade = null;
         $newRecord->fg_grade = $fgOfficialGradeLab;
+
+        $newRecord->total_midterms_lec = null; 
+        $newRecord->lec_midterms_grade = null; 
+        $newRecord->total_midterms_lab = null; 
+        $newRecord->lab_midterms_grade = null; 
         $newRecord->total_midterms_grade = null;
         $newRecord->tentative_midterms_grade = null;
         $newRecord->midterms_grade = null;
+
+        $newRecord->total_finals_lec = null; 
+        $newRecord->lec_finals_grade = null; 
+        $newRecord->total_finals_lab = null; 
+        $newRecord->lab_finals_grade = null;
         $newRecord->total_finals_grade = null;
         $newRecord->tentative_finals_grade = null;
         $newRecord->finals_grade = null;
@@ -712,12 +772,27 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         $newRecord->enrolled_student_id = $enrolledStudentId;
         $newRecord->assessment_id = null;
         $newRecord->points = null;
+
+        $newRecord->total_fg_lec = null; 
+        $newRecord->lec_fg_grade = null; 
+        $newRecord->total_fg_lab = null; 
+        $newRecord->lab_fg_grade = null; 
         $newRecord->total_fg_grade =  null;
         $newRecord->tentative_fg_grade = null;
         $newRecord->fg_grade = null;
+
+        $newRecord->total_midterms_lec = null; 
+        $newRecord->lec_midterms_grade = null; 
+        $newRecord->total_midterms_lab = null; 
+        $newRecord->lab_midterms_grade = null; 
         $newRecord->total_midterms_grade = $actualTotalPointsLabMidterms;
         $newRecord->tentative_midterms_grade = $MidtermsTentativeGradeLab;
         $newRecord->midterms_grade = $MidtermsOfficialGradeLab;
+
+        $newRecord->total_finals_lec = null; 
+        $newRecord->lec_finals_grade = null; 
+        $newRecord->total_finals_lab = null; 
+        $newRecord->lab_finals_grade = null; 
         $newRecord->total_finals_grade = null;
         $newRecord->tentative_finals_grade = null;
         $newRecord->finals_grade = null;
@@ -798,12 +873,27 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         $newRecord->enrolled_student_id = $enrolledStudentId;
         $newRecord->assessment_id = null;
         $newRecord->points = null;
+
+        $newRecord->total_fg_lec = null; 
+        $newRecord->lec_fg_grade = null; 
+        $newRecord->total_fg_lab = null; 
+        $newRecord->lab_fg_grade = null; 
         $newRecord->total_fg_grade =  null;
         $newRecord->tentative_fg_grade = null;
         $newRecord->fg_grade = null;
+
+        $newRecord->total_midterms_lec = null; 
+        $newRecord->lec_midterms_grade = null; 
+        $newRecord->total_midterms_lab = null; 
+        $newRecord->lab_midterms_grade = null; 
         $newRecord->total_midterms_grade = null;
         $newRecord->tentative_midterms_grade = null;
         $newRecord->midterms_grade = null;
+
+        $newRecord->total_finals_lec = null; 
+        $newRecord->lec_finals_grade = null; 
+        $newRecord->total_finals_lab = null; 
+        $newRecord->lab_finals_grade = null; 
         $newRecord->total_finals_grade = $actualTotalPointsLabFinals;
         $newRecord->tentative_finals_grade = $FinalsTentativeGradeLab;
         $newRecord->finals_grade = $FinalsOfficialGradeLab;
@@ -953,6 +1043,10 @@ if ($hasLecRecords) {
 
         if ($existingRecord) {
             ////update 
+            $existingRecord->total_fg_lec = $totalPointsLecFGRaw; 
+            $existingRecord->lec_fg_grade = $fgLecGradeInitial; 
+            $existingRecord->total_fg_lab = $actualTotalPointsLab; 
+            $existingRecord->lab_fg_grade = $fgLabGradeInitial; 
             $existingRecord->fg_grade = $FGLecLab6040Grade;
             $existingRecord->save();
         } else {
@@ -960,9 +1054,30 @@ if ($hasLecRecords) {
             $newRecord = new Grades();
             $newRecord->enrolled_student_id = $enrolledStudentId;
             $newRecord->assessment_id = null;
-            $newRecord->points = null; //
+            $newRecord->points = null; 
+
+            $newRecord->total_fg_lec = $totalPointsLecFGRaw; 
+            $newRecord->lec_fg_grade = $fgLecGradeInitial; 
+            $newRecord->total_fg_lab = $actualTotalPointsLab; 
+            $newRecord->lab_fg_grade = $fgLabGradeInitial; 
+            $newRecord->total_fg_grade = null; 
+            $newRecord->tentative_fg_grade = null; 
             $newRecord->fg_grade = $FGLecLab6040Grade;
+
+            $newRecord->total_midterms_lec = null; 
+            $newRecord->lec_midterms_grade = null; 
+            $newRecord->total_midterms_lab = null; 
+            $newRecord->lab_midterms_grade = null; 
+            $newRecord->total_midterms_grade = null;
+            $newRecord->tentative_midterms_grade = null;
             $newRecord->midterms_grade = null;
+
+            $newRecord->total_finals_lec = null; 
+            $newRecord->lec_finals_grade = null; 
+            $newRecord->total_finals_lab = null; 
+            $newRecord->lab_finals_grade = null; 
+            $newRecord->total_finals_grade = null;
+            $newRecord->tentative_finals_grade = null;
             $newRecord->finals_grade = null;
             $newRecord->save();
         }
@@ -1118,6 +1233,12 @@ if ($hasLecRecordsMidterms) {
                 ->first();
 
             if ($existingRecord) {
+
+                $existingRecord->total_midterms_lec = $totalPointsLecMidtermsRaw; 
+                $existingRecord->lec_midterms_grade = $midtermsLecGradeInitial; 
+                $existingRecord->total_midterms_lab = $actualTotalPointsLabMidterms;
+                $existingRecord->lab_midterms_grade = $midtermsLabGradeInitial;
+                $existingRecord->tentative_midterms_grade = $TentativeMDLecLab6040Grade;
                 $existingRecord->midterms_grade = $MDLecLab6040Grade;
                 $existingRecord->save();
             } else {
@@ -1125,8 +1246,30 @@ if ($hasLecRecordsMidterms) {
                 $newRecord->enrolled_student_id = $enrolledStudentId;
                 $newRecord->assessment_id = null;
                 $newRecord->points = null;
+
+                $newRecord->total_fg_lec = null; 
+                $newRecord->lec_fg_grade = null; 
+                $newRecord->total_fg_lab = null; 
+                $newRecord->lab_fg_grade = null; 
+                $newRecord->total_fg_grade = null; 
+                $newRecord->tentative_fg_grade = null; 
                 $newRecord->fg_grade = null;
+
+
+                $newRecord->total_midterms_lec = $totalPointsLecMidtermsRaw;  
+                $newRecord->lec_midterms_grade = $midtermsLecGradeInitial;
+                $newRecord->total_midterms_lab = $actualTotalPointsLabMidterms;
+                $newRecord->lab_midterms_grade = $midtermsLabGradeInitial;
+                $newRecord->total_midterms_grade = null;
+                $newRecord->tentative_midterms_grade = $TentativeMDLecLab6040Grade;
                 $newRecord->midterms_grade = $MDLecLab6040Grade;
+
+                $newRecord->total_finals_lec = null; 
+                $newRecord->lec_finals_grade = null; 
+                $newRecord->total_finals_lab = null; 
+                $newRecord->lab_finals_grade = null; 
+                $newRecord->total_finals_grade = null;
+                $newRecord->tentative_finals_grade = null;
                 $newRecord->finals_grade = null;
                 $newRecord->save();
             }
@@ -1303,6 +1446,12 @@ if ($hasLecRecordsFinals) {
                 ->first();
 
             if ($existingRecord) {
+
+                $existingRecord->total_finals_lec = $totalPointsLecFinalsRaw; 
+                $existingRecord->lec_finals_grade =  $finalsLecGradeInitial;
+                $existingRecord->total_finals_lab =  $actualTotalPointsLabFinals;
+                $existingRecord->lab_finals_grade = $finalsLabGradeInitial;
+                $existingRecord->tentative_finals_grade = $TentativeFNLecLab6040Grade; 
                 $existingRecord->finals_grade = $FNLecLab6040Grade;
                 $existingRecord->save();
             } else {
@@ -1310,8 +1459,29 @@ if ($hasLecRecordsFinals) {
                 $newRecord->enrolled_student_id = $enrolledStudentId;
                 $newRecord->assessment_id = null; 
                 $newRecord->points = null; 
+
+                $newRecord->total_fg_lec = null; 
+                $newRecord->lec_fg_grade = null; 
+                $newRecord->total_fg_lab = null; 
+                $newRecord->lab_fg_grade = null; 
+                $newRecord->total_fg_grade = null; 
+                $newRecord->tentative_fg_grade = null; 
                 $newRecord->fg_grade = null;
+
+                $newRecord->total_midterms_lec = null; 
+                $newRecord->lec_midterms_grade = null; 
+                $newRecord->total_midterms_lab = null; 
+                $newRecord->lab_midterms_grade = null; 
+                $newRecord->total_midterms_grade = null;
+                $newRecord->tentative_midterms_grade = null;
                 $newRecord->midterms_grade = null; 
+
+                $newRecord->total_finals_lec = $totalPointsLecFinalsRaw; 
+                $newRecord->lec_finals_grade = $finalsLecGradeInitial;
+                $newRecord->total_finals_lab = $actualTotalPointsLabFinals;
+                $newRecord->lab_finals_grade = $finalsLabGradeInitial;
+                $newRecord->total_finals_grade = null;
+                $newRecord->tentative_finals_grade = $TentativeFNLecLab6040Grade; 
                 $newRecord->finals_grade = $FNLecLab6040Grade; 
                 $newRecord->save();
             }
