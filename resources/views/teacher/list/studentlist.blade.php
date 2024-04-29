@@ -722,38 +722,80 @@
                                                             ->pluck('type')
                                                             ->unique();
                                                     @endphp
-                                                @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
-                                                   @if ($assessmentType === 'Exam')
-                                                        <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
-                                                            {{ $assessmentType }}
-                                                        </th>
-                                                        <th class="text-center">Total</th>
-                                                       @if ($gradingPeriod == "First Grading")
-                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center">Total Lec</th>
-                                                                <th class="text-center">Lec Grade</th>
-                                                            @endif
-                                                        @endif
-                                                         @if ($gradingPeriod == "Midterm")
-                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center">Total Midterm Lec</th>
-                                                                <th class="text-center">Midterm Lec Grade</th>
-                                                            @endif
-                                                        @endif
-                                                         @if ($gradingPeriod == "Finals")
-                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center">Total Finals Lec</th>
-                                                                <th class="text-center">Finals Lec Grade</th>
-                                                            @endif
-                                                        @endif
+                                               @php
+                                                 ////////// variable to track the last type header
+                                                    $lastAssessmentType = '';
 
-                                                      @else
-                                                        <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
-                                                            {{ $assessmentType }}
-                                                        </th>
-                                                        <th class="text-center">Total</th>
+                                                /////// variable to track if Total Lec/Lec Grade headers is already present
+                                                    $showTotalLecHeaders = false; 
+
+                                                ////// checks the last specific assessment type header
+                                                    foreach ($gradingPeriodAssessmentTypes as $assessmentType) {
+                                                        if (in_array($assessmentType, ['Quiz', 'OtherActivity', 'Exam'])) {
+                                                            $lastAssessmentType = $assessmentType;
+                                                        }
+                                                    }
+
+                                                 ///////// display Total Lec/Lec Grade headers if the last assessment type header is one of the specified types
+                                                    if ($lastAssessmentType !== '') {
+                                                        $showTotalLecHeaders = true;
+                                                    }
+                                               @endphp
+
+                                            @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
+                                               
+                                                <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
+                                                    {{ $assessmentType }}
+                                                </th>
+
+                                                @php
+                                                    $headerText = '';
+                                                    switch ($assessmentType) {
+                                                        case 'Quiz':
+                                                            $headerText = 'QT';
+                                                            break;
+                                                        case 'OtherActivity':
+                                                            $headerText = 'OAT';
+                                                            break;
+                                                        case 'Exam':
+                                                            $headerText = 'ET';
+                                                            break;
+                                                        case 'Lab Activity':
+                                                            $headerText = 'LT';
+                                                            break;
+                                                        case 'Lab Exam':
+                                                            $headerText = 'ET';
+                                                            break;
+                                                        case 'Direct Bonus Grade':
+                                                            $headerText = 'FGT';
+                                                            break;
+                                                       
+                                                    }
+                                                @endphp
+
+
+                                                <th class="text-center">{{ $headerText }}</th>
+
+                                                
+                                                @if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders)
+                                                 
+                                                    @if ($gradingPeriod == "First Grading" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                        <th class="text-center">Total Lec</th>
+                                                        <th class="text-center">Lec Grade</th>
                                                     @endif
-                                                    @endforeach
+
+                                                     @if ($gradingPeriod == "Midterm" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                        <th class="text-center">Total Midterm Lec</th>
+                                                        <th class="text-center">Midterm Lec Grade</th>
+                                                    @endif
+
+                                                     @if ($gradingPeriod == "Finals" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                        <th class="text-center">Total Finals Lec</th>
+                                                        <th class="text-center">Finals Lec Grade</th>
+                                                    @endif
+                                                @endif
+                                            @endforeach
+
 
                                                     @if (strpos($subject->subject_type, 'LecLab') !== false)
                                                         @if ($gradingPeriod == "First Grading")
@@ -850,32 +892,27 @@
                                                             </td>
                                                         @endif
 
-                                                      @if ($gradingPeriod == "First Grading")
-                                                        @if ($assessmentType === 'Exam')
-                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @endif
-                                                        @endif
-                                                      @endif
 
-                                                     @if ($gradingPeriod == "Midterm")
-                                                        @if ($assessmentType === 'Exam')
-                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @endif
-                                                        @endif
-                                                      @endif
 
-                                                      @if ($gradingPeriod == "Finals")
-                                                        @if ($assessmentType === 'Exam')
-                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @endif
+                                                      
+                                                    @if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders)
+                                                       
+                                                        @if ($gradingPeriod == "First Grading" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
                                                         @endif
-                                                      @endif
+
+                                                         @if ($gradingPeriod == "Midterm" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @endif
+
+                                                         @if ($gradingPeriod == "Finals" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @endif
+                                                    @endif
+
 
 
                                                     @endforeach
@@ -996,10 +1033,10 @@
                                                                     $totalPointsForAssessmentType = 0; //// reset the total points for the next assessment type
 
                                                       /////////////////leclab- total and lec grade////////////////
-
+                                                         if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders){
                                                                if ($gradingPeriod == "First Grading") {
                                                                     if (strpos($subject->subject_type, 'LecLab') !== false) {
-                                                                        if ($assessmentType === 'Exam') {
+                                                                       
                                                                             //// column for total lec grade
                                                                             echo '<td class="grade-column">';
                                                                             foreach ($enrolledStudent->grades as $grade) {
@@ -1023,12 +1060,14 @@
                                                                             echo '</td>';
                                                                         }
                                                                     }
-                                                                }
+                                                                
+
+                                                          
 
 
                                                                if ($gradingPeriod == "Midterm") {
                                                                     if (strpos($subject->subject_type, 'LecLab') !== false) {
-                                                                        if ($assessmentType === 'Exam') {
+                                                                       
                                                                             //// column for total mid lec grade
                                                                             echo '<td class="grade-column">';
                                                                             foreach ($enrolledStudent->grades as $grade) {
@@ -1050,13 +1089,13 @@
                                                                                 }
                                                                             }
                                                                             echo '</td>';
-                                                                        }
+                                                                        
                                                                     }
                                                                 }
 
                                                                  if ($gradingPeriod == "Finals") {
                                                                     if (strpos($subject->subject_type, 'LecLab') !== false) {
-                                                                        if ($assessmentType === 'Exam') {
+                                                                      
                                                                             //// column for total fn lec grade
                                                                             echo '<td class="grade-column">';
                                                                             foreach ($enrolledStudent->grades as $grade) {
@@ -1078,9 +1117,11 @@
                                                                                 }
                                                                             }
                                                                             echo '</td>';
-                                                                        }
+                                                                        
                                                                     }
                                                                 }
+
+                                                         }
 
 
 
@@ -1393,30 +1434,33 @@
                                                                 
                                                                 $currentColIndex++; ///// move to the next column
                                                             }
-
+                                                           
+                                                        if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders) {
                                                            if ($gradingPeriod == "First Grading" && strpos($subject->subject_type, 'LecLab') !== false) {
-                                                            if ($assessmentType === 'Exam') {
+                                                           
                                                                 echo '<th class="assessment-column"></th>
                                                                       <th class="assessment-column"></th>';
                                                                         $currentColIndex++; ///// move to the next column
-                                                                     }
+                                                                     
                                                                    }
 
                                                            if ($gradingPeriod == "Midterm" && strpos($subject->subject_type, 'LecLab') !== false) {
-                                                            if ($assessmentType === 'Exam') {
+                                                           
                                                                 echo '<th class="assessment-column"></th>
                                                                       <th class="assessment-column"></th>';
                                                                         $currentColIndex++; ///// move to the next column
-                                                                     }
+                                                                     
                                                                    }
 
                                                             if ($gradingPeriod == "Finals" && strpos($subject->subject_type, 'LecLab') !== false) {
-                                                            if ($assessmentType === 'Exam') {
+                                                            
                                                                 echo '<th class="assessment-column"></th>
                                                                       <th class="assessment-column"></th>';
                                                                         $currentColIndex++; ///// move to the next column
-                                                                     }
+                                                                     
                                                                    }
+
+                                                            }
 
 
                                                             if ($gradingPeriodAssessments->isNotEmpty()) {
