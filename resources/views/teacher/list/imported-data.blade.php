@@ -103,9 +103,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>ID Number</th>
-                                            <th>Last Name</th>
                                             <th>Name</th>
                                             <th>Middle Initial</th>
+                                            <th>Last Name</th>
                                             <th>Course</th>
                                         </tr>
                                     </thead>
@@ -115,9 +115,9 @@
                                             <tr>
                                                 <td>{{ $maleCount++ }}</td> 
                                                 <td>{{ $male_student['id_number'] }}</td>
-                                                <td>{{ $male_student['last_name'] }}</td>
                                                 <td>{{ $male_student['name'] }}</td>
                                                 <td>{{ $male_student['middle_name'] }}</td>
+                                                <td>{{ $male_student['last_name'] }}</td>
                                                 <td>{{ $male_student['course'] }}</td>
                                             </tr>
                                         @endforeach
@@ -131,9 +131,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>ID Number</th>
-                                            <th>Last Name</th>
                                             <th>Name</th>
-                                            <th>Middle Name</th>
+                                            <th>Middle Initial</th>
+                                            <th>Last Name</th>
                                             <th>Course</th>
                                         </tr>
                                     </thead>
@@ -143,9 +143,9 @@
                                             <tr>
                                                 <td>{{ $femaleCount++ }}</td> 
                                                 <td>{{ $female_student['id_number'] }}</td>
-                                                <td>{{ $female_student['last_name'] }}</td>
                                                 <td>{{ $female_student['name'] }}</td>
                                                 <td>{{ $female_student['middle_name'] }}</td>
+                                                <td>{{ $female_student['last_name'] }}</td>
                                                 <td>{{ $female_student['course'] }}</td>
                                             </tr>
                                         @endforeach

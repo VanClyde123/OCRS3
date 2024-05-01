@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
+
 @section('content')
+<title>Student List</title>
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Student List</h2>

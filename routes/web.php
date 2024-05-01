@@ -107,7 +107,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::put('assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'update'])->name('assessment-descriptions.update');
     Route::delete('assessment-descriptions/{assessment_description}', [AssessmentDescriptionController::class, 'destroy'])->name('assessment-descriptions.destroy');
     
-
     Route::get('admin/set_semester/view_semesters', [SemesterController::class, 'viewSemester'])->name('semesters.view_semesters');  
     Route::get('admin/semesters/create', [SemesterController::class, 'create'])->name('semesters.create');
     Route::post('admin/set_semester/view_semesters', [SemesterController::class, 'store'])->name('semesters.store');

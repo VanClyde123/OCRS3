@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('change-password') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                    <a href="{{ route('change-password') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
                         <p>Change Password</p>
                     </a>
                 </li>
@@ -63,7 +63,7 @@
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a href="{{ route('change-password2') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                    <a href="{{ route('change-password2') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
                         <p>Change Password</p>
                     </a>
                 </li>
@@ -75,7 +75,7 @@
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a href="{{ route('change-password3') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                    <a href="{{ route('change-password3') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
                         <p>Change Password</p>
                     </a>
                 </li>
@@ -111,7 +111,7 @@
                     </a>
                 </li>
                    <li class="nav-item">
-                    <a href="{{ route('change-password1') }}"class="nav-link @if (Request::segment(3) == 'change_password') active @endif">
+                    <a href="{{ route('change-password1') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
                         <p>Change Password</p>
                     </a>
                 </li>

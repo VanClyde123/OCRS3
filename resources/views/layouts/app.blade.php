@@ -136,6 +136,9 @@
         @stack('scripts')
         @yield('script')
 
+        <title>
+            hello
+        </title>
     </head>
     <body >
         <div>

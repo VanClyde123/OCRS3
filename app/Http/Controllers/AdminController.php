@@ -64,10 +64,9 @@ private function getRoleNumber($roleName) {
     return null;
 }
 
-     public function add()
-    {
-     $data['header_title'] = "Add Admin";
-     return view('admin.admin.add',$data);
+    public function add(){
+        $data['header_title'] = "Add User";
+        return view('admin.admin.add',$data);
     }
     
     public function insert(Request $request)
@@ -75,7 +74,10 @@ private function getRoleNumber($roleName) {
         $id_number = trim($request->id_number);
 
         if(User::where('id_number', $id_number)->exists()) {
-          return redirect('admin/admin/list')->with('error', 'ID number already exists');
+            return redirect('admin/admin/add')->with('error', 'ID number already exists');
+        }
+        if(empty($request->password)) {
+            return redirect('admin/admin/add')->with('error', 'Auto generated password error, PLEASE SELECT "USER DEFINED"');
         }
         $user = new User;
         $user->name = trim($request->name);
@@ -83,7 +85,7 @@ private function getRoleNumber($roleName) {
         $user->last_name = trim($request->last_name);    
         $user->id_number = trim($request->id_number);
         $user->role = ($request->role);
-        $user->password = Hash::make($request->password);
+        $user->password = ($request->password);
         $user->save();
 
         return redirect('admin/admin/list')->with('success', "Added User Successfully");
@@ -139,7 +141,7 @@ private function getRoleNumber($roleName) {
             }
         } catch (\Exception $e) {
     
-            return redirect('admin/admin/list')->with('error', 'Error deleting user: ' . $e->getMessage());
+            return redirect('admin/admin/list')->with('error', 'Error deleting, Subjects are linked to this user ' . $e->getMessage());
     
         }
         return redirect('admin/admin/list')->with('error', 'User not found.');
