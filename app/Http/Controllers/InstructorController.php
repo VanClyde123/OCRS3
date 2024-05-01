@@ -469,5 +469,29 @@ class InstructorController extends Controller
         return redirect()->back()->with('success', ' Your password changed successfully.');
     }
 
+    //////////change password - newly logged in///////////////////
+
+
+    public function showInitialChangePasswordForm2()
+        {
+            return view('teacher.initial_change_password');
+        }
+
+    public function initialChangePassword2(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|min:8|confirmed',
+         ], [
+           'new_password.confirmed' => 'The new password and confirmation password do not match.',
+        ]);
+
+        $user = Auth::user();    
+        $user->password = Hash::make($request->new_password);
+        $user->password_changed = true;
+        $user->save();
+
+        return redirect('teacher/list/classlist')->with('success', 'Your password changed successfully.');
+    }
+
 
 }

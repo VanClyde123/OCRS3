@@ -166,6 +166,8 @@ private function getRoleNumber($roleName) {
     
     }
 
+
+/////////////change password///////////////
     public function showChangePasswordForm()
     {
         return view('admin.change_password');
@@ -192,6 +194,31 @@ private function getRoleNumber($roleName) {
         $user->save();
 
         return redirect()->back()->with('success', ' Your password changed successfully.');
+    }
+
+
+//////////change password - newly logged in///////////////////
+
+
+    public function showInitialChangePasswordForm()
+        {
+            return view('admin.initial_change_password');
+        }
+
+    public function initialChangePassword(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|min:8|confirmed',
+         ], [
+           'new_password.confirmed' => 'The new password and confirmation password do not match.',
+        ]);
+
+        $user = Auth::user();    
+        $user->password = Hash::make($request->new_password);
+        $user->password_changed = true;
+        $user->save();
+
+        return redirect('admin/admin/list')->with('success', 'Your password changed successfully.');
     }
 
 

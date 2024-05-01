@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->string('password');
             $table->tinyInteger('role')->comment('1=admin, 2=teacher, 3=student, 4=secretary');
+            $table->boolean('password_changed')->default(false);
             $table->rememberToken();
             $table->timestamps();
             

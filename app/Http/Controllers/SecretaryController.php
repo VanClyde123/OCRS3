@@ -379,5 +379,29 @@ if ($currentSemester) {
         return redirect()->back()->with('success', ' Your password changed successfully.');
     }
 
+   //////////change password - newly logged in///////////////////
+
+
+    public function showInitialChangePasswordForm1()
+        {
+            return view('secretary.initial_change_password');
+        }
+
+    public function initialChangePassword1(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|min:8|confirmed',
+         ], [
+           'new_password.confirmed' => 'The new password and confirmation password do not match.',
+        ]);
+
+        $user = Auth::user();    
+        $user->password = Hash::make($request->new_password);
+        $user->password_changed = true;
+        $user->save();
+
+        return redirect('secretary/teacher_list/instructor_list')->with('success', 'Your password changed successfully.');
+    }
+
 }
 

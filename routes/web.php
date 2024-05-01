@@ -53,6 +53,11 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/admin/edit/{id}', [AdminController::class, 'update']);
     Route::get('admin/admin/delete/{id}', [AdminController::class, 'delete']);
     Route::get('/admin/admin/list/search', [AdminController::class, 'search']);
+
+
+
+     Route::get('/admin/initial-change-password', [AdminController::class, 'showInitialChangePasswordForm'])->name('initial-change-password');
+    Route::post('/admin/initial-change-password', [AdminController::class, 'initialChangePassword']);
     
     Route::get('/admin/change-password', [AdminController::class, 'showChangePasswordForm'])->name('change-password');
     Route::post('/admin/change-password', [AdminController::class, 'changePassword']);
@@ -140,6 +145,10 @@ Route::group(['middleware' => 'instructor'], function () {
     return view('teacher.list.importexcel');
  
 });
+
+
+      Route::get('/teacher/initial-change-password', [InstructorController::class, 'showInitialChangePasswordForm2'])->name('initial-change-password2');
+    Route::post('/teacher/initial-change-password', [InstructorController::class, 'initialChangePassword2']);
 
     Route::get('/teacher/change-password', [InstructorController::class, 'showChangePasswordForm2'])->name('change-password2');
     Route::post('/teacher/change-password', [InstructorController::class, 'changePassword2']);
@@ -239,6 +248,11 @@ Route::group(['middleware' => 'student'], function () {
    Route::get('/student/notifications', [StudentScoreController::class, 'showNotifications'])->name('student.notifications');
 Route::post('/student/mark-notifications-as-read', [StudentScoreController::class, 'markNotificationsAsRead'])->name('student.markNotificationsAsRead');
 
+
+
+ Route::get('/student/initial-change-password', [StudentController::class, 'showInitialChangePasswordForm3'])->name('initial-change-password3');
+    Route::post('/student/initial-change-password', [StudentController::class, 'initialChangePassword3']);
+
    Route::get('/student/change-password', [StudentController::class, 'showChangePasswordForm3'])->name('change-password3');
     Route::post('/student/change-password', [StudentController::class, 'changePassword3']);
 
@@ -298,6 +312,11 @@ Route::group(['middleware' => 'secretary'], function () {
     Route::put('secretary/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'update1'])->name('subject_descriptions.update1');
     Route::delete('secretary/subject_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'destroy1'])->name('subject_descriptions.destroy1');
     Route::get('secretary/assessment_descriptions/{subjectDescription}', [SubjectDescriptionController::class, 'show1'])->name('assessment_descriptions.view_desc1');
+
+
+
+      Route::get('/secretary/initial-change-password', [SecretaryController::class, 'showInitialChangePasswordForm1'])->name('initial-change-password1');
+    Route::post('/secretary/initial-change-password', [SecretaryController::class, 'initialChangePassword1']);
 
 
     Route::get('/secretary/change-password', [SecretaryController::class, 'showChangePasswordForm1'])->name('change-password1');
