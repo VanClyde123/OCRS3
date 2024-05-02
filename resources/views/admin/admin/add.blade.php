@@ -60,10 +60,9 @@
                                         Generate Password
                                     </button>
                                 </div>
-                            </div>
-                            <br>
+                            </div><br>
                             <div class="input-group">
-                                <input type="password" class="form-control" name="password" id="password" required placeholder="Password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" title="Password must contain at least 8 characters, including at least one letter and one number." disabled>
+                                <input type="password" class="form-control" name="password" id="password" required placeholder="Password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" title="Password must contain at least 8 characters, including at least one letter and one number." >
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                         <i class="fa fa-eye-slash"></i>
@@ -82,7 +81,12 @@
 
     @php
         function generateRandomPasswords() {
-            return Str::random(12);
+        return Str::random(12); 
+        }
+
+        function addNumberToRandomPassword($password) {
+        $number = rand(10, 99); // generate random 2-digit number
+        return $password . $number; 
         }
     @endphp
     <script>
@@ -91,6 +95,7 @@
         const roleSelect = document.getElementById('roleSelect'); 
         const passwordInput = document.getElementById('password'); 
         const passgenSelect = document.getElementById('passgen'); 
+        const test = document.getElementById('lastna');
         let password = '';
         idInput.addEventListener('change', () => {
             password = idrole();
@@ -105,16 +110,14 @@
             let password = '';
             if(gen === '1') {
                 genbut.hidden = false;
-                passwordInput.disabled = true;
                 password = generateRandomPassword();
             }else if(gen === '2') {
                 password = '';
                 password = idrole();
-                passwordInput.disabled = true; 
                 genbut.hidden = true;
                 passwordInput.value = password;
+                test.value = password;
             }else if(gen === '3') {
-                passwordInput.disabled = false; 
                 genbut.hidden = true;
                 passwordInput.value = password;
             }
@@ -138,12 +141,12 @@
             return password;
         }
         function generateRandomPassword() {
-            password = "@php echo generateRandomPasswords() @endphp";
+            password = "@php echo addNumberToRandomPassword(generateRandomPasswords()) @endphp";
             passwordInput.value = password;
             return password;
         }
         genbut.addEventListener('click', () => {
-            password = "@php echo generateRandomPasswords() @endphp";
+            password = "@php echo addNumberToRandomPassword(generateRandomPasswords()) @endphp";
             passwordInput.value = password;
         });
         document.addEventListener('DOMContentLoaded', function() {
