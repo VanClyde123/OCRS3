@@ -3,65 +3,61 @@
 @section('content')
 
     <script>
-    $(document).ready(function () {
-    ///// get the assessment descriptions based on the selected type and grading period
-    $('#assessmentType, #gradingPeriod').change(function () {
-        const selectedType = $('#assessmentType').val();
-        const selectedGradingPeriod = $('#gradingPeriod').val();
-        const selectedSubjectCode = $('#subject_code').val(); 
+        $(document).ready(function () {
+        ///// get the assessment descriptions based on the selected type and grading period
+        $('#assessmentType, #gradingPeriod').change(function () {
+            const selectedType = $('#assessmentType').val();
+            const selectedGradingPeriod = $('#gradingPeriod').val();
+            const selectedSubjectCode = $('#subject_code').val(); 
 
-        $.ajax({
-            type: 'GET',
-            url: '{{ route('assessment-descriptions.fetch') }}',
-            data: {
-                type: selectedType,
-                grading_period: selectedGradingPeriod,
-                subject_code: selectedSubjectCode 
-            },
-            success: function (response) {
-                const descriptions = response.descriptions;
-                updateDescriptionDropdown(descriptions, '#assessmentDescription');
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            },
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('assessment-descriptions.fetch') }}',
+                data: {
+                    type: selectedType,
+                    grading_period: selectedGradingPeriod,
+                    subject_code: selectedSubjectCode 
+                },
+                success: function (response) {
+                    const descriptions = response.descriptions;
+                    updateDescriptionDropdown(descriptions, '#assessmentDescription');
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                },
+            });
         });
-    });
 
-    //// update the description dropdown
-    function updateDescriptionDropdown(descriptions, targetSelector) {
-        const $descriptionDropdown = $(targetSelector);
-        $descriptionDropdown.empty();
-        $descriptionDropdown.append($('<option>', {
-            value: '',
-            text: '------Select Description--------',
-            selected: true,
-            disabled: true, 
-        }));
-        descriptions.forEach(description => {
+            //// update the description dropdown
+        function updateDescriptionDropdown(descriptions, targetSelector) {
+            const $descriptionDropdown = $(targetSelector);
+            $descriptionDropdown.empty();
             $descriptionDropdown.append($('<option>', {
-                value: description.description,
-                text: description.description,
+                value: '',
+                text: '------Select Description--------',
+                selected: true,
+                disabled: true, 
             }));
+            descriptions.forEach(description => {
+                $descriptionDropdown.append($('<option>', {
+                    value: description.description,
+                    text: description.description,
+                }));
+            });
+        }
+
+            //// to initially get and update on page load
+        $('#assessmentType, #gradingPeriod').change();
         });
-    }
-
-    //// to initially get and update on page load
-    $('#assessmentType, #gradingPeriod').change();
-});
     </script>
-
 
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div >
-                <div >
-                    <h1>Edit Assessment</h1>
-                </div>
-                
-                </div>
+                <h1>Edit Assessment</h1>
+                    
+                <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
             </div><!-- /.container-fluid -->
         </section>
         <section class="content">

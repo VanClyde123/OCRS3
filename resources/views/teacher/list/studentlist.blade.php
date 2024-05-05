@@ -569,31 +569,33 @@
         <section class="content-header">
             <h2>{{ $subject->subject_code }} - {{ $subject->description }} ClassList</h2>
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+            @php
+                $studentCount = count($enrolledStudents);
+            @endphp
+            <a href="#demo" class="btn btn-info" data-toggle="collapse">Show Class Info</a><br>
+            <div id="demo" class="collapse card" >
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Subject:</strong> {{ $subject->subject_code }}</p>
+                            <p><strong>Description:</strong> {{ $subject->description }}</p>
+                            <p><strong>Section:</strong> {{ $subject->section }}</p>
+                            <p><strong>Time:</strong> {{ $subject->importedClasses->first()->time }}</p>
+                            <p><strong>Enrolled Students:</strong> {{ $studentCount }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Days:</strong> {{ $subject->importedClasses->first()->days }}</p>
+                            <p><strong>Term:</strong> {{ $subject->term }}</p>
+                            <p><strong>Calculation Used:</strong> {{ $subject->subject_type }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         @include('messages')
         <section class="content">
-            @php
-                $studentCount = count($enrolledStudents);
-            @endphp
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Subject:</strong> {{ $subject->subject_code }}</p>
-                                <p><strong>Description:</strong> {{ $subject->description }}</p>
-                                <p><strong>Section:</strong> {{ $subject->section }}</p>
-                                <p><strong>Time:</strong> {{ $subject->importedClasses->first()->time }}</p>
-                                <p><strong>Enrolled Students:</strong> {{ $studentCount }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Days:</strong> {{ $subject->importedClasses->first()->days }}</p>
-                                <p><strong>Term:</strong> {{ $subject->term }}</p>
-                                <p><strong>Calculation Used:</strong> {{ $subject->subject_type }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">List of Enrolled Students</h3>
