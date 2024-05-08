@@ -572,21 +572,63 @@
             @php
                 $studentCount = count($enrolledStudents);
             @endphp
-            <a href="#demo" class="btn btn-info" data-toggle="collapse">Show Class Info</a><br>
+            <a href="#demo" class="btn btn-info" data-toggle="collapse">Show Class Info</a>
+            <style>
+                .ths, .tds {
+                    border: 1px solid #ddd;
+                    padding: 6px; 
+                    text-align: left;
+                }
+                .ths{
+                    background-color: #f2f2f2;
+                }
+                .tables{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 20px;
+                    font-size: 15px; 
+                }
+            </style>
             <div id="demo" class="collapse card" >
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Subject:</strong> {{ $subject->subject_code }}</p>
-                            <p><strong>Description:</strong> {{ $subject->description }}</p>
-                            <p><strong>Section:</strong> {{ $subject->section }}</p>
-                            <p><strong>Time:</strong> {{ $subject->importedClasses->first()->time }}</p>
-                            <p><strong>Enrolled Students:</strong> {{ $studentCount }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Days:</strong> {{ $subject->importedClasses->first()->days }}</p>
-                            <p><strong>Term:</strong> {{ $subject->term }}</p>
-                            <p><strong>Calculation Used:</strong> {{ $subject->subject_type }}</p>
+                <div class="table-responsive">
+                    <div class="card-body">
+                        <div class="class-info">
+                            <table class="class-info-table tables">
+                                <thead>
+                                    <tr>
+                                        <th class="ths"><strong>Subject:</strong> 
+                                            <td class="tds">{{ $subject->subject_code }}</td>
+                                        </th>
+                                        <th class="ths"><strong>Description:</strong>
+                                            <td class="tds">{{ $subject->description }}</td>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="ths"><strong>Section:</strong> 
+                                            <td class="tds">{{ $subject->section }}</td>
+                                        </th>
+                                        <th class="ths"><strong>Time:</strong>
+                                            <td class="tds"> {{ $subject->importedClasses->first()->time }}</td>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="ths"><strong>Enrolled Students:</strong> 
+                                            <td class="tds">{{ $studentCount }}</td>
+                                        </th>
+                                        <th class="ths"><strong>Days:</strong> 
+                                            <td class="tds">{{ $subject->importedClasses->first()->days }}</td>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="ths"><strong>Term:</strong> 
+                                            <td class="tds">{{ $subject->term }}</td>
+                                        </th>
+                                        <th class="ths"><strong>Calculation Used:</strong> 
+                                            <td class="tds">{{ $subject->subject_type }}</td>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -602,8 +644,8 @@
                     </div>
                     <div class="table-responsive ">
                         <div class="card-body">
-                            <button type="button" class="btn btn-success" id="assessmentModalButton" data-toggle="modal" data-target="#assessmentModal" {{ $isPastSubjectList ? 'disabled' : '' }}>Add Assessment</button>
-                            <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('instructor.editAssessments', ['subjectId' => $subject->id]) }}" class="btn btn-primary{{ $isPastSubjectList ? ' disabled' : '' }}">Edit Assessments</a>
+                            <button type="button" class="btn btn-success fixed-column" id="assessmentModalButton" data-toggle="modal" data-target="#assessmentModal" {{ $isPastSubjectList ? 'disabled' : '' }}>Add Assessment</button>
+                            <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('instructor.editAssessments', ['subjectId' => $subject->id]) }}" class="btn btn-primary {{ $isPastSubjectList ? ' disabled' : '' }}">Edit Assessments</a>
 
                             <form action="{{ route('insert.scores') }}" method="post">
                                 @csrf
@@ -618,7 +660,6 @@
                                     .table-container table {
                                         width: auto;
                                     } 
-
                                 
                                     table, th, td {
                                         border: 1px solid #000; 
@@ -658,9 +699,6 @@
                                         border-top: 1px solid #000; 
                                         border-bottom: 1px solid #000; 
                                     }
-
-
-                                    
                                 </style>
                                 <div class="table-container table-striped" class="table-scroll-container" >
                                     <table class="table ">
@@ -919,40 +957,40 @@
 
                                                     @endforeach
                                                     @if ($gradingPeriod == "First Grading")
-                                                           @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                
-                                                            @else
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @endif
+                                                        @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            
+                                                        @else
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @endif
 
                                                     @endif
                                                     @if ($gradingPeriod == "Midterm")
-                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @else
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @endif
+                                                        @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @else
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @endif
                                                     @endif
                                                     @if ($gradingPeriod == "Finals")
-                                                          @if (strpos($subject->subject_type, 'LecLab') !== false)
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @else
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                                <th class="text-center"></th>
-                                                            @endif
+                                                        @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @else
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                            <th class="text-center"></th>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                             </tr>
