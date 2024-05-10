@@ -15,20 +15,28 @@
                     <form action="{{ route('subject_descriptions.store1') }}" method="POST">
                         @csrf
 
+                      <div class="form-group">
+                            <label for="year_level">Year Level</label>
+                            <select class="form-control" id="year_level" name="year_level" required>
+                                <option value="" disabled selected>--- Select Year Level ---</option>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+
+
                         <div class="form-group">
                             <label for="subject_code">Subject Code</label>
-                            <select class="form-control" id="subject_code" name="subject_code">
-                                <option value="" selected disabled>-----Select Subject Code----</option>
-                                @foreach($subjects as $subject)
-                                    <option value="{{ $subject->subject_code }}">{{ $subject->subject_code }}</option>
-                                @endforeach
-                            </select>
+                             <input type="text" class="form-control" id="subject_code" name="subject_code">
                         </div>
 
                         <div class="form-group">
                             <label for="subject_name">Subject Name</label>
-                            <input type="text" class="form-control" id="subject_name" name="subject_name" readonly>
+                            <input type="text" class="form-control" id="subject_name" name="subject_name">
                         </div>
+                        
                         
                         <button type="submit" class="btn btn-success">Create</button>
                     </form>
@@ -37,18 +45,5 @@
         </section>
     </div>
 
-    <script>
-        // Function to update the subject name based on the selected subject code
-        $(document).ready(function() {
-            $('#subject_code').change(function() {
-                var selectedCode = $(this).val();
-                var selectedSubject = {!! json_encode($subjects) !!}.find(subject => subject.subject_code === selectedCode);
-                if (selectedSubject) {
-                    $('#subject_name').val(selectedSubject.description);
-                } else {
-                    $('#subject_name').val('');
-                }
-            });
-        });
-    </script>
+   
 @endsection

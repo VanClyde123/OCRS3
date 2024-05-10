@@ -11,6 +11,7 @@ use App\Models\SubjectType;
 use App\Models\ImportedClasslist;
 use App\Models\User;
 use App\Models\EnrolledStudents;
+use App\Models\SubjectDescription;
 use Auth;
 
 class ClassRecordController extends Controller
@@ -82,9 +83,13 @@ class ClassRecordController extends Controller
     $maleStudentValues = $this->fetchMaleStudentValues($classList, $maleStartRow, $maleEndRow);
     $femaleStudentValues = $this->fetchFemaleStudentValues($classList, $femaleStartRow, $femaleEndRow);
 
+     //////fetch the existing subject codes saved in the subject_description table and use it for matching 
+    $subjectExists = SubjectDescription::where('subject_code', $subjectCode)->exists();
 
     
-    return view('teacher.list.imported-data', compact('term', 'section', 'subjectCode', 'subjectDescription', 'days', 'time', 'room', 'maleStudentValues', 'femaleStudentValues','subjectType'));
+    $message = $subjectExists ? 'The subject from the imported class list is present in the current course' : 'The subject from the imported class list does not exist in the current course';
+    
+    return view('teacher.list.imported-data', compact('term', 'section', 'subjectCode', 'subjectDescription', 'days', 'time', 'room', 'maleStudentValues', 'femaleStudentValues','subjectType', 'message'));
   
   }
 private function fetchMaleStudentValues($classList, $startRow, $endRow)
@@ -276,53 +281,58 @@ private function extractInformation($text, $searchString)
             //// get the current logged-in instructor
             $currentInstructor = Auth::user();
 
-            ///// check if the imported classlist for Lec already exists
-           $importedClasslist = ImportedClasslist::firstOrCreate(
-                [
+            //////// checks if the imported classlist already exists
+            $importedClasslist = ImportedClasslist::where('subjects_id', $subject->id)
+                                ->first();
+
+            if (!$importedClasslist) {
+                $importedClasslist = ImportedClasslist::create([
                     'subjects_id' => $subject->id,
                     'instructor_id' => $currentInstructor->id,
                     'days' => $days,
                     'time' => $time,
                     'room' => $room,
-                ]
-            );
+                ]);
+            }
 
           
          
+             $enrolledStudentsExist = EnrolledStudents::where('imported_classlist_id', $importedClasslist->id)->exists();
+
+          
+            $enrolledStudentsStatus = $enrolledStudentsExist ? 'Updated' : 'Added';
+
+          
             foreach ($maleStudentValues as $studentInfo) {
                 $student = $this->createOrRetrieveStudent($studentInfo);
 
-                /////// check if the student is already enrolled in the specific imported classlist for Lec 
+            
                 EnrolledStudents::firstOrCreate([
                     'student_id' => $student->id,
                     'imported_classlist_id' => $importedClasslist->id,
                 ]);
             }
 
-            ////// loop through female student data for Lec
+            
             foreach ($femaleStudentValues as $studentInfo) {
                 $student = $this->createOrRetrieveStudent($studentInfo);
 
-                ///// check if the student is already enrolled in the specific imported classlist for Lec
+                
                 EnrolledStudents::firstOrCreate([
                     'student_id' => $student->id,
                     'imported_classlist_id' => $importedClasslist->id,
                 ]);
             }
 
-        
-                
-             //// notify if the values in the exscel were saved ot the subjects and students already exist
+          
             $subjectExists = $subject->wasRecentlyCreated ? 'saved successfully' : 'already exists';
             $importedClasslistExists = $importedClasslist->wasRecentlyCreated ? 'saved successfully' : 'already exists';
-
-        
+            $enrolledStudentsMessage = 'Student list ' . $enrolledStudentsStatus;
 
        
-            return view('teacher.list.importexcel', compact('subjectExists', 'importedClasslistExists'));
-        
-     }
-
+            return view('teacher.list.importexcel', compact('subjectExists', 'importedClasslistExists', 'enrolledStudentsMessage'));
+                    
+                 }
      
     private function createOrRetrieveStudent($studentInfo, $isMale = true)
     {

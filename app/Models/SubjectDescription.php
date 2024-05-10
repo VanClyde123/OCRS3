@@ -10,6 +10,7 @@ class SubjectDescription extends Model
     use HasFactory;
 
     protected $fillable = [
+    'year_level',
     'subject_code',
     'subject_name',
      ];

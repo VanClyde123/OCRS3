@@ -13,6 +13,7 @@ return new class extends Migration
     {
           Schema::create('subject_descriptions', function (Blueprint $table) {
             $table->id();
+            $table->integer('year_level')->nullable();
             $table->string('subject_code')->unique();
             $table->string('subject_name');
             $table->timestamps();

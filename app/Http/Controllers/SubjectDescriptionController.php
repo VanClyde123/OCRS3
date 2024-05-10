@@ -23,6 +23,7 @@ class SubjectDescriptionController extends Controller
     public function store(Request $request)
     {
        $request->validate([
+        'year_level' => 'required|integer',
         'subject_code' => 'required|string|unique:subject_descriptions,subject_code',
         'subject_name' => 'required|string',
     ], [
@@ -30,6 +31,7 @@ class SubjectDescriptionController extends Controller
     ]);
 
     SubjectDescription::create([
+        'year_level' => $request->year_level,
         'subject_code' => $request->subject_code,
         'subject_name' => $request->subject_name,
     ]);
@@ -45,11 +47,13 @@ class SubjectDescriptionController extends Controller
     public function update(Request $request, SubjectDescription $subjectDescription)
     {
         $request->validate([
+            'year_level' => 'required|integer',
             'subject_code' => 'required|string',
             'subject_name' => 'required|string',
         ]);
 
         $subjectDescription->update([
+            'year_level' => $request->year_level,
             'subject_code' => $request->subject_code,
             'subject_name' => $request->subject_name,
         ]);
