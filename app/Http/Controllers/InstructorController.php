@@ -493,5 +493,46 @@ class InstructorController extends Controller
         return redirect('teacher/list/classlist')->with('success', 'Your password changed successfully.');
     }
 
+   public function fetchGrades($subjectId, $enrolledStudentId)
+{
+   $enrolledStudent = EnrolledStudents::with(['grades'])
+        ->whereHas('importedClasses', function ($query) use ($subjectId) {
+            $query->where('subjects_id', $subjectId);
+        })
+        ->find($enrolledStudentId);
+
+    if (!$enrolledStudent) {
+        return response()->json(['error' => 'Student not found'], 404);
+    }
+
+    $grades = $enrolledStudent->grades->map(function ($grade) {
+        return [
+            'total_fg_lec' => $grade->total_fg_lec,
+            'lec_fg_grade' => $grade->lec_fg_grade,
+            'total_fg_lab' => $grade->total_fg_lab,
+            'lab_fg_grade' => $grade->lab_fg_grade,
+            'total_fg_grade' => $grade->total_fg_grade,
+            'fg_grade' => $grade->fg_grade,
+             'total_midterms_lec' => $grade->total_midterms_lec,
+            'lec_midterms_grade' => $grade->lec_midterms_grade,
+            'total_midterms_lab' => $grade->total_midterms_lab,
+            'lab_midterms_grade' => $grade->lab_midterms_grade,
+            'total_midterms_grade' => $grade->total_midterms_grade,
+            'tentative_midterms_grade' => $grade->tentative_midterms_grade,
+            'midterms_grade' => $grade->midterms_grade,
+            'total_finals_lec' => $grade->total_finals_lec,
+            'lec_finals_grade' => $grade->lec_finals_grade,
+            'total_finals_lab' => $grade->total_finals_lab,
+            'lab_finals_grade' => $grade->lab_finals_grade,
+            'total_finals_grade' => $grade->total_finals_grade,
+            'tentative_finals_grade' => $grade->tentative_finals_grade,
+            'finals_grade' => $grade->finals_grade,
+           
+        ];
+    });
+
+    return response()->json(['grades' => $grades]);
+}
+
 
 }

@@ -22,6 +22,7 @@
                     @if(isset($subjectExists) && isset($importedClasslistExists))
                         <p>Subject: {{ $subjectExists }}</p>
                         <p>Imported Classlist: {{ $importedClasslistExists }}</p>
+                         <p>Student: {{ $enrolledStudentsMessage }}</p>
                     @endif
                 </div>
             </div>

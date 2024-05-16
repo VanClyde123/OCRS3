@@ -194,6 +194,9 @@ Route::group(['middleware' => 'instructor'], function () {
 
    Route::post('insert/score/{enrolledStudentId}', [ScoreController::class, 'insertScore'])->name('insert.score');
    Route::post('insert/scores', [ScoreController::class, 'insertScore'])->name('insert.scores');
+
+Route::get('fetch/grades/{subjectId}/{enrolledStudentId}', [InstructorController::class, 'fetchGrades'])->name('fetch.grades');
+   
   //Route::get('update/score/{enrolledStudentId}', [ScoreController::class, 'updateScore'])->name('update.score');
    Route::put('update/score/{enrolledStudentId}', [ScoreController::class, 'updateScore'])->name('update.score');
 
