@@ -81,12 +81,12 @@
 
     @php
         function generateRandomPasswords() {
-        return Str::random(12); 
+            return Str::random(12); 
         }
 
         function addNumberToRandomPassword($password) {
-        $number = rand(10, 99); // generate random 2-digit number
-        return $password . $number; 
+            $number = rand(10, 99); 
+            return $password . $number; 
         }
     @endphp
     <script>
@@ -95,7 +95,6 @@
         const roleSelect = document.getElementById('roleSelect'); 
         const passwordInput = document.getElementById('password'); 
         const passgenSelect = document.getElementById('passgen'); 
-        const test = document.getElementById('lastna');
         let password = '';
         idInput.addEventListener('change', () => {
             password = idrole();
@@ -116,7 +115,6 @@
                 password = idrole();
                 genbut.hidden = true;
                 passwordInput.value = password;
-                test.value = password;
             }else if(gen === '3') {
                 genbut.hidden = true;
                 passwordInput.value = password;

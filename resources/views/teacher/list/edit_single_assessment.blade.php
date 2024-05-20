@@ -54,25 +54,16 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="container-fluid">
-                <h1>Edit Assessment</h1>
-                    
-                <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
-            </div><!-- /.container-fluid -->
+            <h2>Edit Assessment</h2>
+                
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
         </section>
         <section class="content">
-                <div class="container-fluid">
-                    
-                    <!-- left column -->
-                    <div>
-                        <!-- general form elements -->
-                        <div class="card ">
-            
-                
+            <div class="card ">
                 <form method="post" action="{{ route('instructor.updateAssessment', ['assessmentId' => $assessment->id]) }}">
                     @csrf
                     @method('PUT')
-                  <input type="hidden" id="subject_code" value="{{ $subjectCode }}">
+                    <input type="hidden" id="subject_code" value="{{ $subjectCode }}">
 
                     <div class="table-responsive">
                         <div class="card-body">
@@ -110,12 +101,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="submit"  class="btn btn-primary">Update Assessment</button>
-                    </div>
-                    </form>
-                    </div>
-                </div>
+                        <div class="card-footer">
+                            <button type="submit"  class="btn btn-primary">Update Assessment</button>
+                        </div>
+                </form>
             </div>
         </section>
     </div>

@@ -35,9 +35,6 @@
         <section class="content">
             @include('messages')
             <div class="card">
-                <div class="card-header">
-
-                </div>
                 <div class="card-body">
                     @if ($scores->isNotEmpty())
                         <div class="card-body ">

@@ -4,6 +4,7 @@
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Previously Enrolled Subjects</h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
         </section>
         @include('messages')
         <section class="content">

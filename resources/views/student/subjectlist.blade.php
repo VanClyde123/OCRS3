@@ -3,15 +3,12 @@
 @section('content')
     <div class="content-wrappers">
         <section class="content-header">
-            <div class="container-fluid">
-                <h2>Enrolled Subjects</h2>
-                <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-info">Past Subjects</a>
-            </div>
+            <h2>Enrolled Subjects</h2>
+            <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-info">Past Subjects</a>
         </section>
 
         @include('messages')
         <section class="content">
-                     
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Enrolled Subjects</h3>
@@ -33,7 +30,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
-                                <thead>
+                                <thead>w
                                     <tr>
                                         <th>Subject Code</th>
                                         <th>Subject Description</th>
@@ -53,7 +50,8 @@
                                             <td>{{ $enrolledSubject->importedclasses->days }}</td>
                                             <td>{{ $enrolledSubject->importedclasses->time }}</td>
                                             <td>{{ $enrolledSubject->importedclasses->room }}</td>
-                                            <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-info">View Scores</a></td>
+                                            <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-info">View Scores</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

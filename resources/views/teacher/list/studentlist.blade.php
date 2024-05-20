@@ -564,159 +564,175 @@
             });
         </script>
 
- <script>
-    $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
 
- 
-    $('.assessment-description').each(function() {
-        var enrolledStudentId = $(this).data('enrolled-student-id');
-        var assessmentType = $(this).data('type');
-        var gradingPeriod = $(this).data('grading-period');
-        updateTotalPoints(enrolledStudentId, assessmentType, gradingPeriod);
-    });
-       
-        $('.score-input').each(function() {
-            var originalValue = $(this).val();
-            $(this).data('original-value', originalValue);
-        });
+        
+            $('.assessment-description').each(function() {
+                var enrolledStudentId = $(this).data('enrolled-student-id');
+                var assessmentType = $(this).data('type');
+                var gradingPeriod = $(this).data('grading-period');
+                updateTotalPoints(enrolledStudentId, assessmentType, gradingPeriod);
+            });
+            
+                $('.score-input').each(function() {
+                    var originalValue = $(this).val();
+                    $(this).data('original-value', originalValue);
+                });
 
-       
-        $('.score-input').on('blur', function() {
-            var currentValue = $(this).val();
-            var originalValue = $(this).data('original-value');
-
-           
-            if (currentValue !== originalValue) {
-                console.log('value changed, triggersave');
-                // Update the original value data attribute
-                $(this).data('original-value', currentValue);
+            
+                $('.score-input').on('blur', function() {
+                    var currentValue = $(this).val();
+                    var originalValue = $(this).data('original-value');
 
                 
-                savePoints($(this));
+                    if (currentValue !== originalValue) {
+                        console.log('value changed, triggersave');
+                        // Update the original value data attribute
+                        $(this).data('original-value', currentValue);
+
+                        
+                        savePoints($(this));
+                    }
+                });
+
+                function savePoints(inputElement) {
+                    var enrolledStudentId = inputElement.data('enrolled-student-id');
+                    var assessmentId = inputElement.data('assessment-id');
+                    var assessmentType = inputElement.data('assessment-type');
+                    var gradingPeriod = inputElement.data('grading-period');
+                    var points = inputElement.val();
+
+                    console.log('Saving points:', {
+                        enrolledStudentId: enrolledStudentId,
+                        assessmentId: assessmentId,
+                        points: points
+                    });
+
+                $.ajax({
+                    url: '{{ url('insert/score') }}/' + enrolledStudentId,
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        points: {
+                            [enrolledStudentId]: {
+                                [assessmentId]: points
+                            }
+                        }
+                    },
+                    success: function(response) {
+                        console.log('Points saved successfully');
+                    
+                        updateTotalPoints(enrolledStudentId, assessmentType, gradingPeriod);
+
+                    
+                        fetchGrades(enrolledStudentId);
+                    },
+                    error: function(xhr) {
+                        console.error('Error saving points:', xhr.responseText);
+                    }
+                });
             }
-        });
 
-        function savePoints(inputElement) {
-            var enrolledStudentId = inputElement.data('enrolled-student-id');
-            var assessmentId = inputElement.data('assessment-id');
-            var assessmentType = inputElement.data('assessment-type');
-            var gradingPeriod = inputElement.data('grading-period');
-            var points = inputElement.val();
+            function updateTotalPoints(enrolledStudentId, assessmentType, gradingPeriod) {
+            
+            var totalPoints = 0;
 
-            console.log('Saving points:', {
-                enrolledStudentId: enrolledStudentId,
-                assessmentId: assessmentId,
-                points: points
+        
+            $('input.score-input[data-enrolled-student-id="' + enrolledStudentId + '"][data-assessment-type="' + assessmentType + '"][data-grading-period="' + gradingPeriod + '"]').each(function() {
+                var value = $(this).val();
+                ///// empty or non-numeric values is zero
+                totalPoints += isNaN(parseFloat(value)) ? 0 : parseFloat(value);
             });
 
-        $.ajax({
-            url: '{{ url('insert/score') }}/' + enrolledStudentId,
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                points: {
-                    [enrolledStudentId]: {
-                        [assessmentId]: points
-                    }
-                }
-            },
-            success: function(response) {
-                console.log('Points saved successfully');
-              
-                updateTotalPoints(enrolledStudentId, assessmentType, gradingPeriod);
-
-               
-                fetchGrades(enrolledStudentId);
-            },
-            error: function(xhr) {
-                console.error('Error saving points:', xhr.responseText);
+            
+            $('p.assessment-description[data-enrolled-student-id="' + enrolledStudentId + '"][data-type="' + assessmentType + '"][data-grading-period="' + gradingPeriod + '"]').text(totalPoints);
             }
-        });
-    }
 
-       function updateTotalPoints(enrolledStudentId, assessmentType, gradingPeriod) {
-    
-    var totalPoints = 0;
+                function fetchGrades(enrolledStudentId) {
+                    var subjectId = {{ $subject->id }};
+                    $.ajax({
+                        url: '{{ url('fetch/grades') }}/' + subjectId + '/' + enrolledStudentId,
+                        method: 'GET',
+                        success: function(response) {
+                            console.log('Grades fetched successfully', response.grades);
 
-   
-    $('input.score-input[data-enrolled-student-id="' + enrolledStudentId + '"][data-assessment-type="' + assessmentType + '"][data-grading-period="' + gradingPeriod + '"]').each(function() {
-        var value = $(this).val();
-        ///// empty or non-numeric values is zero
-        totalPoints += isNaN(parseFloat(value)) ? 0 : parseFloat(value);
-    });
+                            /// find the grades with non-null values
+                    var grade = response.grades.find(g => g.total_fg_lec !== null || g.lec_fg_grade !== null || g.total_fg_lab !== null || g.lab_fg_grade !== null || g.total_fg_grade !== null || g.fg_grade !== null || g.total_midterms_lec !== null || g.lec_midterms_grade !== null);
 
-    
-    $('p.assessment-description[data-enrolled-student-id="' + enrolledStudentId + '"][data-type="' + assessmentType + '"][data-grading-period="' + gradingPeriod + '"]').text(totalPoints);
-}
+                            if (grade) {
+                            
+                                var total_fg_lec = grade.total_fg_lec !== null ? grade.total_fg_lec : '';
+                                var lec_fg_grade = grade.lec_fg_grade !== null ? grade.lec_fg_grade : '';
+                                var total_fg_lab = grade.total_fg_lab !== null ? grade.total_fg_lab : '';
+                                var lab_fg_grade = grade.lab_fg_grade !== null ? grade.lab_fg_grade : '';
+                                var total_fg_grade = grade.total_fg_grade !== null ? grade.total_fg_grade : '';
+                                var fg_grade = grade.fg_grade !== null ? grade.fg_grade : '';
+                                var total_midterms_lec  = grade.total_midterms_lec !== null ? grade.total_midterms_lec  : '';
+                                var lec_midterms_grade  = grade.lec_midterms_grade  !== null ? grade.lec_midterms_grade  : '';
+                                var total_midterms_lab = grade.total_midterms_lab !== null ? grade.total_midterms_lab : '';
+                                var lab_midterms_grade = grade.lab_midterms_grade !== null ? grade.lab_midterms_grade : '';
+                                var total_midterms_grade = grade.total_midterms_grade !== null ? grade.total_midterms_grade : '';
+                                var tentative_midterms_grade  = grade.tentative_midterms_grade  !== null ? grade.tentative_midterms_grade  : '';
+                                var midterms_grade = grade.midterms_grade !== null ? grade.midterms_grade : '';
+                                var total_finals_lec = grade.total_finals_lec !== null ? grade.total_finals_lec : '';
+                                var lec_finals_grade = grade.lec_finals_grade !== null ? grade.lec_finals_grade : '';
+                                var total_finals_lab  = grade.total_finals_lab  !== null ? grade.total_finals_lab : '';
+                                var lab_finals_grade = grade.lab_finals_grade!== null ? grade.lab_finals_grade : '';
+                                var total_finals_grade = grade.total_finals_grade  !== null ? grade.total_finals_grade : '';
+                                var tentative_finals_grade  = grade.tentative_finals_grade  !== null ? grade.tentative_finals_grade  : '';
+                                var finals_grade  = grade.finals_grade !== null ? grade.finals_grade  : '';
 
-        function fetchGrades(enrolledStudentId) {
-            var subjectId = {{ $subject->id }};
-            $.ajax({
-                url: '{{ url('fetch/grades') }}/' + subjectId + '/' + enrolledStudentId,
-                method: 'GET',
-                success: function(response) {
-                    console.log('Grades fetched successfully', response.grades);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_lec"]').text(total_fg_lec);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_fg_grade"]').text(lec_fg_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_lab"]').text(total_fg_lab);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_fg_grade"]').text(lab_fg_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_grade"]').text(total_fg_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="fg_grade"]').text(fg_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_midterms_lec"]').text(total_midterms_lec);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_midterms_grade"]').text(lec_midterms_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_midterms_lab"]').text(total_midterms_lab);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_midterms_grade"]').text(lab_midterms_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_midterms_grade"]').text(total_midterms_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="tentative_midterms_grade"]').text(tentative_midterms_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="midterms_grade"]').text(midterms_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_lec"]').text(total_finals_lec);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_finals_grade"]').text(lec_finals_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_lab"]').text(total_finals_lab);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_finals_grade"]').text(lab_finals_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_grade"]').text(total_finals_grade);
+                                $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="tentative_finals_grade"]').text(tentative_finals_grade);
+                            $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="finals_grade"]').text(finals_grade);
 
-                    /// find the grades with non-null values
-            var grade = response.grades.find(g => g.total_fg_lec !== null || g.lec_fg_grade !== null || g.total_fg_lab !== null || g.lab_fg_grade !== null || g.total_fg_grade !== null || g.fg_grade !== null || g.total_midterms_lec !== null || g.lec_midterms_grade !== null);
-
-                    if (grade) {
-                      
-                        var total_fg_lec = grade.total_fg_lec !== null ? grade.total_fg_lec : '';
-                        var lec_fg_grade = grade.lec_fg_grade !== null ? grade.lec_fg_grade : '';
-                        var total_fg_lab = grade.total_fg_lab !== null ? grade.total_fg_lab : '';
-                        var lab_fg_grade = grade.lab_fg_grade !== null ? grade.lab_fg_grade : '';
-                        var total_fg_grade = grade.total_fg_grade !== null ? grade.total_fg_grade : '';
-                        var fg_grade = grade.fg_grade !== null ? grade.fg_grade : '';
-                        var total_midterms_lec  = grade.total_midterms_lec !== null ? grade.total_midterms_lec  : '';
-                        var lec_midterms_grade  = grade.lec_midterms_grade  !== null ? grade.lec_midterms_grade  : '';
-                        var total_midterms_lab = grade.total_midterms_lab !== null ? grade.total_midterms_lab : '';
-                        var lab_midterms_grade = grade.lab_midterms_grade !== null ? grade.lab_midterms_grade : '';
-                        var total_midterms_grade = grade.total_midterms_grade !== null ? grade.total_midterms_grade : '';
-                        var tentative_midterms_grade  = grade.tentative_midterms_grade  !== null ? grade.tentative_midterms_grade  : '';
-                        var midterms_grade = grade.midterms_grade !== null ? grade.midterms_grade : '';
-                        var total_finals_lec = grade.total_finals_lec !== null ? grade.total_finals_lec : '';
-                        var lec_finals_grade = grade.lec_finals_grade !== null ? grade.lec_finals_grade : '';
-                        var total_finals_lab  = grade.total_finals_lab  !== null ? grade.total_finals_lab : '';
-                        var lab_finals_grade = grade.lab_finals_grade!== null ? grade.lab_finals_grade : '';
-                        var total_finals_grade = grade.total_finals_grade  !== null ? grade.total_finals_grade : '';
-                        var tentative_finals_grade  = grade.tentative_finals_grade  !== null ? grade.tentative_finals_grade  : '';
-                        var finals_grade  = grade.finals_grade !== null ? grade.finals_grade  : '';
-
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_lec"]').text(total_fg_lec);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_fg_grade"]').text(lec_fg_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_lab"]').text(total_fg_lab);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_fg_grade"]').text(lab_fg_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_grade"]').text(total_fg_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="fg_grade"]').text(fg_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_midterms_lec"]').text(total_midterms_lec);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_midterms_grade"]').text(lec_midterms_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_midterms_lab"]').text(total_midterms_lab);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_midterms_grade"]').text(lab_midterms_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_midterms_grade"]').text(total_midterms_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="tentative_midterms_grade"]').text(tentative_midterms_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="midterms_grade"]').text(midterms_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_lec"]').text(total_finals_lec);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_finals_grade"]').text(lec_finals_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_lab"]').text(total_finals_lab);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_finals_grade"]').text(lab_finals_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_grade"]').text(total_finals_grade);
-                        $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="tentative_finals_grade"]').text(tentative_finals_grade);
-                       $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="finals_grade"]').text(finals_grade);
-
-                    } else {
-                        console.error('no grades fetched');
-                    }
-                },
-                error: function(xhr) {
-                    console.error('errorfetching grades:', xhr.responseText);
+                            } else {
+                                console.error('no grades fetched');
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error('errorfetching grades:', xhr.responseText);
+                        }
+                    });
                 }
             });
-        }
-    });
-</script>
+        </script>
     @endpush
 
+    <style>
+        .ths, .tds {
+            border: 1px solid #ddd;
+            padding: 6px; 
+            text-align: left;
+        }
+        .ths{
+            background-color: #f2f2f2;
+        }
+        .tables{
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 15px; 
+        }
+    </style>
     <div class="content-wrappers">
         <section class="content-header">
             <h2>{{ $subject->subject_code }} - {{ $subject->description }} ClassList</h2>
@@ -725,22 +741,6 @@
                 $studentCount = count($enrolledStudents);
             @endphp
             <a href="#demo" class="btn btn-info" data-toggle="collapse">Show Class Info</a>
-            <style>
-                .ths, .tds {
-                    border: 1px solid #ddd;
-                    padding: 6px; 
-                    text-align: left;
-                }
-                .ths{
-                    background-color: #f2f2f2;
-                }
-                .tables{
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-bottom: 20px;
-                    font-size: 15px; 
-                }
-            </style>
             <div id="demo" class="collapse card" >
                 <div class="table-responsive">
                     <div class="card-body">

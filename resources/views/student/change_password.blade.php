@@ -3,7 +3,7 @@
 @section('content')
 <div class="content-wrappers">
     <section class="content-header">
-        <h2>Change Password</h2>
+        <h2 class="mb-5">Change Password</h2>
     </section>
 
     <section class="content">

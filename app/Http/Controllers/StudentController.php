@@ -10,17 +10,16 @@ use App\Models\Users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class StudentController extends Controller
-{
+class StudentController extends Controller{
    
- public function studentsBySubject(Subject $subject)
-   {
+    public function studentsBySubject(Subject $subject)
+    {
       $students = $subject->students;
       //$student = Student::find($Id);
        return view('teacher.list.studentlist', compact('students', 'subject'));
     }
 
- public function showChangePasswordForm3()
+    public function showChangePasswordForm3()
     {
         return view('student.change_password');
     }
@@ -52,9 +51,9 @@ class StudentController extends Controller
 
 
     public function showInitialChangePasswordForm3()
-        {
-            return view('student.initial_change_password');
-        }
+    {
+        return view('student.initial_change_password');
+    }
 
     public function initialChangePassword3(Request $request)
     {
@@ -73,27 +72,31 @@ class StudentController extends Controller
     }
 
 
- public function getname()
-{
+    public function getname()
+    {
 
-    $students = Student::with('user')->get();
+        $students = Student::with('user')->get();
 
-    return view('students', compact('students'));
-}
+        return view('students', compact('students'));
+    }
 
-public function showNotifications()
-{
-    $notifications = auth()->user()->unreadNotifications;
- //  dd($notifications);
-    return view('student.subjectlist', compact('notifications'));
-}
-public function markNotificationsAsRead()
-{
-    auth()->user()->unreadNotifications->markAsRead();
+    public function showNotifications()
+    {
+        $notifications = auth()->user()->unreadNotifications;
+    //  dd($notifications);
+        return view('student.subjectlist', compact('notifications'));
+    }
+    public function markNotificationsAsRead()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
 
-    
-    Session::flash('notification', 'You have successfully marked the notifications as read.');
+        
+        Session::flash('notification', 'You have successfully marked the notifications as read.');
 
-    return redirect()->back();
-}
+        return redirect()->back();
+    }
+
+
+
+
 }
