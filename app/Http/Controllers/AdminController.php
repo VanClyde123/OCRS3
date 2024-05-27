@@ -10,6 +10,9 @@ use App\Models\Semester;
 use App\Models\ImportedClasslist;
 use App\Models\EnrolledStudents;
 use App\Models\Assessment;
+use App\Models\SubjectDescription;
+use App\Models\Section;
+use App\Models\SubjectType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -122,6 +125,7 @@ private function getRoleNumber($roleName) {
         $user->last_name = trim($request->last_name);
         $user->id_number = trim($request->id_number);
         $user->role = $request->role;
+        $user->secondary_role = $request->input('secondary_role');
 
         if(!empty($request->password)) {
         $user->password = Hash::make($request->password);
@@ -386,7 +390,10 @@ private function getRoleNumber($roleName) {
         $importedClass = ImportedClasslist::findOrFail($importedClassId);
 
         
-        $instructors = User::where('role', 2)->get();
+        $instructors = User::where('role', 2)
+                       ->orWhere('secondary_role', 2)
+                       ->get();
+
             return view('admin.subject_list.change_instructor', compact('importedClass', 'instructors'));
         }
 
@@ -407,7 +414,8 @@ private function getRoleNumber($roleName) {
 
      public function showInstructors(Request $request)
 {
-    $query = User::where('role', 2);
+   $query = User::where('role', 2)
+             ->orWhere('secondary_role', 2);
 
    
     if ($request->has('search')) {
@@ -549,6 +557,186 @@ public function viewStudentPoints($studentId, $subjectId)
     $studentGrades = $enrolledStudent->studentgrades;
 
     return view('admin.teacher_list.view_scores', compact('student', 'grades', 'subject', 'studentGrades', 'gradingPeriods', 'assessmentTypes'));
+}
+
+
+public function futureSubjects($instructorId)
+{
+
+    $instructor = User::findOrFail($instructorId);
+
+
+    $currentSemester = Semester::where('is_current', 1)->first();
+    
+    if (!$currentSemester) {
+        return redirect()->back()->with('error', 'Current semester not found');
+    }
+
+ 
+    $currentTerm = $currentSemester->semester_name;
+    $currentYear = $currentSemester->school_year;
+
+    
+    $nextTerm = $currentTerm;
+    $nextYear = $currentYear;
+
+    
+    switch ($currentTerm) {
+        case 'First Semester':
+            $nextTerm = 'Second Semester';
+            break;
+        case 'Second Semester':
+            $nextTerm = 'Short Term';
+            break;
+           case 'Short Term':
+            $nextTerm = 'First Semester';
+
+
+            $years = explode(' - ', $currentYear);
+            if (count($years) == 2) {
+                $nextYear = ($years[0] + 1) . ' - ' . ($years[1] + 1);
+            }
+            break;
+    }
+
+  
+    $futureSubjects = ImportedClasslist::where('instructor_id', $instructorId)
+        ->whereHas('subject', function ($query) use ($nextTerm, $nextYear) {
+            $query->where('term', $nextTerm . ', ' . $nextYear);
+        })
+        ->get();
+
+    return view('admin.teacher_list.future_subjects', compact('instructor', 'futureSubjects'));
+}
+
+public function assignSubjectForm($instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $subjectDescriptions = SubjectDescription::all();
+    $currentSemester = Semester::where('is_current', true)->first();
+     $subjectTypes = SubjectType::all();
+
+    return view('admin.teacher_list.assign_subject', compact('instructor', 'currentSemester', 'subjectDescriptions', 'subjectTypes'));
+}
+
+public function getSections($subjectDescriptionId)
+{
+       $sections = Section::where('subject_description_id', $subjectDescriptionId)->get();
+        
+       
+        return response()->json($sections);
+}
+
+public function assignSubject(Request $request)
+{
+    $request->validate([
+        'subject_code' => 'required',
+        'description' => 'required',
+        'section' => 'required',
+        'term' => 'required',
+        'subject_type' => 'required',
+        'days' => 'required',
+        'time' => 'required',
+        'room' => 'required',
+    ]);
+
+    $subject = Subject::create([
+        'subject_code' => $request->subject_code,
+        'description' => $request->description,
+        'section' => $request->section,
+        'term' => $request->term,
+        'subject_type' => $request->subject_type,
+    ]);
+
+    $importedClass = ImportedClasslist::create([
+        'subjects_id' => $subject->id,
+        'instructor_id' => $request->instructor_id,
+        'days' => $request->days,
+        'time' => $request->time,
+        'room' => $request->room,
+    ]);
+
+   
+    return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])->with('success', 'Future subject assigned successfully');
+}
+
+public function editSubject($instructorId, $subjectId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $subject = Subject::findOrFail($subjectId);
+    $importedClass = ImportedClasslist::where('subjects_id', $subjectId)->first();
+    $currentSemester = Semester::where('is_current', true)->first();
+    $subjectDescriptions = SubjectDescription::all();
+     $subjectTypes = SubjectType::all();
+
+    return view('admin.teacher_list.edit_subject', compact('instructor',  'currentSemester', 'subject', 'importedClass', 'subjectDescriptions', 'subjectTypes'));
+}
+
+public function updateSubject(Request $request)
+{
+    $request->validate([
+        'subject_code' => 'required',
+        'description' => 'required',
+        'section' => 'required',
+        'term' => 'required',
+        'subject_type' => 'required',
+        'days' => 'required',
+        'time' => 'required',
+        'room' => 'required',
+    ]);
+
+    $subject = Subject::findOrFail($request->subject_id);
+    $subject->update([
+        'subject_code' => $request->subject_code,
+        'description' => $request->description,
+        'section' => $request->section,
+        'term' => $request->term,
+        'subject_type' => $request->subject_type,
+    ]);
+
+    $importedClass = ImportedClasslist::where('subjects_id', $subject->id)->first();
+    $importedClass->update([
+        'days' => $request->days,
+        'time' => $request->time,
+        'room' => $request->room,
+    ]);
+
+    return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])->with('success', 'Subject updated successfully');
+}
+
+   public function viewSection(SubjectDescription $subjectDescription)
+    {
+        $sections = $subjectDescription->sections;
+        return view('admin.assessment_description.view_section', compact('sections', 'subjectDescription'));
+    }
+
+    public function storeSection(Request $request)
+    {
+       
+        $request->validate([
+            'subject_description_id' => 'required|exists:subject_descriptions,id',
+            'section_name' => 'required|string|max:255',
+            
+        ]);
+
+       
+        $section = new Section();
+        $section->subject_description_id = $request->subject_description_id;
+         $section->section_name = $request->section_name;
+        $section->save();
+
+       
+        return redirect()->back()->with('success', 'Section created successfully');
+    }
+
+    public function destroySection($id)
+{
+    // Find the section by ID and delete it
+    $section = Section::findOrFail($id);
+    $section->delete();
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Section deleted successfully');
 }
 
 }

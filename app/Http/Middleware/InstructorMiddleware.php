@@ -18,8 +18,7 @@ class InstructorMiddleware
          if(!empty(Auth::check()))
         {
             //->role from ocrsdb database under users table
-            if(Auth::user()->role == 2)
-            {
+              if (Auth::user()->role == 2 || Auth::user()->secondary_role == 1) {
                 return $next($request);
             }
             else

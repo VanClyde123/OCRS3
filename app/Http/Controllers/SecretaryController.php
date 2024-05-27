@@ -19,9 +19,10 @@ class SecretaryController extends Controller
 {
     public function showInstructors(Request $request)
 {
-    $query = User::where('role', 2);
+    $query = User::where('role', 2)
+             ->orWhere('secondary_role', 2);
 
-    // Apply search filter if search query is provided
+    
     if ($request->has('search')) {
         $search = $request->input('search');
         $query->where(function ($q) use ($search) {
@@ -334,7 +335,9 @@ if ($currentSemester) {
         $importedClass = ImportedClasslist::findOrFail($importedClassId);
 
         
-        $instructors = User::where('role', 2)->get();
+         $instructors = User::where('role', 2)
+                       ->orWhere('secondary_role', 2)
+                       ->get();
             return view('secretary.subject_list.change_instructor', compact('importedClass', 'instructors'));
         }
 

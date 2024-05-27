@@ -23,19 +23,30 @@
             <div class="card ">
                 <form method="post" action="{{ route('semesters.setupCurrent1') }}">
                     @csrf
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="semester_id">Current Semester:</label>
-                            <select class="form-control" id="semester_id" name="semester_id" required>
-                                <option disabled value="" {{ ! $semesters->contains('is_current', 1) ? 'selected' : '' }}>No active semester, Select from the options</option>
-                                @foreach ($semesters as $semester)
-                                    <option value="{{ $semester->id }}" {{ $semester->is_current ? 'selected' : '' }}>
-                                        {{ $semester->semester_name }}, {{ $semester->school_year }}
-                                    </option>
-                                @endforeach
+                   <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="semester_name">Term:</label>
+                            <select class="form-control" id="semester_name" name="semester_name" required>
+                                <option value="" disabled>--- Select Term ---</option>
+                                <option value="First Semester" {{ isset($currentSemester) && $currentSemester->semester_name == 'First Semester' ? 'selected' : '' }}>First Semester</option>
+                                <option value="Second Semester" {{ isset($currentSemester) && $currentSemester->semester_name == 'Second Semester' ? 'selected' : '' }}>Second Semester</option>
+                                <option value="Short Term" {{ isset($currentSemester) && $currentSemester->semester_name == 'Short Term' ? 'selected' : '' }}>Short Term</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="school_year">School Year:</label>
+                            <select class="form-control" id="school_year" name="school_year" required>
+                                <option value="" disabled>--- Select School Year ---</option>
+                                @if(isset($schoolYears))
+                                    @foreach($schoolYears as $year)
+                                        <option value="{{ $year }}" {{ isset($currentSemester) && $currentSemester->school_year == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
+                </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Set as Current</button>
                     </div>
@@ -43,5 +54,38 @@
             </div>
         </section>
     </div>
+
+
+       <script>
+       document.getElementById('semester_name').addEventListener('change', function () {
+        var term = this.value;
+        var schoolYearDropdown = document.getElementById('school_year');
+
+
+        schoolYearDropdown.innerHTML = '<option value="" disabled selected>--- Select School Year ---</option>';
+
+     
+        fetch(`/ocrs/secretary/getSchoolYears/${term}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); 
+                data.schoolYears.forEach(year => {
+                    var option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    if(year == '{{ isset($currentSemester) ? $currentSemester->school_year : '' }}') {
+                        option.selected = true;
+                    }
+                    schoolYearDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching school years:', error));
+    });
+
+   
+    if (document.getElementById('semester_name').value !== "") {
+        document.getElementById('semester_name').dispatchEvent(new Event('change'));
+    }
+</script>
 @endsection
 

@@ -36,15 +36,25 @@
                         <label>ID Number *</label>
                         <input min="0" class="form-control" name="id_number" @if ($getData->id == '1')  value="{{ $getData->id_number }}" @else type="number" value="{{ $getData->id_number }}" @endif required>
                     </div>
-                        <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
                             <label>Role *</label>
-                            <select class="form-control" name="role">
+                            <select class="form-control" name="role" id="role">
                                 <option value="1" {{ $getData->role == 1 ? 'selected' : '' }}>Admin</option>
                                 <option value="4" {{ $getData->role == 4 ? 'selected' : '' }}>Secretary</option>
                                 <option value="2" {{ $getData->role == 2 ? 'selected' : '' }}>Instructor</option>
                                 <option value="3" {{ $getData->role == 3 ? 'selected' : '' }}>Student</option>
                             </select>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label>Activate Secondary Role</label>
+                            <select class="form-control" name="secondary_role" id="secondary_role">
+                                <option value="" {{ is_null($getData->secondary_role) ? 'selected' : '' }}>Disable</option>
+                                <option value="1" {{ $getData->secondary_role == 1 ? 'selected' : '' }}>Admin</option>
+                                <option value="2" {{ $getData->secondary_role == 2 ? 'selected' : '' }}>Instructor</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label>Password</label>
                         <div class="input-group">
@@ -83,6 +93,38 @@
                 toggleButton.querySelector('i').classList.toggle('fa-eye');
             }
         });
+
+        document.getElementById('role').addEventListener('change', function () {
+        const secondaryRoleSelect = document.getElementById('secondary_role');
+        const selectedRole = this.value;
+
+        
+        while (secondaryRoleSelect.options.length > 0) {
+            secondaryRoleSelect.remove(0);
+        }
+
+        
+        const noneOption = new Option('Disable', '');
+        secondaryRoleSelect.add(noneOption);
+
+       
+        if (selectedRole == 1) { 
+            const instructorOption = new Option('Instructor', '2');
+            secondaryRoleSelect.add(instructorOption);
+        } else if (selectedRole == 4) { 
+            const adminOption = new Option('Admin', '1');
+            secondaryRoleSelect.add(adminOption);
+        } else if (selectedRole == 2) {
+            const adminOption = new Option('Admin', '1');
+            secondaryRoleSelect.add(adminOption);
+        } 
+
+        
+        secondaryRoleSelect.value = "{{ $getData->secondary_role }}";
+    });
+
+    
+    document.getElementById('role').dispatchEvent(new Event('change'));
     </script>
 
 

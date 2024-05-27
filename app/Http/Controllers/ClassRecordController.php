@@ -247,7 +247,7 @@ private function extractInformation($text, $searchString)
                 $term = trim($request->input('term'), '"');
                 $section = trim($request->input('section'), '"');
                //// dd($section);
-               $days = stripslashes(trim($request->input('days'), '"'));
+                $days = stripslashes(trim($request->input('days'), '"'));
                 $time = trim($request->input('time'), '"');
                 $room = trim($request->input('room'), '"');
 

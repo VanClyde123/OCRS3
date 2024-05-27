@@ -19,4 +19,9 @@ class SubjectDescription extends Model
         {
            return $this->hasMany(AssessmentDescription::class, 'subject_desc_id');
         }
+
+        public function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
 }

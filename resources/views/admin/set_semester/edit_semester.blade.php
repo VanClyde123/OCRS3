@@ -14,7 +14,12 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="name">Semester</label>
-                            <input type="text" class="form-control" name="semester_name" value="{{ $semester->semester_name }}" required>
+                            <select class="form-control" name="semester_name" required>
+                                <option value="" disabled selected>--- Select Semester ---</option>
+                                <option value="First Semester">First Semester</option>
+                                <option value="Second Semester">Second Semester</option>
+                                <option value="Short Term">Short Term</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="school_year">School Year</label>

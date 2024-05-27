@@ -41,6 +41,7 @@
                                     <td>{{ $subjectDescription->subject_name }}</td>
                                     <td>
                                       <div class="btn-group" role="group">
+                                          <a href="{{ route('sections.index', $subjectDescription->id) }}" class="btn btn-success mr-2">Sections</a>
                                         <a href="{{ route('assessment_descriptions.view', $subjectDescription->id) }}" class="btn btn-info mr-2">Assessments Descriptions</a>
                                         <a href="{{ route('subject_descriptions.edit', $subjectDescription->id) }}" class="btn btn-primary mr-2">Edit</a>
                                         <form action="{{ route('subject_descriptions.destroy', $subjectDescription->id) }}" method="POST">

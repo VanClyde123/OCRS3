@@ -68,7 +68,12 @@
                                     <td width="15%">{{ $value->name }}</td>
                                     <td width="15%">{{ $value->middle_name }}</td>
                                     <td width="15%">{{ $value->last_name }}</td>
-                                    <td width="15%">{{ $roles[$value->role] }}</td>
+                                    <td width="15%">
+                                            {{ $roles[$value->role] }}
+                                            @if ($value->secondary_role)
+                                                / {{ $roles[$value->secondary_role] }}
+                                            @endif
+                                        </td>
                                     <td width="15%">
                                         <a href="{{ url('admin/admin/confirm-password/'.$value->id) }}" class="btn btn-primary">Edit</a>
                                         @if($value->role != 1)

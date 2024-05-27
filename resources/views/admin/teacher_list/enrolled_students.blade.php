@@ -9,26 +9,30 @@
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
         </section>
         <section class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                @if ($enrolledStudents->isEmpty())
+                    <p>There are no enrolled students for this subject. the associated class list for this subject is not imported by the instructor yet.</p>
+                @else
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>ID Number</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $sortedStudents = $enrolledStudents->groupBy('student.gender');
+                            @endphp
+                            @foreach ($sortedStudents as $gender => $students)
                                 <tr>
-                                    <th>Name</th>
-                                    <th>ID Number</th>
-                                    <th>Actions</th>
+                                    <td colspan="3" class="gender-header">{{ $gender }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $sortedStudents = $enrolledStudents->groupBy('student.gender');
-                                @endphp
-                                @foreach ($sortedStudents as $gender => $students)
-                                    <tr>
-                                        <td colspan="3" class="gender-header">{{ $gender }}</td>
-                                    </tr>
-                                    @foreach ($students as $enrolledStudent)
+                                @foreach ($students as $enrolledStudent)
+                                    @if ($enrolledStudent->student)
                                         <tr>
                                             <td>{{ $enrolledStudent->student->last_name }}, {{ $enrolledStudent->student->name }} {{ $enrolledStudent->student->middle_name }}</td>
                                             <td>{{ $enrolledStudent->student->id_number }}</td>
@@ -36,14 +40,21 @@
                                                 <a href="{{ route('admin.view.student.points', ['studentId' => $enrolledStudent->student->id, 'subjectId' => $subject->id]) }}" class="btn btn-info">View Scores</a>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3">Student record not found. The classlist is not imported by the instructor yet</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
     </div>
 @endsection
 

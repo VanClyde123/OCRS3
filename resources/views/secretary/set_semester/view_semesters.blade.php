@@ -19,6 +19,7 @@
                                     <th>ID</th>
                                     <th>Semester</th>
                                     <th>School Year</th>
+                                     <th>Active Semester</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -28,6 +29,7 @@
                                         <td>{{ $semester->id }}</td>
                                         <td>{{ $semester->semester_name }}</td>
                                         <td>{{ $semester->school_year }}</td>
+                                        <td>{{ $semester->is_current ? 'Active' : '' }}</td>
                                         <td>
                                         <a href="{{ route('semesters.edit1', $semester->id) }}" class="btn btn-primary">Edit</a>
                                         <form action="{{ route('semesters.destroy1', $semester->id) }}" method="POST" style="display: inline;">

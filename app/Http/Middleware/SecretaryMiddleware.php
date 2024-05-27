@@ -18,8 +18,7 @@ class SecretaryMiddleware
         if(!empty(Auth::check()))
         {
             //->role from ocrsdb database under users table
-            if(Auth::user()->role == 4)
-            {
+              if (Auth::user()->role == 4 || Auth::user()->secondary_role == 1) {
                 return $next($request);
             }
             else

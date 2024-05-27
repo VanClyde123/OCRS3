@@ -21,10 +21,10 @@ class SemesterController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'semester_name' => 'required',
-            'school_year' => 'required',
-        ]);
+         $request->validate([
+        'semester_name' => 'required',
+        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,'.$request->semester_name,
+    ]);
 
         Semester::create($request->all());
 
@@ -40,9 +40,9 @@ class SemesterController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'semester_name' => 'required',
-            'school_year' => 'required',
-        ]);
+        'semester_name' => 'required',
+        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,'.$request->semester_name,
+    ]);
 
         $semester = Semester::findOrFail($id);
         $semester->update($request->all());
@@ -59,25 +59,46 @@ class SemesterController extends Controller
     }
 
 
-    public function setupCurrentSemesterView()
+   public function setupCurrentSemesterView()
 {
     $semesters = Semester::all();
+    $currentSemester = Semester::where('is_current', true)->first();
+    $schoolYears = $currentSemester ? Semester::where('semester_name', $currentSemester->semester_name)->pluck('school_year') : collect();
 
-    return view('admin.set_semester.set_current', compact('semesters'));
+    return view('admin.set_semester.set_current', compact('semesters', 'currentSemester', 'schoolYears'));
 }
+
 
 public function setupCurrentSemester(Request $request)
 {
     
-   
+    $request->validate([
+        'semester_name' => 'required',
+        'school_year' => 'required',
+    ]);
+
+    
     DB::table('semesters')->update(['is_current' => false]);
 
-    Semester::where('id', $request->semester_id)->update(['is_current' => true]);
-
+   
+    Semester::where('semester_name', $request->semester_name)
+        ->where('school_year', $request->school_year)
+        ->update(['is_current' => true]);
 
     return redirect('admin/set_semester/set_current')->with('success', 'Current semester updated successfully');
 }
 
+
+public function getSchoolYears($term)
+{
+    
+    $schoolYears = Semester::where('semester_name', $term)->pluck('school_year');
+
+   
+    return response()->json([
+        'schoolYears' => $schoolYears
+    ]);
+}
 
 ///////secretary side///
 
@@ -134,18 +155,29 @@ public function viewSemester1()
 
     public function setupCurrentSemesterView1()
 {
-    $semesters = Semester::all();
+   $semesters = Semester::all();
+    $currentSemester = Semester::where('is_current', true)->first();
+    $schoolYears = $currentSemester ? Semester::where('semester_name', $currentSemester->semester_name)->pluck('school_year') : collect();
 
-    return view('secretary.set_semester.set_current', compact('semesters'));
+   
+    return view('secretary.set_semester.set_current', compact('semesters', 'currentSemester', 'schoolYears'));
 }
 
 public function setupCurrentSemester1(Request $request)
 {
     
-   
+    $request->validate([
+        'semester_name' => 'required',
+        'school_year' => 'required',
+    ]);
+
+    
     DB::table('semesters')->update(['is_current' => false]);
 
-    Semester::where('id', $request->semester_id)->update(['is_current' => true]);
+   
+    Semester::where('semester_name', $request->semester_name)
+        ->where('school_year', $request->school_year)
+        ->update(['is_current' => true]);
 
 
     return redirect('secretary/set_semester/set_current')->with('success', 'Current semester updated successfully');

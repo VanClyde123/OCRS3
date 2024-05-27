@@ -19,8 +19,7 @@ class AdminMiddleware
         if(!empty(Auth::check()))
         {
             //->role from ocrsdb database under users table
-            if(Auth::user()->role == 1)
-            {
+             if (Auth::user()->role == 1 || Auth::user()->secondary_role == 2) {
                 return $next($request);
             }
             else

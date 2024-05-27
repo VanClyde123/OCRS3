@@ -12,7 +12,11 @@ class ImportedClasslist extends Model
     
     public function instructor()
     {
-    return $this->belongsTo(User::class, 'instructor_id', 'id')->where('role', 2);
+   return $this->belongsTo(User::class, 'instructor_id', 'id')
+                ->where(function ($query) {
+                    $query->where('role', 2)
+                          ->orWhere('secondary_role', 2);
+                });
     }
 
     public function subject()

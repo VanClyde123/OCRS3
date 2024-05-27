@@ -26,6 +26,7 @@ class User extends Authenticatable
         'course',
         'gender',
         'role',
+        'secondary_role',
         'password',
     ];
 
