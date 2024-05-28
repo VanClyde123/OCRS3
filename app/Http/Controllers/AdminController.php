@@ -279,36 +279,69 @@ private function getRoleNumber($roleName) {
 
    public function viewPastEnrolledSubjects(Request $request, $studentId)
 {
-    $student = User::find($studentId);
-    $currentSemester = Semester::where('is_current', true)->first();
-    if ($currentSemester) {  
-        $query = $student->enrolledSubjects()
-            ->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+       $student = User::find($studentId);
+        $currentSemester = Semester::where('is_current', true)->first();
 
-       
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('subject_code', 'like', "%$search%")
-                  ->orWhere('description', 'like', "%$search%")
-                  ->orWhere('section', 'like', "%$search%");
-            });
+        if ($currentSemester) {
+            
+            $currentTerm = $currentSemester->semester_name;
+            $currentSchoolYear = $currentSemester->school_year;
+
+          
+            $terms = ['First Semester', 'Second Semester', 'Short Term'];
+
+           
+            $currentTermIndex = array_search($currentTerm, $terms);
+
+          
+            $previousTerms = [];
+
+           
+            for ($i = $currentTermIndex - 1; $i >= 0; $i--) {
+                $previousTerms[] = $terms[$i] . ', ' . $currentSchoolYear;
+            }
+
+            
+            $yearParts = explode(' - ', $currentSchoolYear);
+            $startYear = (int)$yearParts[0];
+            $endYear = (int)$yearParts[1];
+
+            while ($startYear > 0 && $endYear > 0) {
+                $startYear--;
+                $endYear--;
+
+                foreach (array_reverse($terms) as $term) {
+                    $previousTerms[] = $term . ', ' . $startYear . ' - ' . $endYear;
+                }
+            }
+
+           
+            $query = $student->enrolledSubjects()->whereIn('term', $previousTerms);
+
+            
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $query->where(function ($q) use ($search) {
+                    $q->where('subject_code', 'like', "%$search%")
+                      ->orWhere('description', 'like', "%$search%")
+                      ->orWhere('section', 'like', "%$search%");
+                });
+            }
+
+           
+            if ($request->has('term')) {
+                $term = $request->input('term');
+                $query->where('term', 'like', "%$term%");
+            }
+
+            $pastEnrolledSubjects = $query->get();
+
+        } else {
+            $pastEnrolledSubjects = [];
         }
-
-     
-        if ($request->has('term')) {
-            $term = $request->input('term');
-            $query->where('term','like', "%$term%");
-        }
-
-    $pastEnrolledSubjects = $query->get();
-
-    } else {
-        $pastEnrolledSubjects = [];
-    }
 
         return view('admin.student_list.view_pastsubjects', compact('student', 'pastEnrolledSubjects'));
-    }
+        }
  
     public function viewGrades($studentId, $subjectId)
     {
@@ -469,34 +502,62 @@ public function showPastInstructorSubjects(Request $request, $instructorId)
     $instructor = User::findOrFail($instructorId);
     $currentSemester = Semester::where('is_current', true)->first();
 
-    if ($currentSemester) {  
-    $query = $instructor->taughtSubjects()
-        ->whereHas('subject', function ($query) use ($currentSemester) {
-            $query->where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year);
+    if ($currentSemester) {
+        
+        $currentTerm = $currentSemester->semester_name;
+        $currentSchoolYear = $currentSemester->school_year;
+
+       
+        $terms = ['First Semester', 'Second Semester', 'Short Term'];
+
+
+        $currentTermIndex = array_search($currentTerm, $terms);
+
+     
+        $previousTerms = [];
+
+       
+        for ($i = $currentTermIndex - 1; $i >= 0; $i--) {
+            $previousTerms[] = $terms[$i] . ', ' . $currentSchoolYear;
+        }
+
+        $yearParts = explode(' - ', $currentSchoolYear);
+        $startYear = (int)$yearParts[0];
+        $endYear = (int)$yearParts[1];
+
+        while ($startYear > 0 && $endYear > 0) {
+            $startYear--;
+            $endYear--;
+
+            foreach (array_reverse($terms) as $term) {
+                $previousTerms[] = $term . ', ' . $startYear . ' - ' . $endYear;
+            }
+        }
+
+
+        $query = $instructor->taughtSubjects()->whereHas('subject', function ($q) use ($previousTerms) {
+            $q->whereIn('term', $previousTerms);
         });
 
- 
-    if ($request->has('search')) {
-        $search = $request->input('search');
-        $query->where(function ($q) use ($search) {
-            $q->whereHas('subject', function ($sq) use ($search) {
+    
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->whereHas('subject', function ($sq) use ($search) {
                 $sq->where('description', 'like', "%$search%")
                    ->orWhere('subject_code', 'like', "%$search%")
                    ->orWhere('section', 'like', "%$search%");
             });
-        });
-    }
+        }
 
-   
-    if ($request->has('term')) {
-        $term = $request->input('term');
-        $query->whereHas('subject', function ($sq) use ($term) {
-            $sq->where('term','like', "%$term%");
-        });
-    }
+        
+        if ($request->has('term')) {
+            $term = $request->input('term');
+            $query->whereHas('subject', function ($sq) use ($term) {
+                $sq->where('term', 'like', "%$term%");
+            });
+        }
 
-    $pastSubjects = $query->get();
-
+        $pastSubjects = $query->get();
     } else {
         $pastSubjects = [];
     }

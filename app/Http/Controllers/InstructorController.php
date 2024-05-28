@@ -71,15 +71,44 @@ class InstructorController extends Controller
 
     public function pastlistSubjects(Request $request)
 {
-    // get subjects taught by the current logged-in instructor
+    
     $instructorId = Auth::user()->id;
 
     $currentSemester = Semester::where('is_current', true)->first();
 
-    if ($currentSemester) {
-        $query = Subject::where('term', '!=', $currentSemester->semester_name . ', ' . $currentSemester->school_year)
-            ->whereHas('importedclasses', function ($query) use ($instructorId) {
-                $query->where('instructor_id', $instructorId);
+   if ($currentSemester) {
+        
+        $currentTerm = $currentSemester->semester_name;
+        $currentSchoolYear = $currentSemester->school_year;
+
+       
+        $terms = ['First Semester', 'Second Semester', 'Short Term'];
+        $currentTermIndex = array_search($currentTerm, $terms);
+        $previousTerms = [];
+
+       
+        for ($i = $currentTermIndex - 1; $i >= 0; $i--) {
+            $previousTerms[] = $terms[$i] . ', ' . $currentSchoolYear;
+        }
+
+        
+        $yearParts = explode(' - ', $currentSchoolYear);
+        $startYear = (int)$yearParts[0];
+        $endYear = (int)$yearParts[1];
+
+        while ($startYear > 0 && $endYear > 0) {
+            $startYear--;
+            $endYear--;
+
+            foreach (array_reverse($terms) as $term) {
+                $previousTerms[] = $term . ', ' . $startYear . ' - ' . $endYear;
+            }
+        }
+
+        
+        $query = Subject::whereIn('term', $previousTerms)
+            ->whereHas('importedClasses', function ($q) use ($instructorId) {
+                $q->where('instructor_id', $instructorId);
             });
 
     
@@ -114,7 +143,7 @@ class InstructorController extends Controller
         'Lab',
     ];
 
-    // combine additional subject types with the fetched subject types from the db table
+   
     $subjectTypes = array_merge($additionalSubjectTypes, $subjectTypePercentages);
 
       return view('teacher.list.past_classlist', compact('subjects','subjectTypes'));

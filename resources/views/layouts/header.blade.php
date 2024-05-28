@@ -2,6 +2,7 @@
   
     {{-- DO NOT TOUCH --}}
     <nav class="mt-2">
+         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> << </a>
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li>
                        @php
@@ -11,9 +12,18 @@
                                 3 => 'Student',
                                 4 => 'Secretary',
                             ];
+
+
+                             $currentSemester = \App\Models\Semester::where('is_current', 1)->first();
+                              $currentSemesterText = $currentSemester ? $currentSemester->semester_name . ', ' . $currentSemester->school_year : 'No current semester';
                         @endphp
 
                 <div>
+                     <div>
+                        <a class="nav-link" style="color:white; font-size: 90%;">
+                            {{ $currentSemesterText }}
+                        </a>
+                    </div>
                    <div>
                         <a class="nav-link" style="color:white;">
                             {{ Auth::user()->name }} {{ Auth::user()->last_name }}
@@ -26,7 +36,7 @@
                                         
                         </a>
                         <hr>
-                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><<</a>
+                       
                     </div>
 
                 </div>
