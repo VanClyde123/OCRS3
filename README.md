@@ -9,7 +9,6 @@ Functions that applies for Admin and Secretary:
 -Minor Update to GUI to reflect the mentioned updates.
 
 ****Need to update:
--Apply the updated functions: subject maintenance page, set next sem subjects, minor GUI update for the Secretary Side
 -update the notifications for exceeded/bonus points for the students in the studentlist.blade
 -update the student side subject list for notifications for new published score
 -update minor GUI based on the updates in the other functions
