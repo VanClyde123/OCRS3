@@ -731,11 +731,11 @@ public function updateSubject(Request $request)
 
     public function destroySection($id)
 {
-    // Find the section by ID and delete it
+    
     $section = Section::findOrFail($id);
     $section->delete();
 
-    // Redirect back with a success message
+    
     return redirect()->back()->with('success', 'Section deleted successfully');
 }
 

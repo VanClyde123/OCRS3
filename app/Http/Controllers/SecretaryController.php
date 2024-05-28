@@ -11,6 +11,9 @@ use App\Models\ImportedClasslist;
 use App\Models\Grades;
 use App\Models\Semester;
 use App\Models\Assessment;
+use App\Models\Section;
+use App\Models\SubjectDescription;
+use App\Models\SubjectType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -406,5 +409,188 @@ if ($currentSemester) {
         return redirect('secretary/teacher_list/instructor_list')->with('success', 'Your password changed successfully.');
     }
 
+
+    public function futureSubjects1($instructorId)
+{
+
+    $instructor = User::findOrFail($instructorId);
+
+
+    $currentSemester = Semester::where('is_current', 1)->first();
+    
+    if (!$currentSemester) {
+        return redirect()->back()->with('error', 'Current semester not found');
+    }
+
+ 
+    $currentTerm = $currentSemester->semester_name;
+    $currentYear = $currentSemester->school_year;
+
+    
+    $nextTerm = $currentTerm;
+    $nextYear = $currentYear;
+
+    
+    switch ($currentTerm) {
+        case 'First Semester':
+            $nextTerm = 'Second Semester';
+            break;
+        case 'Second Semester':
+            $nextTerm = 'Short Term';
+            break;
+           case 'Short Term':
+            $nextTerm = 'First Semester';
+
+
+            $years = explode(' - ', $currentYear);
+            if (count($years) == 2) {
+                $nextYear = ($years[0] + 1) . ' - ' . ($years[1] + 1);
+            }
+            break;
+    }
+
+  
+    $futureSubjects = ImportedClasslist::where('instructor_id', $instructorId)
+        ->whereHas('subject', function ($query) use ($nextTerm, $nextYear) {
+            $query->where('term', $nextTerm . ', ' . $nextYear);
+        })
+        ->get();
+
+    return view('secretary.teacher_list.future_subjects', compact('instructor', 'futureSubjects'));
 }
+
+public function assignSubjectForm1($instructorId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $subjectDescriptions = SubjectDescription::all();
+    $currentSemester = Semester::where('is_current', true)->first();
+     $subjectTypes = SubjectType::all();
+
+    return view('secretary.teacher_list.assign_subject', compact('instructor', 'currentSemester', 'subjectDescriptions', 'subjectTypes'));
+}
+
+public function getSections1($subjectDescriptionId)
+{
+       $sections = Section::where('subject_description_id', $subjectDescriptionId)->get();
+        
+       
+        return response()->json($sections);
+}
+
+public function assignSubject1(Request $request)
+{
+    $request->validate([
+        'subject_code' => 'required',
+        'description' => 'required',
+        'section' => 'required',
+        'term' => 'required',
+        'subject_type' => 'required',
+        'days' => 'required',
+        'time' => 'required',
+        'room' => 'required',
+    ]);
+
+    $subject = Subject::create([
+        'subject_code' => $request->subject_code,
+        'description' => $request->description,
+        'section' => $request->section,
+        'term' => $request->term,
+        'subject_type' => $request->subject_type,
+    ]);
+
+    $importedClass = ImportedClasslist::create([
+        'subjects_id' => $subject->id,
+        'instructor_id' => $request->instructor_id,
+        'days' => $request->days,
+        'time' => $request->time,
+        'room' => $request->room,
+    ]);
+
+   
+    return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('success', 'Future subject assigned successfully');
+}
+
+public function editSubject1($instructorId, $subjectId)
+{
+    $instructor = User::findOrFail($instructorId);
+    $subject = Subject::findOrFail($subjectId);
+    $importedClass = ImportedClasslist::where('subjects_id', $subjectId)->first();
+    $currentSemester = Semester::where('is_current', true)->first();
+    $subjectDescriptions = SubjectDescription::all();
+     $subjectTypes = SubjectType::all();
+
+    return view('secretary.teacher_list.edit_subject', compact('instructor',  'currentSemester', 'subject', 'importedClass', 'subjectDescriptions', 'subjectTypes'));
+}
+
+public function updateSubject1(Request $request)
+{
+    $request->validate([
+        'subject_code' => 'required',
+        'description' => 'required',
+        'section' => 'required',
+        'term' => 'required',
+        'subject_type' => 'required',
+        'days' => 'required',
+        'time' => 'required',
+        'room' => 'required',
+    ]);
+
+    $subject = Subject::findOrFail($request->subject_id);
+    $subject->update([
+        'subject_code' => $request->subject_code,
+        'description' => $request->description,
+        'section' => $request->section,
+        'term' => $request->term,
+        'subject_type' => $request->subject_type,
+    ]);
+
+    $importedClass = ImportedClasslist::where('subjects_id', $subject->id)->first();
+    $importedClass->update([
+        'days' => $request->days,
+        'time' => $request->time,
+        'room' => $request->room,
+    ]);
+
+    return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('success', 'Subject updated successfully');
+}
+
+   public function viewSection1(SubjectDescription $subjectDescription)
+    {
+        $sections = $subjectDescription->sections;
+        return view('secretary.assessment_description.view_section', compact('sections', 'subjectDescription'));
+    }
+
+    public function storeSection1(Request $request)
+    {
+       
+        $request->validate([
+            'subject_description_id' => 'required|exists:subject_descriptions,id',
+            'section_name' => 'required|string|max:255',
+            
+        ]);
+
+       
+        $section = new Section();
+        $section->subject_description_id = $request->subject_description_id;
+         $section->section_name = $request->section_name;
+        $section->save();
+
+       
+        return redirect()->back()->with('success', 'Section created successfully');
+    }
+
+    public function destroySection1($id)
+{
+    
+    $section = Section::findOrFail($id);
+    $section->delete();
+
+    
+    return redirect()->back()->with('success', 'Section deleted successfully');
+}
+
+}
+
+
+
 

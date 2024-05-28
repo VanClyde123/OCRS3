@@ -336,6 +336,23 @@ Route::group(['middleware' => 'secretary'], function () {
 
 
 
+
+    Route::get('secretary/teacher_list/future_subjects/{instructorId}', [SecretaryController::class, 'futureSubjects1'])->name('secretary.teacher_list.future_subjects1');
+    Route::get('secretary/teacher_list/assign_subject/{instructorId}', [SecretaryController::class, 'assignSubjectForm1'])->name('secretary.teacher_list.assign_subject1');
+    Route::post('secretary/teacher_list/assign_subject', [SecretaryController::class, 'assignSubject1'])->name('secretary.teacher_list.store_subject1');
+
+
+
+    Route::get('/secretary/get-sections/{subjectDescriptionId}', [SecretaryController::class, 'getSections1'])->name('secretary.get_sections1');
+    Route::get('/secretary/teacher_list/{instructorId}/edit_subject/{subjectId}', [SecretaryController::class, 'editSubject1'])->name('secretary.teacher_list.edit_subject1');
+    Route::post('/secretary/teacher_list/update_subject', [SecretaryController::class, 'updateSubject1'])->name('secretary.teacher_list.update_subject1');
+
+    Route::get('/secretary/sections/{subjectDescription}', [SecretaryController::class, 'viewSection1'])->name('sections.index1');
+    Route::post('/secretary/sections/store', [SecretaryController::class, 'storeSection1'])->name('sections.store1');
+    Route::delete('/secretary/sections/{section}', [SecretaryController::class, 'destroySection1'])->name('sections.destroy1');
+
+
+
       Route::get('/secretary/initial-change-password', [SecretaryController::class, 'showInitialChangePasswordForm1'])->name('initial-change-password1');
     Route::post('/secretary/initial-change-password', [SecretaryController::class, 'initialChangePassword1']);
 
@@ -402,6 +419,15 @@ Route::group(['middleware' => 'multiRole:admin|instructor'], function () {
     Route::get('/admin/teacher_list/show_past_instructor_subjects/search/{instructorId}', [AdminController::class, 'showPastInstructorSubjects'])->name('admin.searchPastInstructorSubjects');
     Route::get('/admin/teacher_list/{subject}/students', [AdminController::class, 'showEnrolledStudents'])->name('admin.teacher_list.enrolled_students');
     Route::get('admin/view-student-points/{studentId}/{subjectId}', [AdminController::class, 'viewStudentPoints'])->name('admin.view.student.points');
+
+
+
+     Route::get('admin/teacher_list/future_subjects/{instructorId}', [AdminController::class, 'futureSubjects'])->name('admin.teacher_list.future_subjects');
+    Route::get('admin/teacher_list/assign_subject/{instructorId}', [AdminController::class, 'assignSubjectForm'])->name('admin.teacher_list.assign_subject');
+    Route::post('admin/teacher_list/assign_subject', [AdminController::class, 'assignSubject'])->name('admin.teacher_list.store_subject');
+
+
+
    
     Route::get('admin/subject_types/viewtypes', [SubjectTypeController::class, 'viewTypes']);
     Route::get('admin/subject_types/createtypes', [SubjectTypeController::class, 'create'])->name('subject_types.create');
@@ -668,6 +694,14 @@ Route::get('/secretary/subject_list/view_subjects',  [SecretaryController::class
     Route::get('/admin/teacher_list/show_past_instructor_subjects/search/{instructorId}', [AdminController::class, 'showPastInstructorSubjects'])->name('admin.searchPastInstructorSubjects');
     Route::get('/admin/teacher_list/{subject}/students', [AdminController::class, 'showEnrolledStudents'])->name('admin.teacher_list.enrolled_students');
     Route::get('admin/view-student-points/{studentId}/{subjectId}', [AdminController::class, 'viewStudentPoints'])->name('admin.view.student.points');
+
+
+     Route::get('admin/teacher_list/future_subjects/{instructorId}', [AdminController::class, 'futureSubjects'])->name('admin.teacher_list.future_subjects');
+    Route::get('admin/teacher_list/assign_subject/{instructorId}', [AdminController::class, 'assignSubjectForm'])->name('admin.teacher_list.assign_subject');
+    Route::post('admin/teacher_list/assign_subject', [AdminController::class, 'assignSubject'])->name('admin.teacher_list.store_subject');
+
+
+
    
     Route::get('admin/subject_types/viewtypes', [SubjectTypeController::class, 'viewTypes']);
     Route::get('admin/subject_types/createtypes', [SubjectTypeController::class, 'create'])->name('subject_types.create');

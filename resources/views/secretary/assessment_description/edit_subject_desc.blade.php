@@ -8,6 +8,9 @@
         </section>
         <section class="content">
             <div class="card">
+                 <div class="card-header">
+                    <h3 class="card-title">{{ $subjectDescription->subject_code }} - {{ $subjectDescription->subject_name }}</h3>
+                </div>
                 <div class="card-body">
                     <form action="{{ route('subject_descriptions.update1', $subjectDescription->id) }}" method="POST">
                         @csrf

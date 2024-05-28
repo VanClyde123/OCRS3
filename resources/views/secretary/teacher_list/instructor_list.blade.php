@@ -41,6 +41,7 @@
                                     <td>{{ $instructor->middle_name }}</td>
                                     <td>{{ $instructor->last_name }}</td>
                                     <td>  <a href="{{ route('secretary.teacher_list.subjects', ['instructorId' => $instructor->id]) }}"class="btn btn-info">View Current Subjects</a> <a href="{{ route('secretary.teacher_list.past_subjects', ['instructorId' => $instructor->id]) }}" class="btn btn-info">View Past Semester Subjects</a>
+                                        <a href="{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}" class="btn btn-info">Set Next Semester Subjects</a>
                                     </td>
 
                                     </tr>
