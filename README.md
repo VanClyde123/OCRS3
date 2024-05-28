@@ -8,13 +8,6 @@ Functions that applies for Admin and Secretary:
 -Added a new button for the setting up the next semester subjects for Instructors.
 -Minor Update to GUI to reflect the mentioned updates.
 
-****Need to update:
--update the notifications for exceeded/bonus points for the students in the studentlist.blade
--update the student side subject list for notifications for new published score
--update minor GUI based on the updates in the other functions
-
-
-
 Test Accounts:
 
 Admin Account: admin
