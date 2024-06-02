@@ -2,21 +2,18 @@
   
     {{-- DO NOT TOUCH --}}
     <nav class="mt-2">
-         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> << </a>
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li>
-                       @php
-                            $roles = [
-                                1 => 'Admin',
-                                2 => 'Instructor',
-                                3 => 'Student',
-                                4 => 'Secretary',
-                            ];
-
-
-                             $currentSemester = \App\Models\Semester::where('is_current', 1)->first();
-                              $currentSemesterText = $currentSemester ? $currentSemester->semester_name . ', ' . $currentSemester->school_year : 'No current semester';
-                        @endphp
+                @php
+                    $roles = [
+                        1 => 'Admin',
+                        2 => 'Instructor',
+                        3 => 'Student',
+                        4 => 'Secretary',
+                    ];
+                        $currentSemester = \App\Models\Semester::where('is_current', 1)->first();
+                        $currentSemesterText = $currentSemester ? $currentSemester->semester_name . ', ' . $currentSemester->school_year : 'No current semester';
+                @endphp
 
                 <div>
                      <div>
@@ -221,10 +218,13 @@
 </div>
 
 <div id="butt" class="butt">
-    <button class="openbtn" onclick="openNav()"> ☰ </button>
+    <button id="openbtn" class="openbtn" onclick="openNav()"> ☰ </button>
 </div>
 
 <script>
+    const openBtn = document.getElementById('openbtn'); 
+    const closeBtn = document.getElementById('closebtn');
+
     const mediaQuery = window.matchMedia('(max-width: 768px)');
     if(mediaQuery.matches) {
         closeNav();
@@ -237,17 +237,20 @@
         }
     });
     document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById("closebtn").style.display = "block";
+        document.getElementById("openbtn").style.display = "none";
         document.getElementById("mySidebar").style.width = "200px";
-        document.getElementById("butt").style.display = "none";
         document.getElementById("main").style.marginLeft = "200px"; 
     });
     function openNav() {
+        document.getElementById("closebtn").style.display = "block";
+        document.getElementById("openbtn").style.display = "none";
         document.getElementById("mySidebar").style.width = "200px";
         document.getElementById("main").style.marginLeft= "200px";
-        document.getElementById("butt").style.display = "none";
     }
     function closeNav() {
-        document.getElementById("butt").style.display = "block";
+        document.getElementById("closebtn").style.display = "none";
+        document.getElementById("openbtn").style.display = "block";
         document.getElementById("mySidebar").style.width = "0";
         document.getElementById("main").style.marginLeft= "0";
     }

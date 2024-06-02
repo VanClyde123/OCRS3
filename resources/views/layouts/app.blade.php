@@ -72,6 +72,24 @@
                     background-color: black; 
                 }
             }
+            .closebtn {
+                position:fixed; 
+                padding: 16px; 
+                z-index: 999;  
+                top: 16px; 
+                left: 216px;
+                font-size: 20px;
+                cursor: pointer;  
+                background-color: white;
+                color: darkslategrey;
+                padding: 10px 15px;
+                border: none;
+                &:hover {
+                    opacity:0.3;
+                    color:yellow;
+                    background-color: white; 
+                }
+            }
             #main {
                 transition: margin-left .5s;
             }
@@ -145,6 +163,7 @@
             @include('layouts.header') 
             <div id="main">
                 
+                    <button  id="closebtn" href="javascript:void(0)" class="closebtn" onclick="closeNav()"><<</button>
                 @yield('content')
                 <br><br><br><br>
                 @include('layouts.footer')
