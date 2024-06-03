@@ -44,9 +44,20 @@ class StudentScoreController extends Controller
 
         $scores = $enrolledStudent->studentgrades;
 
+
+        $latestPublishedAssessment = $enrolledStudent->importedclasses->subject->latestPublishedAssessment();
+        if ($latestPublishedAssessment) {
+            $student = Auth::user();
+            if (!$student->viewedAssessments->contains($latestPublishedAssessment->id)) {
+                $student->viewedAssessments()->attach($latestPublishedAssessment->id);
+            }
+        }
+
         return view('student.scores.showscores', compact('scores', 'gradingPeriods', 'assessmentTypes'));
     } else {
         return redirect()->route('login')->with('error', 'Access denied.');
     }
 }
+
+
 }

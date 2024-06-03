@@ -30,7 +30,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
-                                <thead>w
+                                <thead>
                                     <tr>
                                         <th>Subject Code</th>
                                         <th>Subject Description</th>
@@ -41,20 +41,31 @@
                                         <th>Action</th> 
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach ($enrolledStudentSubjects as $enrolledSubject)
-                                        <tr>
-                                            <td>{{ $enrolledSubject->importedclasses->subject->subject_code }}</td>
-                                            <td>{{ $enrolledSubject->importedclasses->subject->description }}</td>
-                                            <td>{{ $enrolledSubject->importedclasses->instructor->name }} {{ $enrolledSubject->importedclasses->instructor->last_name }}</td>
-                                            <td>{{ $enrolledSubject->importedclasses->days }}</td>
-                                            <td>{{ $enrolledSubject->importedclasses->time }}</td>
-                                            <td>{{ $enrolledSubject->importedclasses->room }}</td>
-                                            <td><a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-info">View Scores</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                               <tbody>
+                                @foreach ($enrolledStudentSubjects as $enrolledSubject)
+                                    @php
+                                        $latestPublishedAssessment = $enrolledSubject->importedclasses->subject->latestPublishedAssessment();
+                                        $hasNewPublishedScores = $latestPublishedAssessment && !$student->viewedAssessments->contains($latestPublishedAssessment);
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            @if ($hasNewPublishedScores)
+                                                <i class="fas fa-bell text-warning" id="bell_{{ $enrolledSubject->importedclasses->subject->id }}"></i>
+                                            @endif
+                                            {{ $enrolledSubject->importedclasses->subject->subject_code }}
+                                            
+                                        </td>
+                                        <td>{{ $enrolledSubject->importedclasses->subject->description }}</td>
+                                        <td>{{ $enrolledSubject->importedclasses->instructor->name }} {{ $enrolledSubject->importedclasses->instructor->last_name }}</td>
+                                        <td>{{ $enrolledSubject->importedclasses->days }}</td>
+                                        <td>{{ $enrolledSubject->importedclasses->time }}</td>
+                                        <td>{{ $enrolledSubject->importedclasses->room }}</td>
+                                        <td>
+                                            <a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-info view-scores-btn" data-assessment-id="{{ $latestPublishedAssessment ? $latestPublishedAssessment->id : '' }}">View Scores</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                             </table>
                         </div>
                     </div>
@@ -65,4 +76,20 @@
             </div>
         </section>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewScoresButtons = document.querySelectorAll('.view-scores-btn');
+        viewScoresButtons.forEach(button => {
+            button.addEventListener('click', function() {
+               
+                const bellId = button.dataset.bellId;
+                const bellIcon = document.getElementById(`bell_${bellId}`);
+                if (bellIcon) {
+                    bellIcon.style.display = 'none'; 
+                }
+            });
+        });
+    });
+</script>
 @endsection

@@ -31,6 +31,21 @@ class Subject extends Model
 
     //}
 
+           public function assessments()
+    {
+        return $this->hasMany(Assessment::class);
+    }
+
+           public function hasNewPublishedScores()
+{
+    return $this->assessments()->where('published', 1)->exists();
+}
+
+public function latestPublishedAssessment()
+{
+    return $this->assessments()->where('published', 1)->latest('published_at')->first();
+}
+
     protected $fillable = [
     'subject_code',
     'description',

@@ -5,7 +5,7 @@
     </script>
     <div class="content-wrappers">
         <section class="content-header">
-            <h2 class="mb-5">Import Classlist</h2>
+            <h2 class="mb-5"></h2>
         </section>
         @include('messages')
         <div class="card">
@@ -19,10 +19,16 @@
                         <input id="fileInput" type="file" name="file" accept=".xlsx,.xls">
                         <button id="importBtn" disabled type="submit" class="btn btn-primary">Import</button>
                     </form>
-                    @if(isset($subjectExists) && isset($importedClasslistExists))
-                        <p>Subject: {{ $subjectExists }}</p>
-                        <p>Imported Classlist: {{ $importedClasslistExists }}</p>
-                         <p>Student: {{ $enrolledStudentsMessage }}</p>
+                  @if(isset($subjectExists) && isset($importedClasslistExists))
+                        <div class="alert alert-info" role="alert">
+                            <strong>Subject:</strong> {{ $subjectExists }}
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            <strong>Imported Classlist:</strong> {{ $importedClasslistExists }}
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            <strong>Student:</strong> {{ $enrolledStudentsMessage }}
+                        </div>
                     @endif
                 </div>
             </div>

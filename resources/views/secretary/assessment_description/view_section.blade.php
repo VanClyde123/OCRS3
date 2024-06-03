@@ -2,7 +2,11 @@
 
 @section('content')
    <div class="container">
-        
+        <section class="content-header">
+            <h2></h2>
+           <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+
+        </section>
         <div class="card mt-4">
             <div class="card-header">
                 <h3 class="card-title">Sections for {{ $subjectDescription->subject_name }}</h3>

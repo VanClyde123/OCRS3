@@ -4,14 +4,14 @@
    <div class="content-wrappers">
         <style>
             small.small-tag {
-                font-size: 0.8em; /* Adjust this value to make the tag smaller */
+                font-size: 0.8em;
                 position: relative;
-                top: -10px; /* Adjust this value to elevate the tag from the ground */
+                top: -10px; 
             }
         </style>
         <section class="content-header">
             <h2>Add User</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+            <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
         </section>
         @include('messages')
         <section class="content">

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'role',
         'secondary_role',
         'password',
+       
     ];
 
     /**
@@ -86,6 +87,11 @@ class User extends Authenticatable
     public function enrolledStudentSubjects() {
     return $this->hasMany(EnrolledStudents::class, 'student_id');
     }
+
+    public function viewedAssessments()
+{
+    return $this->belongsToMany(Assessment::class, 'assessment_views', 'student_id', 'assessment_id');
+}
 
     
 }

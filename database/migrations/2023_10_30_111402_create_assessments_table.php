@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('subject_id');
-            $table->string('grading_period'); //First Grading/ Midterms/ Finals
-            $table->string('type');//Quiz, Project, Essay, Exam
+            $table->string('grading_period'); 
+            $table->string('type');
             $table->string('description');
             $table->decimal('max_points', 5, 2)->nullable();
             $table->string('subject_type');

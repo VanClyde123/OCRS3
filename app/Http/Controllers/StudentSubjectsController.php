@@ -55,7 +55,7 @@ class StudentSubjectsController extends Controller
             $enrolledStudentSubjects = [];
         }
 
-        return view('student.subjectlist', compact('enrolledStudentSubjects'));
+        return view('student.subjectlist', compact('enrolledStudentSubjects', 'student'));
     } else {
         return redirect()->route('login')->with('error', 'Access denied.');
     }

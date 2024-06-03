@@ -1,47 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
-   
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Assessments for {{ $subject->description }} </h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+            <h2>Assessments for {{ $subject->description }}</h2>
+           <input type="button" onclick="window.location.href='{{ route('teacher.list.studentlist', ['subject' => $subject]) }}';" class="btn btn-info" value="Back" />
         </section>
         @include('messages')
         <section class="content">
             <div class="card">
                 <div class="table-responsive">
                     <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Grading Period</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                    <th>Max Points</th>
-                                    <th>Activity Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($assessments as $assessment)
-                                    <tr>
-                                        <td>{{ $assessment->grading_period }}</td>
-                                        <td>{{ $assessment->type }}</td>
-                                        <td>{{ $assessment->description }}</td>
-                                        <td>{{ number_format($assessment->max_points, 0) }}</td>
-                                        <td>{{ $assessment->activity_date }}</td>
-                                        <td>
-                                        <a href="{{ route('instructor.editSingleAssessment', ['assessmentId' => $assessment->id]) }}"  class="btn btn-primary">Edit</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        @php
+                            $groupedAssessments = $assessments->groupBy('grading_period')->map(function ($group) {
+                                return $group->groupBy('type');
+                            });
+                        @endphp
+
+                        @foreach($groupedAssessments as $gradingPeriod => $types)
+                            <h3>{{ $gradingPeriod }}</h3>
+                            @foreach($types as $type => $assessments)
+                                <h5><b>{{ $type }}</b></h5>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">Description</th>
+                                            <th style="width: 10%">Max Points</th>
+                                            <th style="width: 20%">Activity Date</th>
+                                            <th style="width: 10%">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($assessments as $assessment)
+                                            <tr>
+                                                <td>{{ $assessment->description }}</td>
+                                                <td>{{ number_format($assessment->max_points, 0) }}</td>
+                                                <td>{{ $assessment->activity_date }}</td>
+                                                <td>
+                                                    <a href="{{ route('instructor.editSingleAssessment', ['assessmentId' => $assessment->id]) }}" class="btn btn-primary">Edit</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endforeach
+                        @endforeach
                     </div>
                 </div>
             </div>
         </section>
     </div>
 @endsection
-

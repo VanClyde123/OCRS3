@@ -14,7 +14,7 @@
                     $('#accordion button[data-target="#' + activeCollapseId + '"]').removeClass('active');
                 });
 
-                // Activate nested accordion
+               
                 $('.assessmentCollapse').on('shown.bs.collapse', function () {
                     var activeAssessmentCollapseId = $(this).attr('id');
                     $('#assessmentAccordion button[data-target="#' + activeAssessmentCollapseId + '"]').addClass('active');
@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     @else
-                        <p>No activity or scores published yet.</p>
+                        <p>No activity/ No scores recorded for you yet</p>
                     @endif
                 </div>
             </div>

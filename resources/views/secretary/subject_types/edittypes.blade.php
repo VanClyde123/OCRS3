@@ -48,7 +48,9 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2>Edit Subject Type <br>{{ $subjectType->subject_type }}</h2>
+            <h2>Edit Subject Type {{ $subjectType->subject_type }}</h2>
+            <input type="button" onclick="window.location.href='{{ url('secretary/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
+
         </section>
         <!-- Main content -->
         <section class="content">

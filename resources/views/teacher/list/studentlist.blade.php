@@ -2,6 +2,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @php
+        $header_title = "Student Records";
+    @endphp
+    
     @push('scripts')
         <script>
             $(document).ready(function () {
@@ -238,7 +243,7 @@
 
                         isSaving = true;
 
-                        //console.log('save button clicked');
+                        /////console.log('save button clicked');
 
                         const assessmentId = modal.find('#assessment').val();
                         const points = modal.find('#points').val();
@@ -567,7 +572,16 @@
         <script>
             $(document).ready(function() {
 
-        
+            if ((window.location.href.indexOf("studentlist") > -1 && window.location.href.match(/\/\d+$/)) || document.referrer.indexOf("classlist") > -1 || document.referrer.indexOf("edit_assessments") > -1) {
+            
+                $('.score-input').each(function() {
+                   
+                    if ($(this).val().trim() !== "") {
+                        savePoints($(this));
+                    }
+                });
+            }
+
             $('.assessment-description').each(function() {
                 var enrolledStudentId = $(this).data('enrolled-student-id');
                 var assessmentType = $(this).data('type');
@@ -581,19 +595,27 @@
                 });
 
             
-                $('.score-input').on('blur', function() {
-                    var currentValue = $(this).val();
-                    var originalValue = $(this).data('original-value');
+               $('.score-input').on('blur', function() {
+                var currentValue = $(this).val();
+                var originalValue = $(this).data('original-value');
+                var maxPoints = parseFloat($(this).data('max-points'));
+                var studentName = $(this).data('student-name');
+                var assessmentDescription = $(this).data('assessment-description');
 
-                
-                    if (currentValue !== originalValue) {
-                        console.log('value changed, triggersave');
-                        // Update the original value data attribute
-                        $(this).data('original-value', currentValue);
+                if (currentValue !== originalValue) {
+                    console.log('value changed, triggersave');
+                     
+                    $(this).data('original-value', currentValue);
 
-                        
-                        savePoints($(this));
+                    if (parseFloat(currentValue) > maxPoints) {
+                         showMessage(`Inserted points exceeded the max points of ${assessmentDescription} for ${studentName}Considered as bonus points`);
+                    } else {
+                        hideMessage();
                     }
+
+
+                    savePoints($(this));
+                }
                 });
 
                 function savePoints(inputElement) {
@@ -649,6 +671,20 @@
             $('p.assessment-description[data-enrolled-student-id="' + enrolledStudentId + '"][data-type="' + assessmentType + '"][data-grading-period="' + gradingPeriod + '"]').text(totalPoints);
             }
 
+             function showMessage(message) {
+            $('#message-text').text(message);
+            $('#message-container').fadeIn();
+
+            /////timer before fading: 1000 = 1 sec
+            setTimeout(function() {
+                $('#message-container').fadeOut();
+            }, 6000);
+        }
+
+        function hideMessage() {
+            $('#message-container').fadeOut();
+        }
+
                 function fetchGrades(enrolledStudentId) {
                     var subjectId = {{ $subject->id }};
                     $.ajax({
@@ -657,7 +693,7 @@
                         success: function(response) {
                             console.log('Grades fetched successfully', response.grades);
 
-                            /// find the grades with non-null values
+                            ///// find the grade columns with non-null values
                     var grade = response.grades.find(g => g.total_fg_lec !== null || g.lec_fg_grade !== null || g.total_fg_lab !== null || g.lab_fg_grade !== null || g.total_fg_grade !== null || g.fg_grade !== null || g.total_midterms_lec !== null || g.lec_midterms_grade !== null);
 
                             if (grade) {
@@ -788,6 +824,9 @@
         </section>
 
         @include('messages')
+        <div id="message-container" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: #ffcc00; color: black; padding: 10px; border-radius: 5px; z-index: 1000;">
+            <span id="message-text"></span>
+        </div>
         <section class="content">
             
                 <div class="card">
@@ -1202,6 +1241,9 @@
 
                                                                     $disabled = $isPastSubjectList ? 'disabled' : ''; /// check if the subject is in the past subject list view
 
+                                                                     $studentName = $enrolledStudent->student->last_name . ', ' . $enrolledStudent->student->name . ' ' . $enrolledStudent->student->middle_name;
+                                                                      $assessmentDescription = $assessment->description;
+
                                                                     echo '<td class="assessment-column">
                                                                         <input type="text" name="' . $textboxName . '" class="form-control score-input" ' . $disabled . '
                                                                            data-grading-period="' . $assessment->grading_period . '"
@@ -1209,6 +1251,9 @@
                                                                             data-assessment-id="' . $assessment->id . '"
                                                                             data-assessment-type="' . $assessment->type . '"
                                                                             data-original-value="' . $textboxValue . '"
+                                                                             data-max-points="' . $assessment->max_points . '"
+                                                                             data-student-name="' . $studentName . '"
+                                                                              data-assessment-description="' . $assessmentDescription . '"
                                                                             value="' . $textboxValue . '"
                                                                             style="width: 80px; text-align: center;">
                                                                     </td>';

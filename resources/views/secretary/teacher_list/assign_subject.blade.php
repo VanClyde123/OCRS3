@@ -2,7 +2,10 @@
 
 @section('content')
 <div class="container">
-    <h2></h2>
+     <section class="content-header">
+       <input type="button" onclick="window.location.href='{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}';" class="btn btn-info" value="Back" />
+
+      </section>
 
     <div class="card">
         <div class="card-header">

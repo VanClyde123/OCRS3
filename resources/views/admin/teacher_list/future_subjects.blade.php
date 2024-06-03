@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-    
-    
-
+     <section class="content-header">
+      <input type="button" onclick="window.location.href='{{ url('admin/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />
+      </section>
     <div class="card">
         <div class="card-header">
           Next Semester Subjects for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}

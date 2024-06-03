@@ -6,7 +6,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h2>Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h2>
-        <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+       <input type="button" onclick="window.location.href='{{ url('admin/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />
     </section>
     <section class="content">
         <div class="card">

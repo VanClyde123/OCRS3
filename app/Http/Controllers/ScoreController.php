@@ -175,7 +175,7 @@ public function fetchassessmentDetails($enrolledStudentId, $assessmentId)
             $studentLast = $enrolledStudent->student->last_name;
 
            if (is_numeric($enteredPoints) && $enteredPoints > $assessment->max_points) {
-            //// get the key for specific student
+            //// get the key for specific student id
             $studentKey = 'warning_' . $enrolledStudentId;
 
             ////// checks if a warning message has been displayed recently for the student
@@ -186,7 +186,7 @@ public function fetchassessmentDetails($enrolledStudentId, $assessmentId)
                     }
                 }
 
-            //// updare or create the record
+            //// updare or create the points 
             $grade = Grades::updateOrCreate(
                 [
                     'enrolled_student_id' => $enrolledStudentId,
@@ -1511,7 +1511,7 @@ if ($hasLecRecordsFinals) {
   }
        }
     }
-    return redirect()->back()->with('success', 'Scores saved successfully.');
+    return redirect()->back();
     }
 
 /////////////////////////////////FOR LEC TYPE///////////////////////////////

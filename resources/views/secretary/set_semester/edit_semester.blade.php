@@ -4,6 +4,8 @@
     <div class="content-wrappers">
         <section class="content-header">
             <h3>Edit Semester</h3>
+            <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
+
         </section>
         <section class="content">
             <div class="card">

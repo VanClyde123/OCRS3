@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2024 at 07:02 AM
+-- Generation Time: Jun 03, 2024 at 06:55 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -66,6 +66,20 @@ INSERT INTO `assessment_descriptions` (`id`, `subject_desc_id`, `grading_period`
 (1, 8, 'First Grading', 'Quiz', 'Quiz 1: Data types', '2024-05-19 19:45:05', '2024-05-19 19:45:05'),
 (2, 8, 'First Grading', 'OtherActivity', 'Seat Work 1: basics of Data structures', '2024-05-19 19:45:37', '2024-05-19 19:45:37'),
 (3, 8, 'First Grading', 'Exam', 'First Grading Examination', '2024-05-19 19:45:55', '2024-05-19 19:45:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assessment_views`
+--
+
+CREATE TABLE `assessment_views` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `assessment_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -156,15 +170,6 @@ CREATE TABLE `imported_classlist` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `imported_classlist`
---
-
-INSERT INTO `imported_classlist` (`id`, `subjects_id`, `instructor_id`, `days`, `time`, `room`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'W/F', '9:00 AM-10:00 AM,  8:00 AM-11:00 AM', 'F216, CA01', '2024-05-26 16:32:50', '2024-05-26 17:15:04'),
-(2, 2, 1, 'M', '8:00 - 11:00 AM', 'F216', '2024-05-26 16:34:19', '2024-05-26 16:34:19'),
-(3, 3, 98, 'TH', '9:00 AM - 10:00 AM', 'F216', '2024-05-26 20:53:50', '2024-05-26 20:53:50');
-
 -- --------------------------------------------------------
 
 --
@@ -230,7 +235,11 @@ INSERT INTO `sections` (`id`, `subject_description_id`, `section_name`, `created
 (1, 7, '3 - IDB', '2024-05-24 04:32:37', '2024-05-24 04:32:37'),
 (2, 8, '2 - IDA', '2024-05-25 01:44:35', '2024-05-25 01:44:35'),
 (3, 2, '3 - IDA', '2024-05-25 01:45:33', '2024-05-25 01:45:33'),
-(4, 7, '3 - IDA', '2024-05-26 20:07:20', '2024-05-26 20:07:20');
+(4, 7, '3 - IDA', '2024-05-26 20:07:20', '2024-05-26 20:07:20'),
+(6, 7, '3 - IDB', '2024-05-27 16:25:22', '2024-05-27 16:25:22'),
+(8, 8, '2 - IDB', '2024-05-27 18:28:39', '2024-05-27 18:28:39'),
+(9, 3, '1 - IDA', '2024-05-27 18:32:27', '2024-05-27 18:32:27'),
+(10, 3, '1 - IDC', '2024-05-27 18:34:04', '2024-05-27 18:34:04');
 
 -- --------------------------------------------------------
 
@@ -252,12 +261,12 @@ CREATE TABLE `semesters` (
 --
 
 INSERT INTO `semesters` (`id`, `semester_name`, `school_year`, `is_current`, `created_at`, `updated_at`) VALUES
-(1, 'First Semester', '2023 - 2024', 0, '2024-05-21 18:09:33', '2024-05-22 23:53:14'),
-(2, 'Second Semester', '2023 - 2024', 0, '2024-05-21 18:55:19', '2024-05-22 22:30:57'),
-(3, 'Short Term', '2023 - 2024', 0, '2024-05-21 22:52:02', '2024-05-22 22:29:42'),
+(1, 'First Semester', '2023 - 2024', 1, '2024-05-21 18:09:33', '2024-06-02 18:09:16'),
+(2, 'Second Semester', '2023 - 2024', 0, '2024-05-21 18:55:19', '2024-05-27 20:11:47'),
+(3, 'Short Term', '2023 - 2024', 0, '2024-05-21 22:52:02', '2024-05-27 21:47:26'),
 (4, 'First Semester', '2022 - 2023', 0, '2024-05-22 23:15:37', '2024-05-22 23:15:37'),
 (5, 'Second Semester', '2022 - 2023', 0, '2024-05-22 23:15:55', '2024-05-22 23:15:55'),
-(6, 'Short Term', '2022 - 2023', 1, '2024-05-22 23:16:03', '2024-05-26 20:29:47');
+(6, 'Short Term', '2022 - 2023', 0, '2024-05-22 23:16:03', '2024-05-27 21:47:12');
 
 -- --------------------------------------------------------
 
@@ -275,15 +284,6 @@ CREATE TABLE `subjects` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `subjects`
---
-
-INSERT INTO `subjects` (`id`, `subject_code`, `description`, `section`, `term`, `subject_type`, `created_at`, `updated_at`) VALUES
-(1, 'WEBDEV2', 'Web Development 2', '3 - IDB', 'First Semester, 2023 - 2024', 'LecLab6040', '2024-05-26 16:32:50', '2024-05-26 17:15:04'),
-(2, 'APPDEV1', 'Application Development 1', '3 - IDA', 'First Semester, 2023 - 2024', 'Lec', '2024-05-26 16:34:19', '2024-05-26 16:34:19'),
-(3, 'WEBDEV2', 'Web Development 2', '3 - IDA', 'First Semester, 2023 - 2024', 'LecLab4060', '2024-05-26 20:53:50', '2024-05-26 20:53:50');
 
 -- --------------------------------------------------------
 
@@ -364,12 +364,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `course`, `gender`, `password`, `role`, `secondary_role`, `password_changed`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Dante', 'E', 'Sparda', NULL, NULL, '$2y$10$xMfHyc1RQhQfEkXVzF8GNOgJ9Onj4HqtphxKUgbyqfAKMV5gP/HBm', 1, 2, 1, 'kBSuTBbWuxFvzIHiyc2oCC8qnbRdnLJhH59MR1Awp3kTFu4BZmOMq1MRIg0L', NULL, '2024-05-21 20:24:56'),
-(67, '10001000', 'Richard', 'R', 'Deckard', NULL, NULL, '$2y$10$2nDMazrP/fb0pas158hUhOmbMKgLC16JmyLbntS93KNwm2Yw6dFci', 2, 1, 1, 'rYe24JCENzhobb1tEyr6rXiQMbFoo0T2LNxEs1pyJXQyfdp9N83WqgUjPzSH', '2024-04-30 18:45:54', '2024-05-01 17:45:51'),
-(68, '00001000', 'Rachel', 'D', 'Tyrell', NULL, NULL, '$2y$10$2vtM.i2n4Xj9Ltf3FbnnLO6NtHXOPW.05kR6PDelzA6UCvQxvEURe', 4, 1, 1, '1AY8PEqsLPmvx9U7HNhTM79EqPdJlfmG2UAGYZwOU8BdxhW1C8EekL9moj0k', '2024-04-30 18:46:33', '2024-05-19 20:47:29'),
-(69, '20151000', 'Tariq', 'R.', 'Andrews', 'BSIT', 'Male', '$2y$10$dAJhARKEwfe0CITsVoHVgOtZ/Ve4xHkoNYwSdBiV/kl3zh8.7Sh2e', 3, NULL, 1, 'NGRJ8NrZtK674ctRsGaZqyO9z7y3kFWQuEicUED7TWPKx72pvNK4mvU0RGmw', '2024-04-30 20:38:44', '2024-05-13 23:05:04'),
-(70, '20151110', 'Raphael', 'S.', 'Archer', 'BSIT', 'Male', '$2y$10$aMcRZ2qTP9ZHPNaJ3tEweeNSZlcJbgF//i7UPS02ZO/mDXkANlQFm', 3, NULL, 0, NULL, '2024-04-30 20:38:44', '2024-04-30 20:38:44'),
-(71, '20151120', 'Brian', 'L.', 'Cooke', 'BSCS', 'Male', '$2y$10$vTSHwwQKYKCWv5YX8B9XDeG9uiqD0CyEi.MKzMftbcTyS7hre40RW', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
+(1, 'admin', 'Dante', 'E', 'Sparda', NULL, NULL, '$2y$10$xMfHyc1RQhQfEkXVzF8GNOgJ9Onj4HqtphxKUgbyqfAKMV5gP/HBm', 1, 2, 1, 'AKLTMs40Ddxd9o58BFV0bq1yvSu4BWhj9eAxwIFqxGJ5pYFhmYrNirGu37iD', NULL, '2024-05-27 18:33:13'),
+(67, '10001000', 'Richard', 'R', 'Deckard', NULL, NULL, '$2y$10$2nDMazrP/fb0pas158hUhOmbMKgLC16JmyLbntS93KNwm2Yw6dFci', 2, 1, 1, 'afhSRMIn5b18yKwCkfsJtMUMUU4Ag5lOKqJ4yO5l35TFZWsuENlSk7ID6kOa', '2024-04-30 18:45:54', '2024-05-01 17:45:51'),
+(68, '00001000', 'Rachel', 'D', 'Tyrell', NULL, NULL, '$2y$10$2vtM.i2n4Xj9Ltf3FbnnLO6NtHXOPW.05kR6PDelzA6UCvQxvEURe', 4, 1, 1, 'DYc1sGWgx0DdWbQZr5RkyMgw9tdN1ZIF2i60aQPm8UHjDNwEx3JjNAC936Zc', '2024-04-30 18:46:33', '2024-05-27 18:33:35'),
+(69, '20151000', 'Tariq', 'R.', 'Andrews', 'BSIT', 'Male', '$2y$10$dAJhARKEwfe0CITsVoHVgOtZ/Ve4xHkoNYwSdBiV/kl3zh8.7Sh2e', 3, NULL, 1, '0Vm2JSW6GXCE66qNTisaRgoGa52t7ek6I9rJBGAizR65kkY8t8tKxB6U3jPB', '2024-04-30 20:38:44', '2024-05-29 23:35:31'),
+(70, '20151110', 'Raphael', 'S.', 'Archer', 'BSIT', 'Male', '$2y$10$SvLJ2HanrBqyGFMidmbhQOrGnb9K4U1dsf3L6RV7i.YikpVQrObLy', 3, NULL, 1, 'MhVO5CxVrjCdMt8epdzCalr2USI5FEEWR7UGljyFRf3RwIuCYTgOboowU62I', '2024-04-30 20:38:44', '2024-05-30 18:27:15'),
+(71, '20151120', 'Brian', 'L.', 'Cooke', 'BSCS', 'Male', '$2y$10$hopBoOiuHvyKFkLSsck87ONcXrCrKS4eygUvEG3LomvKhETq2dHBe', 3, NULL, 1, 'GwmF2HZbtjy2hA1SySpCPvCDeSRVd8zcjHRNJfjoo3Nfwg3FMWORA1HUfxWk', '2024-04-30 20:38:45', '2024-05-30 20:21:46'),
 (72, '20151130', 'Timothy', 'U.', 'Dejesus', 'BSCS', 'Male', '$2y$10$.OlocPtyUfrGrWCp8gXNB.N8zjy9YB4AV.W683LbTSKID2nt6/IfO', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
 (73, '20151140', 'Vincent', 'M.', 'Fernandez', 'BSCS', 'Male', '$2y$10$6s5ox7l5uhZNBvzRJXoyr.sjOmz7k4T5Kcll3yY5MFtGCIyM7zyBi', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
 (74, '20151150', 'Olly', 'P.', 'Ford', 'BSCS', 'Male', '$2y$10$kw.UsNC.9I0OkCwTdDkxsOj4SToHa2rIzuqa3DPh0sw3.pVkIQW76', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
@@ -415,6 +415,14 @@ ALTER TABLE `assessments`
 ALTER TABLE `assessment_descriptions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `assessment_descriptions_subject_desc_id_foreign` (`subject_desc_id`);
+
+--
+-- Indexes for table `assessment_views`
+--
+ALTER TABLE `assessment_views`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `student_assessment_unique` (`student_id`,`assessment_id`),
+  ADD KEY `assessment_id` (`assessment_id`);
 
 --
 -- Indexes for table `enrolled_students`
@@ -525,6 +533,12 @@ ALTER TABLE `assessment_descriptions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `assessment_views`
+--
+ALTER TABLE `assessment_views`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `enrolled_students`
 --
 ALTER TABLE `enrolled_students`
@@ -546,7 +560,7 @@ ALTER TABLE `grades`
 -- AUTO_INCREMENT for table `imported_classlist`
 --
 ALTER TABLE `imported_classlist`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -564,7 +578,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `semesters`
@@ -576,7 +590,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `subject_descriptions`
@@ -611,6 +625,13 @@ ALTER TABLE `assessments`
 --
 ALTER TABLE `assessment_descriptions`
   ADD CONSTRAINT `assessment_descriptions_subject_desc_id_foreign` FOREIGN KEY (`subject_desc_id`) REFERENCES `subject_descriptions` (`id`);
+
+--
+-- Constraints for table `assessment_views`
+--
+ALTER TABLE `assessment_views`
+  ADD CONSTRAINT `assessment_views_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assessment_views_ibfk_2` FOREIGN KEY (`assessment_id`) REFERENCES `assessments` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `enrolled_students`

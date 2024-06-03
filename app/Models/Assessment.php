@@ -12,6 +12,11 @@ class Assessment extends Model
     {
         return $this->hasMany(Grades::class);
     }
+
+    public function viewers()
+{
+    return $this->belongsToMany(User::class, 'assessment_views', 'assessment_id', 'student_id');
+}
    protected $table = 'assessments';
 protected $fillable = [
            'subject_id',

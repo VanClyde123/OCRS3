@@ -3,13 +3,14 @@
 @section('content')
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Edit Subject Description</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+            <h2></h2>
+            <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+ 
         </section>
         <section class="content">
             <div class="card">
                  <div class="card-header">
-                    <h3 class="card-title">{{ $subjectDescription->subject_code }} - {{ $subjectDescription->subject_name }}</h3>
+                    <h3 class="card-title">Edit Subject Description of {{ $subjectDescription->subject_code }} - {{ $subjectDescription->subject_name }}</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('subject_descriptions.update1', $subjectDescription->id) }}" method="POST">

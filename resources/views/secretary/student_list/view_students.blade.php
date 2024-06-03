@@ -3,12 +3,17 @@
 @section('content')
     <div class="content-wrappers">
         <section class="content-header">
-            <h2 class="mb-5">Student List</h2>
+            
+
+            
         </section>
 
         @include('messages')
         <section class="content">
             <div class="card">
+                 <div class="card-header">
+                    Student List
+                </div>
                 <div class="card-body ">
                     <div>
                         <form action="{{ route('secretary.searchStudents1') }}" method="GET" class="mb-2">

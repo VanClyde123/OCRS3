@@ -267,7 +267,7 @@ Route::group(['middleware' => 'student'], function () {
    Route::get('/student/notifications', [StudentScoreController::class, 'showNotifications'])->name('student.notifications');
 Route::post('/student/mark-notifications-as-read', [StudentScoreController::class, 'markNotificationsAsRead'])->name('student.markNotificationsAsRead');
 
-
+//////Route::post('/mark-as-viewed', [StudentScoresController::class, 'markAsViewed'])->name('student.scores.markAsViewed');
 
  Route::get('/student/initial-change-password', [StudentController::class, 'showInitialChangePasswordForm3'])->name('initial-change-password3');
     Route::post('/student/initial-change-password', [StudentController::class, 'initialChangePassword3']);

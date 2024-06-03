@@ -2,11 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h2>Edit Subject for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h2>
+   
+       <section class="content-header">
+       <input type="button" onclick="window.location.href='{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}';" class="btn btn-info" value="Back" />
 
+      </section>
     <div class="card">
         <div class="card-header">
-            Edit Subject
+           Edit Subject for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('secretary.teacher_list.update_subject1') }}">

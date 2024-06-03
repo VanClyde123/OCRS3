@@ -6,6 +6,8 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h2>Semesters</h2>
+            <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/set_current') }}';" class="btn btn-info" value="Back" />
+
             <a href="{{ route('semesters.create1') }}" class="btn btn-success">Add Semester</a>
         </section>
         <section class="content">

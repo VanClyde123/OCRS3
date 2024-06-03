@@ -4,7 +4,8 @@
     <div class="content-wrappers">
         <section class="content-header">
         
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+           <input type="button" onclick="window.location.href='{{ url('admin/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+
         </section>
         <section class="content">
             <div class="card">

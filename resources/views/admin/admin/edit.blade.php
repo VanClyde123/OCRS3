@@ -11,7 +11,7 @@
         </style>
         <section class="content-header">
             <h2>Edit User</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+           <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
         </section>
 
         <section class="content">
