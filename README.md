@@ -1,12 +1,9 @@
 Updates:
 
--Secondary Roles for Admin, Instructor, and Secretary Main Roles. The navigation side bar will dynamically update if the User's Secondary Role is activated.
--Updated all related codes that associates the role column to include the secondary roles.
-
-Functions that applies for Admin and Secretary:
--Added a new button in the subject maintenance page, for adding a section on the selected subject.
--Added a new button for the setting up the next semester subjects for Instructors.
--Minor Update to GUI to reflect the mentioned updates.
+- added a notif bell beside the subject code in the student's subject list(student side)
+- re added the message for the exceeded points from the max points of the student in the studentlist.blade
+- updated the edit assessment list page and studentlist page so that if the instructor edited a max points in an assessment, the points of the student will be re saved again to updated the changes based on the updated max points.
+- updated the back buttons to redirect to the page properly(refresh the page)
 
 Test Accounts:
 
