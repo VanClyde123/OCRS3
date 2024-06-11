@@ -1,6 +1,10 @@
 @extends('layouts.app')
    
 @section('content')
+
+    @php
+        $header_title = "Imported Data";
+    @endphp
     @push('scripts')
     <script>
             $(document).ready(function () {

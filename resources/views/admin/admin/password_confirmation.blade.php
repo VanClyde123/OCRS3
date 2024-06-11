@@ -1,6 +1,9 @@
 @extends('layouts.app') 
 
 @section('content')
+@php
+        $header_title = "Enter Password";
+    @endphp
     <div class="content-wrappers">
    
     <section class="content-header">

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $header_title = "Remove Students";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Enrolled Students List</h2>

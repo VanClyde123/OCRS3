@@ -1,6 +1,10 @@
 @extends('layouts.app')
    
 @section('content')
+
+     @php
+        $header_title = "Import Classlist";
+    @endphp
     <script src="{{ asset('resources/js/import.js') }}">
     </script>
     <div class="content-wrappers">

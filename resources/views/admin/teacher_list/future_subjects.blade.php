@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Next Semester Subjects";
+    @endphp
 <div class="container">
      <section class="content-header">
       <input type="button" onclick="window.location.href='{{ url('admin/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />

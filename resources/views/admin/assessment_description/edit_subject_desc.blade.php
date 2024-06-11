@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Edit Subject Description";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             

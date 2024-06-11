@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+
+     @php
+        $header_title = "Subject List";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Subject List</h2>

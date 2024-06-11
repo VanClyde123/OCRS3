@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Past Semester Subjects";
+    @endphp
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">

@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
+@php
+        $header_title = "Add New Class Type";
+    @endphp
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const lecPercentageInput = document.querySelector('input[name="lec_percentage"]');

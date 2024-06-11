@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Class Types List";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Class Types for Lec and Lab Subjects</h2>

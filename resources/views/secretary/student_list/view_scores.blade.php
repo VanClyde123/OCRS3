@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Student Records";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Scores aasdnd Grades for {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }} in {{ $subject->description }}</h2>

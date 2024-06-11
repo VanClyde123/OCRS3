@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
+@php
+        $header_title = "Edit Assessment";
+    @endphp
     <script>
         $(document).ready(function () {
         ///// get the assessment descriptions based on the selected type and grading period

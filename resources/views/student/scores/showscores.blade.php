@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Records";
+    @endphp
     @push('scripts')
         <script>
             $(document).ready(function () {

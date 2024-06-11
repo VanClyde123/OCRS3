@@ -172,6 +172,7 @@ class InstructorController extends Controller
                 WHEN type = 'Exam' THEN 3
                 WHEN type = 'Lab Activity' THEN 4
                 WHEN type = 'Lab Exam' THEN 5
+                WHEN type = 'Direct Bonus Grade' THEN 7
                 ELSE 6
             END")
             ->get();

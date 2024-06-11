@@ -47,6 +47,7 @@
                         <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert max points</small><br>
                         <label for="assessmentActivityDate${assessmentCount}">Activity Date</label>
                         <input type="date" class="form-control" name="activity_date" value="">
+                        <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert the date</small><br>
                     </div>
                     `;
 
@@ -771,7 +772,7 @@
     </style>
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>{{ $subject->subject_code }} - {{ $subject->description }} ClassList</h2>
+            <h2></h2>
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
             @php
                 $studentCount = count($enrolledStudents);
@@ -831,7 +832,7 @@
             
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List of Enrolled Students</h3>
+                        <h3 class="card-title">{{ $subject->subject_code }} | {{ $subject->description }} </h3>
                     </div>
                     <div class="table-responsive ">
                         <div class="card-body">
@@ -975,9 +976,11 @@
 
                                             @foreach ($gradingPeriodAssessmentTypes as $assessmentType)
                                                
-                                                <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
-                                                    {{ $assessmentType }}
-                                                </th>
+                                                @if ($assessmentType != 'Direct Bonus Grade')
+                                                    <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', $assessmentType)->count() }}" class="text-center assessment-type-header">
+                                                        {{ $assessmentType }}
+                                                    </th>
+                                                @endif
 
                                                 @php
                                                     $headerText = '';
@@ -1004,9 +1007,9 @@
                                                     }
                                                 @endphp
 
-
+                                                @if ($assessmentType != 'Direct Bonus Grade')
                                                 <th class="text-center">{{ $headerText }}</th>
-
+                                                  @endif
                                                 
                                                 @if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders)
                                                  
@@ -1059,15 +1062,33 @@
                                                             <th class="text-center">Total Finals Lab</th>
                                                             <th class="text-center">Finals Lab Grade</th>
                                                             <th class="text-center">Tentative Finals Grade</th>
+                                                        @endif
+
+                                                           
+                                                        @if ($gradingPeriod == "Finals" && $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
+                                                                <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() }}" class="text-center assessment-type-header">
+                                                                     {{ $assessmentType }}
+                                                                </th>
+                                                        @endif
+                                                        @if ($gradingPeriod == "Finals")
                                                             <th class="text-center">Final Grade</th>
                                                         @endif
-                                                        @else
-                                                            @if ($gradingPeriod == "Finals")
+                                                    @else
+                                                        @if ($gradingPeriod == "Finals")
                                                             <th class="text-center">Over All Total</th>
                                                             <th class="text-center">Tentative Final Grade</th>
+                                                        @endif
+                                                   
+                                                        @if ($gradingPeriod == "Finals" && $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
+                                                                <th colspan="{{ $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() }}" class="text-center assessment-type-header">
+                                                                    {{ $assessmentType }}
+                                                                </th>
+                                                        @endif
+
+                                                        @if ($gradingPeriod == "Finals")
                                                             <th class="text-center">Final Grade</th>
                                                         @endif
-                                                     @endif
+                                                    @endif
                                                 @endforeach
                                             </tr>
                                             <tr>
@@ -1103,6 +1124,7 @@
                                                             $hasAssessments = $gradingPeriodAssessments->isNotEmpty();
                                                         @endphp
                                                         @foreach ($gradingPeriodAssessments as $assessment)
+                                                          @if ($assessmentType != 'Direct Bonus Grade')
                                                             <th class="assessment-column">
                                                                 <p class="assessment-description"
                                                                     data-grading-period="{{ $assessment->grading_period }}"
@@ -1110,9 +1132,11 @@
                                                                     data-description="{{ $assessment->description }}">
                                                                     {{ $assessment->abbreviation }} <br> {{ number_format($assessment->max_points, $assessment->max_points == intval($assessment->max_points) ? 0 : 2) }}
                                                                 </p>
-                                                            </th>    
+                                                            </th> 
+                                                            @endif   
                                                         @endforeach
-                                                        @if ($hasAssessments)    
+                                                        @if ($hasAssessments) 
+                                                           @if ($assessmentType != 'Direct Bonus Grade')
                                                             <td class="assessment-column">
                                                                 <p class="assessment-description"
                                                                     data-grading-period="{{ $gradingPeriod }}"
@@ -1121,6 +1145,7 @@
                                                                     {{ $maxPointsTotal }}
                                                                 </p>
                                                             </td>
+                                                          @endif
                                                         @endif
 
 
@@ -1176,10 +1201,32 @@
                                                             <th class="text-center"></th>
                                                             <th class="text-center"></th>
                                                             <th class="text-center"></th>
+                                                          @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
+                                                            <th class="assessment-column">
+                                                                <p class="assessment-description"
+                                                                    data-grading-period="{{ $assessment->grading_period }}"
+                                                                    data-type="{{ $assessment->type }}"
+                                                                    data-description="{{ $assessment->description }}">
+                                                                    {{ $assessment->abbreviation }} 
+                                                                </p>
+                                                            </th>
+                                                        @endif
                                                             <th class="text-center"></th>
-                                                        @else
+                                                            
+                                                            
+                                                    @else
                                                             <th class="text-center"></th>
                                                             <th class="text-center"></th>
+                                                         @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
+                                                            <th class="assessment-column">
+                                                                 <p class="assessment-description"
+                                                                    data-grading-period="{{ $assessment->grading_period }}"
+                                                                    data-type="{{ $assessment->type }}"
+                                                                    data-description="{{ $assessment->description }}">
+                                                                    {{ $assessment->abbreviation }} 
+                                                                </p>
+                                                            </th>
+                                                        @endif
                                                             <th class="text-center"></th>
                                                         @endif
                                                     @endif
@@ -1243,7 +1290,7 @@
 
                                                                      $studentName = $enrolledStudent->student->last_name . ', ' . $enrolledStudent->student->name . ' ' . $enrolledStudent->student->middle_name;
                                                                       $assessmentDescription = $assessment->description;
-
+                                                                 if ($assessment->type != 'Direct Bonus Grade') {
                                                                     echo '<td class="assessment-column">
                                                                         <input type="text" name="' . $textboxName . '" class="form-control score-input" ' . $disabled . '
                                                                            data-grading-period="' . $assessment->grading_period . '"
@@ -1257,15 +1304,18 @@
                                                                             value="' . $textboxValue . '"
                                                                             style="width: 80px; text-align: center;">
                                                                     </td>';
+                                                                }
                                                                     $totalPointsForAssessmentType += is_numeric($textboxValue) ? $textboxValue : 0;
                                                                     $currentColIndex++; 
                                                                 }
                                                                 if ($gradingPeriodAssessments->isNotEmpty()) {
+                                                                 if ($assessment->type != 'Direct Bonus Grade') {
                                                                 echo '<td class="assessment-column">
                                                                     <p class="assessment-description" data-type="' . $assessmentType . '" data-description="Total Points" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grading-period="' . $gradingPeriod . '">
                                                                         ' . $totalPointsForAssessmentType . '
                                                                     </p>
                                                                 </td>';
+                                                            }
 
                                                                 $currentColIndex++; 
                                                             }
@@ -1551,6 +1601,22 @@
                                                                         }
                                                                         echo '</td>';
 
+                                                                   if ($assessment->type === 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                        echo '<td class="assessment-column">
+                                                                            <input type="text" name="' . $textboxName . '" class="form-control score-input" ' . $disabled . '
+                                                                               data-grading-period="' . $assessment->grading_period . '"
+                                                                                data-enrolled-student-id="' . $enrolledStudent->id . '"
+                                                                                data-assessment-id="' . $assessment->id . '"
+                                                                                data-assessment-type="' . $assessment->type . '"
+                                                                                data-original-value="' . $textboxValue . '"
+                                                                                 data-max-points="' . $assessment->max_points . '"
+                                                                                 data-student-name="' . $studentName . '"
+                                                                                  data-assessment-description="' . $assessmentDescription . '"
+                                                                                value="' . $textboxValue . '"
+                                                                                style="width: 80px; text-align: center;">
+                                                                        </td>';
+                                                                    }
+
                                                                      //// column for  fn grade
                                                                       echo '<td class="grade-column">';
                                                                        foreach ($enrolledStudent->grades as $grade) {
@@ -1598,6 +1664,22 @@
                                                                             }
                                                                         }
                                                                         echo '</td>';
+
+                                                                       if ($assessment->type === 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                    echo '<td class="assessment-column">
+                                                                        <input type="text" name="' . $textboxName . '" class="form-control score-input" ' . $disabled . '
+                                                                           data-grading-period="' . $assessment->grading_period . '"
+                                                                            data-enrolled-student-id="' . $enrolledStudent->id . '"
+                                                                            data-assessment-id="' . $assessment->id . '"
+                                                                            data-assessment-type="' . $assessment->type . '"
+                                                                            data-original-value="' . $textboxValue . '"
+                                                                             data-max-points="' . $assessment->max_points . '"
+                                                                             data-student-name="' . $studentName . '"
+                                                                              data-assessment-description="' . $assessmentDescription . '"
+                                                                            value="' . $textboxValue . '"
+                                                                            style="width: 80px; text-align: center;">
+                                                                    </td>';
+                                                                }
 
 
                                                                      echo '<td class="grade-column">';
@@ -1663,6 +1745,7 @@
 
                                                             
                                                             foreach ($gradingPeriodAssessments as $assessment) {
+                                                                if ($assessment->type != 'Direct Bonus Grade') {
                                                                 echo '<th class="assessment-column">
                                                                     <p class="assessment-description"
                                                                         data-grading-period="' . $assessment->grading_period . '"
@@ -1675,7 +1758,7 @@
                                                                         </button>
 
                                                                 </th>';
-
+                                                                }
                                                                 
                                                                 $currentColIndex++; ///// move to the next column
                                                             }
@@ -1710,7 +1793,9 @@
 
                                                             if ($gradingPeriodAssessments->isNotEmpty()) {
                                                                 //// Empty th for Total Points
+                                                                if ($assessment->type != 'Direct Bonus Grade') {
                                                                 echo '<th class="assessment-column"></th>';
+                                                             }
                                                                 $currentColIndex++; 
                                                             }
                                                         }
@@ -1734,10 +1819,20 @@
                                                             echo '<th class="grade-column"></th>
                                                                   <th class="grade-column"></th>
                                                                   <th class="grade-column"></th>';
+                                                                   if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                    echo '<th class="assessment-column">
+                                                                              
+                                                                          </th>';
+                                                                    }
                                                         } else {
                                                             //// for Lec and Lab type
                                                             echo '<th class="grade-column"></th>
                                                                   <th class="grade-column"></th>';
+                                                                  if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                    echo '<th class="assessment-column">
+                                                                              
+                                                                          </th>';
+                                                                    }
                                                         }
                                                     }
 

@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
+@php
+        $header_title = "Subject List";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h2>

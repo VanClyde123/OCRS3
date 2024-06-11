@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Assessment List";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h2>Assessments for {{ $subject->description }}</h2>

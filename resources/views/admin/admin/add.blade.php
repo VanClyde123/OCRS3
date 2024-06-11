@@ -1,6 +1,9 @@
 @extends('layouts.app')
    
 @section('content')
+@php
+        $header_title = "Add User";
+    @endphp
    <div class="content-wrappers">
         <style>
             small.small-tag {

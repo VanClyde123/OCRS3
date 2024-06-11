@@ -2,6 +2,9 @@
 
 
 @section('content')
+@php
+        $header_title = "Student List";
+    @endphp
 <title>Student List</title>
     <div class="content-wrappers">
         <section class="content-header">

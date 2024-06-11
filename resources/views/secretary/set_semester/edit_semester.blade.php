@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+        $header_title = "Edit Semester";
+    @endphp
     <div class="content-wrappers">
         <section class="content-header">
             <h3>Edit Semester</h3>
