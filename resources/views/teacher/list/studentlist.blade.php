@@ -1258,7 +1258,7 @@
                                                         <td >{{ $enrolledStudent->student->course }}</td>
                                                         @php
                                                             $totalPointsForAssessmentType = 0;
-                                                            $currentColIndex = 1; // Start from the first column
+                                                            $currentColIndex = 1; 
                                                             foreach ($gradingPeriods as $gradingPeriod) {
                                                                 foreach ($assessmentTypes as $assessmentType) {
                                                                     $gradingPeriodAssessments = $assessments
@@ -1319,7 +1319,7 @@
 
                                                                 $currentColIndex++; 
                                                             }
-                                                            $totalPointsForAssessmentType = 0; // reset the total points for the next assessment type
+                                                            $totalPointsForAssessmentType = 0; 
 
 
 
@@ -1717,7 +1717,7 @@
                                                 <th class="fixed-column"></th> 
                                                 <th class="fixed-column"></th> 
                                                 @php
-                                                    $currentColIndex = 1; // Start from the first column
+                                                    $currentColIndex = 1; 
                                                     foreach ($gradingPeriods as $gradingPeriod) {
                                                         foreach ($assessmentTypes as $assessmentType) {
                                                             $gradingPeriodAssessments = $assessments
@@ -1792,7 +1792,7 @@
 
 
                                                             if ($gradingPeriodAssessments->isNotEmpty()) {
-                                                                //// Empty th for Total Points
+                                                                //// empty th for Total Points
                                                                 if ($assessment->type != 'Direct Bonus Grade') {
                                                                 echo '<th class="assessment-column"></th>';
                                                              }
@@ -1800,7 +1800,7 @@
                                                             }
                                                         }
                                                         $subjectId = $subject->id;
-                                                            ///// Empty th for grades column under 
+                                                            ///// empty th for grades column under 
                                                       
 
                                                    if ($gradingPeriod == "First Grading") {

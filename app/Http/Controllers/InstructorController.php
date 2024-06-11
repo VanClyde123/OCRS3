@@ -24,7 +24,7 @@ class InstructorController extends Controller
 
     public function listSubjects(Request $request)
 {
-    // get subjects taught by the current logged-in instructor
+    ////// get subjects taught by the current logged-in instructor
     $instructorId = Auth::user()->id;
 
     $currentSemester = Semester::where('is_current', true)->first();
@@ -62,7 +62,7 @@ class InstructorController extends Controller
         'Lab',
     ];
 
-    // combine additional subject types with the fetched subject types from the db table
+    ///// combine additional subject types with the fetched subject types from the db subject_type_percentage table
     $subjectTypes = array_merge($additionalSubjectTypes, $subjectTypePercentages);
 
 
