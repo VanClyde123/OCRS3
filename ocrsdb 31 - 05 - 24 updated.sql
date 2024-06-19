@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2024 at 06:55 AM
+-- Generation Time: Jun 19, 2024 at 09:41 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -227,20 +227,6 @@ CREATE TABLE `sections` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Dumping data for table `sections`
---
-
-INSERT INTO `sections` (`id`, `subject_description_id`, `section_name`, `created_at`, `updated_at`) VALUES
-(1, 7, '3 - IDB', '2024-05-24 04:32:37', '2024-05-24 04:32:37'),
-(2, 8, '2 - IDA', '2024-05-25 01:44:35', '2024-05-25 01:44:35'),
-(3, 2, '3 - IDA', '2024-05-25 01:45:33', '2024-05-25 01:45:33'),
-(4, 7, '3 - IDA', '2024-05-26 20:07:20', '2024-05-26 20:07:20'),
-(6, 7, '3 - IDB', '2024-05-27 16:25:22', '2024-05-27 16:25:22'),
-(8, 8, '2 - IDB', '2024-05-27 18:28:39', '2024-05-27 18:28:39'),
-(9, 3, '1 - IDA', '2024-05-27 18:32:27', '2024-05-27 18:32:27'),
-(10, 3, '1 - IDC', '2024-05-27 18:34:04', '2024-05-27 18:34:04');
-
 -- --------------------------------------------------------
 
 --
@@ -310,7 +296,8 @@ INSERT INTO `subject_descriptions` (`id`, `year_level`, `subject_code`, `subject
 (5, 4, 'TESTSUB4', 'Testsub4', '2024-05-08 19:25:34', '2024-05-08 19:25:34'),
 (6, 3, 'SYSINT2', 'Systems and Applications 2', '2024-05-08 20:55:06', '2024-05-08 20:55:06'),
 (7, 3, 'WEBDEV2', 'Web Development 2', '2024-05-09 21:02:17', '2024-05-09 21:02:17'),
-(8, 2, 'DSALGO1', 'Data Structures and Algorithm', '2024-05-19 19:44:36', '2024-05-19 19:46:59');
+(8, 2, 'DSALGO1', 'Data Structures and Algorithm', '2024-05-19 19:44:36', '2024-05-19 19:46:59'),
+(9, 1, 'TESTSUB2', 'Testsub2', '2024-06-18 23:36:00', '2024-06-18 23:36:00');
 
 -- --------------------------------------------------------
 
@@ -365,7 +352,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `course`, `gender`, `password`, `role`, `secondary_role`, `password_changed`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'admin', 'Dante', 'E', 'Sparda', NULL, NULL, '$2y$10$xMfHyc1RQhQfEkXVzF8GNOgJ9Onj4HqtphxKUgbyqfAKMV5gP/HBm', 1, 2, 1, 'AKLTMs40Ddxd9o58BFV0bq1yvSu4BWhj9eAxwIFqxGJ5pYFhmYrNirGu37iD', NULL, '2024-05-27 18:33:13'),
-(67, '10001000', 'Richard', 'R', 'Deckard', NULL, NULL, '$2y$10$2nDMazrP/fb0pas158hUhOmbMKgLC16JmyLbntS93KNwm2Yw6dFci', 2, 1, 1, 'afhSRMIn5b18yKwCkfsJtMUMUU4Ag5lOKqJ4yO5l35TFZWsuENlSk7ID6kOa', '2024-04-30 18:45:54', '2024-05-01 17:45:51'),
+(67, '10001000', 'Richard', 'R', 'Deckard', NULL, NULL, '$2y$10$2nDMazrP/fb0pas158hUhOmbMKgLC16JmyLbntS93KNwm2Yw6dFci', 2, 1, 1, '9bsd1qEPRsNL1jX431WQbX16xjIh2owHhOYUzTAsYhxVIaQCrZSoPUhcIT56', '2024-04-30 18:45:54', '2024-05-01 17:45:51'),
 (68, '00001000', 'Rachel', 'D', 'Tyrell', NULL, NULL, '$2y$10$2vtM.i2n4Xj9Ltf3FbnnLO6NtHXOPW.05kR6PDelzA6UCvQxvEURe', 4, 1, 1, 'DYc1sGWgx0DdWbQZr5RkyMgw9tdN1ZIF2i60aQPm8UHjDNwEx3JjNAC936Zc', '2024-04-30 18:46:33', '2024-05-27 18:33:35'),
 (69, '20151000', 'Tariq', 'R.', 'Andrews', 'BSIT', 'Male', '$2y$10$dAJhARKEwfe0CITsVoHVgOtZ/Ve4xHkoNYwSdBiV/kl3zh8.7Sh2e', 3, NULL, 1, '0Vm2JSW6GXCE66qNTisaRgoGa52t7ek6I9rJBGAizR65kkY8t8tKxB6U3jPB', '2024-04-30 20:38:44', '2024-05-29 23:35:31'),
 (70, '20151110', 'Raphael', 'S.', 'Archer', 'BSIT', 'Male', '$2y$10$SvLJ2HanrBqyGFMidmbhQOrGnb9K4U1dsf3L6RV7i.YikpVQrObLy', 3, NULL, 1, 'MhVO5CxVrjCdMt8epdzCalr2USI5FEEWR7UGljyFRf3RwIuCYTgOboowU62I', '2024-04-30 20:38:44', '2024-05-30 18:27:15'),
@@ -388,7 +375,7 @@ INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `cou
 (87, '20151454', 'Eryn', 'W.', 'Douglas', 'BSIT', 'Female', '$2y$10$Udx./R5VNItFwutZDiIIQ.Ewti6RbYX/XNVKDck4RM7MoMAMtaY/2', 3, NULL, 0, NULL, '2024-04-30 20:38:47', '2024-04-30 20:38:47'),
 (88, '20151970', 'Jayden', 'M.', 'Giles', 'BSCS', 'Female', '$2y$10$ThDCJ9Atia6rQm5KVQh48ur/LpdWV.KZp8uEqVI/J8zopMoLUIlKy', 3, NULL, 0, NULL, '2024-04-30 20:38:47', '2024-04-30 20:38:47'),
 (89, '20151750', 'Evangeline', 'S.', 'Holloway', 'BSCS', 'Female', '$2y$10$ALh28kx9lx1Q4oiNLxWh6esP8vWJo9Q7Yqh8jiZgk5VySH8iQtF1u', 3, NULL, 0, NULL, '2024-04-30 20:38:47', '2024-04-30 20:38:47'),
-(90, '20091220', 'Juan', 'L.', 'Dela Cruz', 'BSCS', 'Male', '$2y$10$rVu9GkiNdXzVzFP5b16UPe7nZY7JW0Xu3zlSUtL.suAPrbgA3k0nO', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
+(90, '20091220', 'Juan', 'L.', 'Dela Cruz', 'BSCS', 'Male', '$2y$10$wgd/Nvkg9EERRjBoKPsHIuJs2RUcpfmzNX0VQBtPMtuXsrg2TeNMm', 3, NULL, 1, 'JtiLWTGlRJJaaOyxBkJ8EbE7yZd1yobqAG8SP57miK1oa3b7gwEaGPUiuZ4j', '2024-05-01 17:50:15', '2024-06-15 21:00:31'),
 (91, '20019312', 'Glenn', 'S.', 'Howard', 'BSCS', 'Male', '$2y$10$/OFJc3MBm1p3.hp/8EddPexciYT6GHm0yqdxlUrL20D/fwo8stqYq', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
 (92, '20012312', 'Testname', 'S.', 'Test', 'BSCS', 'Male', '$2y$10$A/yCiAaUZsAtxQvKx8evNeGAO72iKWCxGPsfsMpw6M4dN9ve5sNVK', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
 (93, '21232122', 'Testname2', 'S.', 'Test', 'BSCS', 'Male', '$2y$10$RsbBxXvXshZf7olropT7JenIiCIRu1bFplNGiVEFlCbgPaKneR/.u', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
@@ -578,7 +565,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `semesters`
@@ -596,7 +583,7 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `subject_descriptions`
 --
 ALTER TABLE `subject_descriptions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `subject_type_percentage`

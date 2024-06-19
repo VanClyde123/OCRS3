@@ -10,7 +10,7 @@
            <input type="button" onclick="window.location.href='{{ url('admin/subject_descriptions') }}';" class="btn btn-info" value="Back" />
 
         </section>
-
+      @include('messages')
         <div class="card mt-4">
             <div class="card-header">
                 <h3 class="card-title">Sections for {{ $subjectDescription->subject_name }}</h3>

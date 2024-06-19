@@ -24,7 +24,7 @@ class ClassRecordController extends Controller
 
     }
   
-     //mehtod for getting the values from excel file only, 
+     ////mehtod for getting the values from excel file only, 
     public function import(Request $request)
     {
              $request->validate([
@@ -43,7 +43,7 @@ class ClassRecordController extends Controller
         'Lab',
     ];
 
-    // combine additional subject types with the fetched subject types from the db table
+    ////// combine additional subject types with the fetched subject types from the db table
     $subjectType = array_merge($additionalSubjectTypes, $subjectTypePercentages);
 
                          
@@ -55,6 +55,7 @@ class ClassRecordController extends Controller
     $term = $this->extractLine($cellB5Value, 3);
 
     $section = $this->extractInformation($cellB5Value, 'Section :');
+    $section = $this->cleanSectionName($section);
    
     $subjectInfo = $this->extractInformation($cellB5Value, 'Subject:');
     list($subjectCode, $subjectDescription) = $this->extractSubjectInfo($subjectInfo);
@@ -105,15 +106,15 @@ private function fetchMaleStudentValues($classList, $startRow, $endRow)
         if (empty($idNumber) || empty($nameCell) || empty($course)) {
             continue;
         }
-        // Check if $nameCell is a string
+        ////  if $nameCell is a string
         $nameCellValue = is_string($nameCell) ? $nameCell : $nameCell->getValue();
 
-        // Extract parts of the name
+        ///// extract parts of the name
         $nameParts = explode(',', $nameCellValue);
         $lastName = trim($nameParts[0]);
         $firstAndMiddleName = trim($nameParts[1]);
 
-        // Split first and middle names
+        //// split the first and middle names
         $firstAndMiddleNameParts = explode(' ', $firstAndMiddleName, 2);
         $firstName = trim($firstAndMiddleNameParts[0]);
         $middleName = isset($firstAndMiddleNameParts[1]) ? trim($firstAndMiddleNameParts[1]) : '';
@@ -139,20 +140,20 @@ private function fetchFemaleStudentValues($classList, $startRow, $endRow)
         $nameCell = $classList->getCell('D' . $row)->getValue();
         $course = $classList->getCell('H' . $row)->getValue();
 
-         // skip if cell is blank
+         ///// skip if cell is blank
         if (empty($idNumber) || empty($nameCell) || empty($course)) {
             continue;
         }
 
-         // Check if $nameCell is a string
+          ////  if $nameCell is a string
         $nameCellValue = is_string($nameCell) ? $nameCell : $nameCell->getValue();
 
-        // Extract parts of the name
+        ///// extract parts of the name
         $nameParts = explode(',', $nameCellValue);
         $lastName = trim($nameParts[0]);
         $firstAndMiddleName = trim($nameParts[1]);
 
-        // Split first and middle names
+       //// split the first and middle names
         $firstAndMiddleNameParts = explode(' ', $firstAndMiddleName, 2);
         $firstName = trim($firstAndMiddleNameParts[0]);
         $middleName = isset($firstAndMiddleNameParts[1]) ? trim($firstAndMiddleNameParts[1]) : '';
@@ -175,13 +176,13 @@ private function extractScheduleInfo($scheduleInfo)
     $matches = [];
     preg_match_all('/\b([MTWFSUH]+(?:\/[MTWFSUH]+)?)\b\s*([\d:]+\s*(?:AM|PM)-[\d:]+\s*(?:AM|PM))\s*\(([^)]+)\)/i', $scheduleInfo, $matches);
 
-    // checks if matches are found
+ 
     if (!empty($matches[1]) && !empty($matches[2]) && !empty($matches[3])) {
         $days = implode(', ', array_map('trim', $matches[1]));
         $time = implode(', ', array_map('trim', $matches[2]));
         $room = implode(', ', array_map('trim', $matches[3]));
     } else {
-        // if no matches are found, set default values
+    
         $days = '';
         $time = '';
         $room = '';
@@ -234,6 +235,14 @@ private function extractInformation($text, $searchString)
     return '';
     }
 
+private function cleanSectionName($section)
+{
+    //// the pattern to remove the extra letter/number before the actual section
+    $pattern = '/^\d+\s*-\s*/';
+
+    //// remove the extra letter/number before the actual section
+    return preg_replace($pattern, '', $section);
+}
 
 
 

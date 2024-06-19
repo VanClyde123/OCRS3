@@ -97,20 +97,24 @@
                                                     @foreach($scores as $score)
                                                     @if ($score->fg_grade !== null || $score->midterms_grade !== null || $score->finals_grade !== null)
                                                         <tr>
-                                                            <td>
-                                                                    @if ($gradingPeriod == "First Grading" && $score->fg_grade !== null && $score->published)
-                                                                    <strong>First Grading Grade:</strong> {{ $score->fg_grade }}<br>
-                                                                    @endif
+                                                            <td style="text-align: center;">
+                                                                @if ($gradingPeriod == "First Grading" && $score->fg_grade !== null && $score->published)
+                                                                    <strong style="display: block; text-align: center;">First Grading Grade: {{ $score->fg_grade }}</strong><br>
+                                                                @endif
 
-                                                                    @if ($gradingPeriod == "Midterm" && $score->midterms_grade !== null && $score->published_midterms)
-                                                                        <strong>Midterm Grade:</strong> {{ $score->midterms_grade }}<br>
-                                                                    @endif
+                                                                @if ($gradingPeriod == "Midterm" && $score->midterms_grade !== null && $score->published_midterms)
+                                                                    <strong style="display: block; text-align: center;">Midterm Grade: {{ $score->midterms_grade }}</strong><br>
+                                                                @endif
 
-                                                                    @if ($gradingPeriod == "Finals" &&  $score->finals_grade !== null && $score->published_finals)
-                                                                        <strong>Finals Grade:</strong> {{ $score->finals_grade }}
+                                                                @if ($gradingPeriod == "Finals" && $score->finals_grade !== null && $score->published_finals)
+                                                                    @if ($score->finals_status === 'DEFAULT')
+                                                                        <strong style="display: block; text-align: center;">Final Grade: {{ $score->finals_grade }}</strong> 
+                                                                    @else
+                                                                        <strong style="display: block; text-align: center;">Final Grade: {{ $score->finals_status }}</strong> 
                                                                     @endif
+                                                                @endif
                                                             </td>
-                                                            <td></td>
+                                                            <td style="text-align: center;"></td>
                                                         </tr>
                                                     @endif
                                                 @endforeach

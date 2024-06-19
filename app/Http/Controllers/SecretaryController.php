@@ -555,6 +555,16 @@ public function assignSubject1(Request $request)
         'room' => 'required',
     ]);
 
+    $existingSubject = Subject::where('subject_code', $request->subject_code)
+                              ->where('section', $request->section)
+                              ->first();
+
+    if ($existingSubject) {
+         return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('error', 'Assigned subject already exists');
+    }
+
+
+
     $subject = Subject::create([
         'subject_code' => $request->subject_code,
         'description' => $request->description,
@@ -600,6 +610,14 @@ public function updateSubject1(Request $request)
         'room' => 'required',
     ]);
 
+    $existingSubject = Subject::where('subject_code', $request->subject_code)
+                              ->where('section', $request->section)
+                              ->first();
+
+    if ($existingSubject) {
+         return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('error', 'Subject already exists');
+    }
+
     $subject = Subject::findOrFail($request->subject_id);
     $subject->update([
         'subject_code' => $request->subject_code,
@@ -633,6 +651,14 @@ public function updateSubject1(Request $request)
             'section_name' => 'required|string|max:255',
             
         ]);
+
+       $existingSubject = Section::where('subject_description_id', $request->subject_description_id)
+                              ->where('section_name', $request->section_name)
+                              ->first();
+
+        if ($existingSubject) {
+             return redirect()->back()->with('error', 'Section Already Exists');
+        }
 
        
         $section = new Section();

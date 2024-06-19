@@ -11,18 +11,20 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 use App\Models\EnrolledStudents;
 use App\Models\Assessment;
 use App\Models\Subject;
 use App\Models\ImportedClasslist;
 
-class StudentReportExport implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithEvents, WithTitle
+class StudentReportExport implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize, WithStyles, WithEvents, WithTitle
 {
    
 
@@ -50,11 +52,11 @@ class StudentReportExport implements FromCollection, WithHeadings, WithColumnFor
         'Exam' => 'E',
         'Lab Activity' => 'LA',
         'Lab Exam' => 'LE',
-        'Additional Points Quiz' => 'BQ',
-        'Additional Points OT' => 'BOT',
-        'Additional Points Exam' => 'BE',
-        'Additional Points Lab' => 'BL',
-        'Direct Bonus Grade' => 'FG',
+        'Additional Points Quiz' => 'QB',
+        'Additional Points OT' => 'OTB',
+        'Additional Points Exam' => 'EB',
+        'Additional Points Lab' => 'LB',
+        'Direct Bonus Grade' => '+FG',
     ];
 
     $exemptedTypes = ['Exam', 'Lab Exam', 'Additional Points Quiz', 'Additional Points OT', 'Additional Points Exam', 'Additional Points Lab', 'Direct Bonus Grade'];
@@ -256,9 +258,9 @@ class StudentReportExport implements FromCollection, WithHeadings, WithColumnFor
 
                 if ($lastTIndex !== -1) {
                    
-                    array_splice($assessmentHeaderRow, $lastTIndex + 1, 0, ['Total Lec', 'Lec Grade']);
+                    array_splice($assessmentHeaderRow, $lastTIndex + 1, 0, ['', 'Grade']);
                     array_splice($assessmentMaxPointsRow, $lastTIndex + 1, 0, ['', '']);
-                    array_splice($assessmentTypeHeaderRow, $lastTIndex + 1, 0, ['', '']); 
+                    array_splice($assessmentTypeHeaderRow, $lastTIndex + 1, 0, ['Total', 'Lec']); 
                     array_splice($gradingPeriodHeaderRow, $lastTIndex + 1, 0, ['', '']);
 
                     $addedTotalLecHeader = true; 
@@ -280,43 +282,43 @@ class StudentReportExport implements FromCollection, WithHeadings, WithColumnFor
                    
 
                     if ($hasFGAssessments) {
-                        $assessmentHeaderRow[] = 'Total Lab';
+                        $assessmentHeaderRow[] = '';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Total';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasFGAssessments) {
-                        $assessmentHeaderRow[] = 'Lab Grade';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Lab';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasFGAssessments) {
-                        $assessmentHeaderRow[] = 'FG Grade';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = '1st Grading';
                         $gradingPeriodHeaderRow[] = '';
                     }
                 } else {
 //////////////////columns for LEc type and Lab type///////////////////
                     if ($hasFGAssessments) {
-                        $assessmentHeaderRow[] = 'Over All Total';
+                        $assessmentHeaderRow[] = '';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Total';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasFGAssessments) {
-                        $assessmentHeaderRow[] = 'FG Grade';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = '1st Grading';
                         $gradingPeriodHeaderRow[] = '';
                     }
                 }
@@ -389,9 +391,9 @@ if (strpos($subject->subject_type, 'LecLab') !== false) {
 
         if ($lastTIndexMidterm !== -1) {
            
-            array_splice($assessmentHeaderRow, $lastTIndexMidterm + 1, 0, ['Total Lec', 'Lec Grade']);
+            array_splice($assessmentHeaderRow, $lastTIndexMidterm + 1, 0, ['', 'Grade']);
             array_splice($assessmentMaxPointsRow, $lastTIndexMidterm + 1, 0, ['', '']);
-            array_splice($assessmentTypeHeaderRow, $lastTIndexMidterm + 1, 0, ['', '']); 
+            array_splice($assessmentTypeHeaderRow, $lastTIndexMidterm + 1, 0, ['Total', 'Lec']); 
             array_splice($gradingPeriodHeaderRow, $lastTIndexMidterm + 1, 0, ['', '']);
 
             $addedTotalLecHeaderMidterm = true; 
@@ -411,216 +413,215 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
 
              if (strpos($subject->subject_type, 'LecLab') !== false) {
                     if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'Total Lab';
+                        $assessmentHeaderRow[] = '';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Total';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'Lab Grade';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Lab';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'Tentative Midterms';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'TM';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                      if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'MD Grade';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Midterm';
                         $gradingPeriodHeaderRow[] = '';
                     }
                 } else {
                     if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'Over All Total';
+                        $assessmentHeaderRow[] = '';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Total';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'Tentative Midterm';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'TM';
                         $gradingPeriodHeaderRow[] = '';
                     }
 
                     if ($hasMidtermAssessments) {
-                        $assessmentHeaderRow[] = 'MD Grade';
+                        $assessmentHeaderRow[] = 'Grade';
                         $assessmentMaxPointsRow[] = '';
                         $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
+                        $assessmentTypeHeaderRow[] = 'Midterm';
                         $gradingPeriodHeaderRow[] = '';
                     }
                     }
 
 ///////////////////////FINALS/////////////////////////////////////////////////////////////
 
-            $previousFinalsAssessmentType = null;
-            $lastSpecifiedFinalsAssessmentType = null; 
-            $addedTotalLecHeaderFinals = false;
+        $previousFinalsAssessmentType = null;
+        $lastSpecifiedFinalsAssessmentType = null; 
+        $addedTotalLecHeaderFinals = false;
 
-            $finalsAssessmentTypeTotals = [];
-            $tHeaderIndexesFinals = [];
+        $finalsAssessmentTypeTotals = [];
+        $tHeaderIndexesFinals = [];
 
-            foreach ($finalsAssessments as $finalsAssessment) {
-                if ($previousFinalsAssessmentType !== $finalsAssessment->type) {
+        foreach ($finalsAssessments as $finalsAssessment) {
 
-                    if ($previousFinalsAssessmentType) {
-                        $assessmentHeaderRow[] = 'T';
-                        $assessmentMaxPointsRow[] = $finalsAssessmentTypeTotals[$previousFinalsAssessmentType] ?? 0;
-                        $assessmentTypeHeaderRow[] = ''; 
-                        $gradingPeriodHeaderRow[] = ''; 
+            ///skips DBG if it exist in the loop, so it will not show up beside the other assessment types
+            if ($finalsAssessment->type === 'Direct Bonus Grade') {
+                continue; 
+            }
 
-                        
-                        $tHeaderIndexesFinals[$previousFinalsAssessmentType] = count($assessmentHeaderRow) - 1;
-                    }
-
-                    $finalsAssessmentTypeTotals[$finalsAssessment->type] = 0;
-
-                    $assessmentHeaderRow[] = $finalsAssessment->abbreviation;
-                    $assessmentMaxPointsRow[] = $finalsAssessment->max_points;
-                    $assessmentDateRow[] = $finalsAssessment->activity_date;
-                    $assessmentTypeHeaderRow[] = $finalsAssessment->type;
-
-                    if (!in_array($finalsAssessment->grading_period, $uniqueGradingPeriods)) {
-                        $gradingPeriodHeaderRow[] = $finalsAssessment->grading_period;
-                        $uniqueGradingPeriods[] = $finalsAssessment->grading_period;
-                    } else {
-                        $gradingPeriodHeaderRow[] = ''; 
-                    }
-
-                    $previousFinalsAssessmentType = $finalsAssessment->type;
-
-                   
-                    if (in_array($finalsAssessment->type, ['Quiz', 'OtherActivity', 'Exam'])) {
-                        $lastSpecifiedFinalsAssessmentType = $finalsAssessment->type;
-                    }
-                } else {
-                    $assessmentHeaderRow[] = $finalsAssessment->abbreviation;
-                    $assessmentMaxPointsRow[] = $finalsAssessment->max_points;
-                    $assessmentDateRow[] = $finalsAssessment->activity_date;
+            if ($previousFinalsAssessmentType !== $finalsAssessment->type) {
+                if ($previousFinalsAssessmentType) {
+                    $assessmentHeaderRow[] = 'T';
+                    $assessmentMaxPointsRow[] = $finalsAssessmentTypeTotals[$previousFinalsAssessmentType] ?? 0;
                     $assessmentTypeHeaderRow[] = ''; 
+                    $gradingPeriodHeaderRow[] = ''; 
 
-                    if (!in_array($finalsAssessment->grading_period, $uniqueGradingPeriods)) {
-                        $gradingPeriodHeaderRow[] = $finalsAssessment->grading_period;
-                        $uniqueGradingPeriods[] = $finalsAssessment->grading_period;
-                    } else {
-                        $gradingPeriodHeaderRow[] = '';
-                    }
+                    $tHeaderIndexesFinals[$previousFinalsAssessmentType] = count($assessmentHeaderRow) - 1;
                 }
 
-                $finalsAssessmentTypeTotals[$finalsAssessment->type] += $finalsAssessment->max_points;
-            }
+                $finalsAssessmentTypeTotals[$finalsAssessment->type] = 0;
 
-            if ($lastSpecifiedFinalsAssessmentType && !$addedTotalLecHeaderFinals) {
-            
-                $lastTIndexFinals = isset($tHeaderIndexesFinals[$lastSpecifiedFinalsAssessmentType]) ? $tHeaderIndexesFinals[$lastSpecifiedFinalsAssessmentType] : -1;
+                $assessmentHeaderRow[] = $finalsAssessment->abbreviation;
+                $assessmentMaxPointsRow[] = $finalsAssessment->max_points;
+                $assessmentDateRow[] = $finalsAssessment->activity_date;
+                $assessmentTypeHeaderRow[] = $finalsAssessment->type;
 
-                if ($lastTIndexFinals !== -1) {
-                   
-                    array_splice($assessmentHeaderRow, $lastTIndexFinals + 1, 0, ['Total Lec', 'Lec Grade']);
-                    array_splice($assessmentMaxPointsRow, $lastTIndexFinals + 1, 0, ['', '']);
-                    array_splice($assessmentTypeHeaderRow, $lastTIndexFinals + 1, 0, ['', '']); 
-                    array_splice($gradingPeriodHeaderRow, $lastTIndexFinals + 1, 0, ['', '']);
+                if (!in_array($finalsAssessment->grading_period, $uniqueGradingPeriods)) {
+                    $gradingPeriodHeaderRow[] = $finalsAssessment->grading_period;
+                    $uniqueGradingPeriods[] = $finalsAssessment->grading_period;
+                } else {
+                    $gradingPeriodHeaderRow[] = ''; 
+                }
 
-                    $addedTotalLecHeaderFinals = true; 
+                $previousFinalsAssessmentType = $finalsAssessment->type;
+
+                if (in_array($finalsAssessment->type, ['Quiz', 'OtherActivity', 'Exam'])) {
+                    $lastSpecifiedFinalsAssessmentType = $finalsAssessment->type;
+                }
+            } else {
+                $assessmentHeaderRow[] = $finalsAssessment->abbreviation;
+                $assessmentMaxPointsRow[] = $finalsAssessment->max_points;
+                $assessmentDateRow[] = $finalsAssessment->activity_date;
+                $assessmentTypeHeaderRow[] = ''; 
+
+                if (!in_array($finalsAssessment->grading_period, $uniqueGradingPeriods)) {
+                    $gradingPeriodHeaderRow[] = $finalsAssessment->grading_period;
+                    $uniqueGradingPeriods[] = $finalsAssessment->grading_period;
+                } else {
+                    $gradingPeriodHeaderRow[] = '';
                 }
             }
 
-            if ($previousFinalsAssessmentType) {
-                $assessmentHeaderRow[] = 'T';
-                $assessmentMaxPointsRow[] = $finalsAssessmentTypeTotals[$previousFinalsAssessmentType] ?? 0;
-                $assessmentTypeHeaderRow[] = '';
+            $finalsAssessmentTypeTotals[$finalsAssessment->type] += $finalsAssessment->max_points;
+        }
+
+        ////// add Total Lec and Lec Grade header only for LecLab subjects
+        if ($lastSpecifiedFinalsAssessmentType && !$addedTotalLecHeaderFinals && strpos($subject->subject_type, 'LecLab') !== false) {
+            $lastTIndexFinals = isset($tHeaderIndexesFinals[$lastSpecifiedFinalsAssessmentType]) ? $tHeaderIndexesFinals[$lastSpecifiedFinalsAssessmentType] : -1;
+
+            if ($lastTIndexFinals !== -1) {
+                array_splice($assessmentHeaderRow, $lastTIndexFinals + 1, 0, ['', 'Grade']);
+                array_splice($assessmentMaxPointsRow, $lastTIndexFinals + 1, 0, ['', '']);
+                array_splice($assessmentTypeHeaderRow, $lastTIndexFinals + 1, 0, ['Total', 'Lec']); 
+                array_splice($gradingPeriodHeaderRow, $lastTIndexFinals + 1, 0, ['', '']);
+
+                $addedTotalLecHeaderFinals = true; 
+            }
+        }
+
+        if ($previousFinalsAssessmentType) {
+            $assessmentHeaderRow[] = 'T';
+            $assessmentMaxPointsRow[] = $finalsAssessmentTypeTotals[$previousFinalsAssessmentType] ?? 0;
+            $assessmentTypeHeaderRow[] = '';
+            $gradingPeriodHeaderRow[] = '';
+        }
+
+        $hasFinalsAssessments = count($finalsAssessments) > 0;
+
+        if ($hasFinalsAssessments) {
+            if (strpos($subject->subject_type, 'LecLab') !== false) {
+                $assessmentHeaderRow[] = '';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'Total';
+                $gradingPeriodHeaderRow[] = '';
+
+                $assessmentHeaderRow[] = 'Grade';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'Lab';
+                $gradingPeriodHeaderRow[] = '';
+
+                $assessmentHeaderRow[] = 'Grade';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'TF';
+                $gradingPeriodHeaderRow[] = '';
+
+                if ($finalsAssessment->where('type', 'Direct Bonus Grade')->count() > 0) {
+                $assessmentHeaderRow[] = ''; 
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = $finalsAssessment->abbreviation;
+                $gradingPeriodHeaderRow[] = '';
+                 }
+
+                $assessmentHeaderRow[] = 'Grade';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'Final';
+                $gradingPeriodHeaderRow[] = '';
+            } else {
+                $assessmentHeaderRow[] = '';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'Total';
+                $gradingPeriodHeaderRow[] = '';
+
+                $assessmentHeaderRow[] = 'Grade';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'TF';
+                $gradingPeriodHeaderRow[] = '';
+
+                if ($finalsAssessment->where('type', 'Direct Bonus Grade')->count() > 0) {
+                $assessmentHeaderRow[] = ''; 
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = $finalsAssessment->abbreviation;
+                $gradingPeriodHeaderRow[] = '';
+                 }
+
+                $assessmentHeaderRow[] = 'Grade';
+                $assessmentMaxPointsRow[] = '';
+                $assessmentDateRow[] = '';
+                $assessmentTypeHeaderRow[] = 'Final';
                 $gradingPeriodHeaderRow[] = '';
             }
+        }
 
-            $hasFinalsAssessments = count($finalsAssessments) > 0;
-
-
-
-                if (strpos($subject->subject_type, 'LecLab') !== false) {
-                    if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'Total Lab';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-                    if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'Lab Grade';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-                    if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'Tentative Finals';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-                    if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'FN Grade';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-                  } else {
-
-                     if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'Over All Total';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-                    if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'Tentative Finals';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-                    if ($hasFinalsAssessments) {
-                        $assessmentHeaderRow[] = 'FN Grade';
-                        $assessmentMaxPointsRow[] = '';
-                        $assessmentDateRow[] = '';
-                        $assessmentTypeHeaderRow[] = '';
-                        $gradingPeriodHeaderRow[] = '';
-                    }
-
-
-                  }
-
-            $assessmentRows = [
-                $gradingPeriodHeaderRow,
-                $assessmentTypeHeaderRow,
-                $assessmentHeaderRow,
-                $assessmentMaxPointsRow,
-               
-            ];
+        $assessmentRows = [
+            $gradingPeriodHeaderRow,
+            $assessmentTypeHeaderRow,
+            $assessmentHeaderRow,
+            $assessmentMaxPointsRow,
+        ];
 
 
     $sortedStudents = collect($students)->groupBy('student.gender');
@@ -639,7 +640,7 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
                 $lastAssessmentType = null;
 
         foreach ($assessments as $index => $assessment) {
-            $score = $student->getScore($assessment->id) ?: '';
+            $score = $student->getScore($assessment->id);
             $assessmentRow[] = $score;
 
             
@@ -725,7 +726,7 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
             $lastMidtermAssessmentType = null;
 
             foreach ($midtermAssessments as $index => $midtermAssessment) {
-            $score = $student->getScore($midtermAssessment->id) ?: '';
+            $score = $student->getScore($midtermAssessment->id);
             $assessmentRow[] = $score;
 
           
@@ -829,28 +830,35 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
 
                     }
 
-               $finalsAssessmentTypeTotals = [];
+
+
+
+                $finalsAssessmentTypeTotals = [];
                 $lastFinalsAssessmentType = null;
+                $directBonusGradeScore = null; 
 
-             foreach ($finalsAssessments as $index => $finalsAssessment) {
-            $score = $student->getScore($finalsAssessment->id) ?: '';
-            $assessmentRow[] = $score;
+                foreach ($finalsAssessments as $index => $finalsAssessment) {
+                    $score = $student->getScore($finalsAssessment->id);
 
-          
-            if (is_numeric($score)) {
-                $finalsAssessmentTypeTotals[$finalsAssessment->type] = ($finalsAssessmentTypeTotals[$finalsAssessment->type] ?? 0) + $score;
-            }
+                    if ($finalsAssessment->type === 'Direct Bonus Grade') {
+                        $directBonusGradeScore = $score; 
+                    } else {
+                        $assessmentRow[] = $score; 
+                    }
 
-            $isLastColumn = ($index === (count($finalsAssessments) - 1));
-            $isLastColumnOfType = ($isLastColumn || $finalsAssessment->type !== $finalsAssessments[$index + 1]->type);
+                    if (is_numeric($score)) {
+                        $finalsAssessmentTypeTotals[$finalsAssessment->type] = ($finalsAssessmentTypeTotals[$finalsAssessment->type] ?? 0) + $score;
+                    }
 
-            
-            if ($isLastColumnOfType) {
-                $assessmentRow[] = $finalsAssessmentTypeTotals[$finalsAssessment->type] ?? ''; 
-            }
+                    $isLastColumn = ($index === (count($finalsAssessments) - 1));
+                    $isLastColumnOfType = ($isLastColumn || $finalsAssessment->type !== $finalsAssessments[$index + 1]->type);
 
-            $lastFinalsAssessmentType = $finalsAssessment->type;
-        }
+                    if ($isLastColumnOfType && $finalsAssessment->type !== 'Direct Bonus Grade') {
+                        $assessmentRow[] = $finalsAssessmentTypeTotals[$finalsAssessment->type] ?? ''; 
+                    }
+
+                    $lastFinalsAssessmentType = $finalsAssessment->type;
+                }
 
         ///////////////////for LecLab type columns finals/////////////////
           if (strpos($subject->subject_type, 'LecLab') !== false) {
@@ -901,6 +909,10 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
                             $assessmentRow[] = $tentativeFNGrade;
             }
 
+            if ($directBonusGradeScore !== null) {
+                $assessmentRow[] = $directBonusGradeScore;
+            }
+
             if ($hasFinalsAssessments) {
                 $assessmentRow[] = $student->grades->avg('finals_grade');
             }
@@ -925,8 +937,23 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
                             $assessmentRow[] = $tentativeFNGrade;
             }
 
-            if ($hasFinalsAssessments) {
-                $assessmentRow[] = $student->grades->avg('finals_grade');
+            if ($directBonusGradeScore !== null) {
+                $assessmentRow[] = $directBonusGradeScore;
+            }
+
+             if ($hasFinalsAssessments) {
+                foreach ($student->grades as $grade) {
+                   
+                    if (isset($grade->finals_status)) {
+                        if ($grade->finals_status === 'DEFAULT') {
+                            $assessmentRow[] = $grade->avg('finals_grade');
+                        } else {
+                            $assessmentRow[] = $grade->finals_status;
+                        }
+                        
+                        break; 
+                    }
+                }
             }
 
 
@@ -1146,7 +1173,7 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
                 $event->sheet->mergeCells('A1:Z4');
 
               
-                $event->sheet->setCellValue('A1', "Subject Code: {$subject->subject_code}                                                                            Days: {$subject->importedClasses->first()->days}\nDescription: {$subject->description}                        Time: {$subject->importedClasses->first()->time}\nTerm: {$subject->term}                                                         Section: {$subject->section}\nInstructor: {$subject->importedClasses->first()->instructor->name} {$subject->importedClasses->first()->instructor->middle_name} {$subject->importedClasses->first()->instructor->last_name}                                                                 Room: {$subject->importedClasses->first()->room}");
+                $event->sheet->setCellValue('A1', "Subject Code: {$subject->subject_code}                                                                              Days: {$subject->importedClasses->first()->days}\nDescription: {$subject->description}                                                               Time: {$subject->importedClasses->first()->time}\nTerm: {$subject->term}                                                         Section: {$subject->section}\nInstructor: {$subject->importedClasses->first()->instructor->name} {$subject->importedClasses->first()->instructor->middle_name} {$subject->importedClasses->first()->instructor->last_name}                                                                 Room: {$subject->importedClasses->first()->room}");
 
 
                
@@ -1202,12 +1229,14 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
             $event->sheet->setCellValue('A' . ($lastDataRow + 7), "E - Exam");
             $event->sheet->setCellValue('A' . ($lastDataRow + 8), "LA - Lab Activity");
             $event->sheet->setCellValue('A' . ($lastDataRow + 9), "LE - Lab Exam");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 10), "BQ - Additional Total Quiz");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 11), "BOT - Additional Total OtherActivity");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 12), "BE - Additional Total Exam");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 13), "BL - Additional Total Lab Activity");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 14), "FG - Direct Bonus to Finals Grade");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 15), "T - Total");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 10), "QB - Additional Total Quiz");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 11), "OTB - Additional Total OtherActivity");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 12), "EB - Additional Total Exam");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 13), "LB - Additional Total Lab Activity");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 14), "+FG - Direct Bonus to Final Grade");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 15), "TM - Tentative Midterm");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 16), "TF - Tentative Finals");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 17), "T - Total");
 
           
             $event->sheet->mergeCells('A' . ($lastDataRow + 2) . ':B' . ($lastDataRow + 2));
@@ -1224,6 +1253,8 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
             $event->sheet->mergeCells('A' . ($lastDataRow + 13) . ':B' . ($lastDataRow + 13));
             $event->sheet->mergeCells('A' . ($lastDataRow + 14) . ':B' . ($lastDataRow + 14));
             $event->sheet->mergeCells('A' . ($lastDataRow + 15) . ':B' . ($lastDataRow + 15));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 16) . ':B' . ($lastDataRow + 16));
+            $event->sheet->mergeCells('A' . ($lastDataRow + 17) . ':B' . ($lastDataRow + 17));
 
             $borderStyle = [
                 'borders' => [
@@ -1234,10 +1265,10 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
                 ],
             ];
 
-            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':B' . ($lastDataRow + 15))->applyFromArray($borderStyle);
+            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':B' . ($lastDataRow + 17))->applyFromArray($borderStyle);
 
            
-            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':Z' . ($lastDataRow + 15))->applyFromArray([
+            $event->sheet->getStyle('A' . ($lastDataRow + 2) . ':Z' . ($lastDataRow + 17))->applyFromArray([
                 'font' => [
                     'bold' => true,
                 ],
@@ -1248,6 +1279,21 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
 
             },
         ];
+    }
+
+     public function styles(Worksheet $sheet)
+    {
+        
+        $headerRows = [1, 2, 3, 4, 5, 6, 7, 8];
+
+       
+        foreach ($headerRows as $row) {
+            $sheet->getStyle("A{$row}:ZZ{$row}")->applyFromArray([
+                'font' => [
+                    'bold' => true,
+                ],
+            ]);
+        }
     }
 
     public function headings(): array
