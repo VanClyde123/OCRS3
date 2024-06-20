@@ -7,11 +7,14 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2>Create Assessment Description</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
-        </section>
-        <section class="content">
-            <div class="card">
+        <h2><br></h2>
+       
+    </section>
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                    <h3 class="card-title">Create Assessment Description</h3>
+                </div>
                 <div class="card-body">
                     <form action="{{ route('assessment-descriptions.store1') }}" method="POST">
                         @csrf
@@ -50,6 +53,7 @@
                 </div>
             </div>
         </section>
+        <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
     </div>
 
 @endsection

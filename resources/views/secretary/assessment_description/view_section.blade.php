@@ -7,7 +7,7 @@
    <div class="container">
         <section class="content-header">
             <h2></h2>
-           <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+          
 
         </section>
          @include('messages')
@@ -48,6 +48,7 @@
                 @endif
             </div>
         </div>
+         <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
     </div>
 
     <!-- add section modal -->

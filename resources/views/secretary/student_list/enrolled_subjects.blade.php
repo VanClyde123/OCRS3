@@ -6,9 +6,9 @@
     @endphp
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h2 >Enrolled Subjects</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+        <section class="content-header" style="text-align: right;">
+            <h2 ></h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Student List" /> 
         </section>
 
         @include('messages')

@@ -5,17 +5,17 @@
         $header_title = "Enrolled Subjects";
     @endphp
     <div class="content-wrappers">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h2>Enrolled Subjects</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+        
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Student List" />
         </section>
         <section class="content">
             @include('messages')
                     
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">{{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h3>
+                    <h3 class="card-title">Enrolled Subjects of {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h3>
                 </div>
             
                 <div class="card-body">

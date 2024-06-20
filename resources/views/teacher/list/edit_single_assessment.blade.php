@@ -54,9 +54,9 @@
     </script>
 
     <div class="content-wrappers">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h2>Edit Assessment</h2>
+        
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
                 
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
         </section>
@@ -68,6 +68,9 @@
                     <input type="hidden" id="subject_code" value="{{ $subjectCode }}">
 
                     <div class="table-responsive">
+                         <div class="card-header">
+                            <h3 class="card-title">Edit Assessment</h3>
+                        </div>
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="gradingPeriod">Grading Period</label>

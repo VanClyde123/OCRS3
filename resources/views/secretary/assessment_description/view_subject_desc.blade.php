@@ -5,7 +5,7 @@
         $header_title = "Course List";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
+        <section class="content-header"  style="text-align: right;">
             
             <a href="{{ route('subject_descriptions.create1') }}" class="btn btn-success">Add Subject</a>
         </section>

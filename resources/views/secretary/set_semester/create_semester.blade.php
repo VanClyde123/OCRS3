@@ -7,13 +7,15 @@
 <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h2>Create Semester</h2>
-        <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
-
+        <h2><br></h2>
+        
     </section>
     <section class="content">
         <div class="container-fluid">
             <div class="card ">
+                 <div class="card-header">
+                    <h3 class="card-title">Create Semester</h3>
+                </div>
                 <div class="card-body">
                     <form method="post" action="{{ route('semesters.store1') }}">
                         @csrf
@@ -43,6 +45,8 @@
             </div>
         </div>
     </section>
+    <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
+
 </div>
 <script>
 

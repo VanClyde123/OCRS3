@@ -7,8 +7,8 @@
    <div class="container">
         <section class="content-header">
         
-           <input type="button" onclick="window.location.href='{{ url('admin/subject_descriptions') }}';" class="btn btn-info" value="Back" />
-
+          
+        <h2></h2>
         </section>
       @include('messages')
         <div class="card mt-4">
@@ -48,7 +48,9 @@
                 @endif
             </div>
         </div>
+         <input type="button" onclick="window.location.href='{{ url('admin/subject_descriptions') }}';" class="btn btn-info" value="Back" />
     </div>
+
 
     <!-- add section modal -->
     <div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="addSectionModalLabel" aria-hidden="true">

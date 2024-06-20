@@ -7,7 +7,7 @@
 <div class="content-wrappers">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h2 class="mb-5">Instructors</h2>
+        <h2 class="mb-5"></h2>
     </section>
     <section class="content">
         <div class="card">

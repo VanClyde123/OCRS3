@@ -5,8 +5,8 @@
         $header_title = "Student Records";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Scores and Grades for {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h2>
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
         </section>
         <section class="content">
@@ -23,6 +23,9 @@
                         </div>
 
                         <div id="collapse{{ $loop->index }}" class="collapse" aria-labelledby="heading{{ $loop->index }}" data-parent="#accordionExample">
+                           <div class="card-header">
+                                <h3 class="card-title">Records of {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h3>
+                            </div>
                             <div class="card-body">
                                 <div class="accordion" id="assessmentAccordion{{ $loop->index }}">
                                     @foreach($gradesByGradingPeriod->groupBy('assessment.type') as $assessmentType => $gradesByAssessmentType)

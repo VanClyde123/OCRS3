@@ -7,7 +7,8 @@
 <div class="container">
     
       <section class="content-header">
-       <input type="button" onclick="window.location.href='{{ url('secretary/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />
+      <br>
+     <br>
       </section>
        @include('messages')
     <div class="card">
@@ -52,5 +53,6 @@
             </div>
         </div>
     </div>
+     <input type="button" onclick="window.location.href='{{ url('secretary/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />
 </div>
 @endsection

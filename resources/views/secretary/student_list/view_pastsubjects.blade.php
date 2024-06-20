@@ -6,15 +6,15 @@
     @endphp
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h2>Past Semester Subjects</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Student List" />
         </section>
         <section class="content">
             @include('messages')
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">{{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h2>
+                    <h2 class="card-title">Past Semester Subjects of {{ $student->last_name }}, {{ $student->name }} {{ $student->middle_name }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

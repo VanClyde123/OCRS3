@@ -6,12 +6,15 @@
     @endphp
 <div class="content-wrappers">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h2>Edit Assessment Description</h2>
-        <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+     <section class="content-header">
+        <h2><br></h2>
+        
     </section>
     <section class="content">
-        <div class="card">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Edit Description for {{$assessmentDescription->grading_period}} {{$assessmentDescription->description}}</h3>
+                </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <form action="{{ route('assessment-descriptions.update1', $assessmentDescription->id) }}" method="POST">
@@ -53,6 +56,7 @@
             </div>
         </div>
     </section>
+      <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
 </div>
 
 @endsection

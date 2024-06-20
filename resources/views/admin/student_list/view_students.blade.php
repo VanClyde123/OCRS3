@@ -7,15 +7,15 @@
     @endphp
 <title>Student List</title>
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Student List</h2>
-           <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
+        <section class="content-header" style="text-align: right;">
+           
+           <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back to User List" />
         </section>
         <section class="content">
             @include('messages')
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Search Students</h3>
+                    <h2 class="card-title">Students List</h3>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

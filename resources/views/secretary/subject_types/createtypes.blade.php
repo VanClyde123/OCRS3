@@ -49,12 +49,15 @@
 
     <div class="content-wrappers">
         <section class="content-header">
-            <h2 >Create Subject Type for Calculation</h2>
-            <input type="button" onclick="window.location.href='{{ url('secretary/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
- 
+            <h2><br></h2>
+           
+
         </section>
         <section class="content">
             <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title">Create Class Type for Calculation</h3>
+                </div>
                 <div class="table-responsive">
                     <div class="card-body">
                         <form action="{{ route('subject_types.store1') }}" method="POST">
@@ -80,5 +83,6 @@
                 </div>
             </div>
         </section>
+          <input type="button" onclick="window.location.href='{{ url('secretary/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
     </div>
 @endsection

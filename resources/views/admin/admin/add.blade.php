@@ -13,14 +13,17 @@
             }
         </style>
         <section class="content-header">
-            <h2>Add User</h2>
-            <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
+           <br>
+          
         </section>
         @include('messages')
         <section class="content">
             <div class="card">
                 <form method="post" action="">
                     {{ csrf_field() }}
+                <div class="card-header">
+                    <h3 class="card-title">Add User</h3>
+                </div>
                     <div class="card-body">
                         <small class="small-tag">* Required</small>
                         <div class="form-group">
@@ -79,6 +82,8 @@
                     </div>
                 </form>
             </div>
+
+              <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
         </section>
     </div>
 

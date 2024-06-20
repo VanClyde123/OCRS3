@@ -7,7 +7,7 @@
     <div class="content-wrappers">
         <section class="content-header">
             
-           <input type="button" onclick="window.location.href='{{ url('admin/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+           <br>
 
         </section>
         <section class="content">
@@ -43,5 +43,6 @@
                 </div>
             </div>
         </section>
+        <input type="button" onclick="window.location.href='{{ url('admin/subject_descriptions') }}';" class="btn btn-info" value="Back" />
     </div>
 @endsection

@@ -16,8 +16,8 @@
     @endpush
 
     <div class="content-wrappers">
-        <section class="content-header">
-                <h2>Semesters</h2>
+        <section class="content-header" style="text-align: right;">
+                <h2></h2>
                 <a href="{{ url('secretary/set_semester/view_semesters')}}" class="btn btn-primary">Modify Semesters</a>
         </section>
     

@@ -789,9 +789,9 @@
         }
     </style>
     <div class="content-wrappers">
-        <section class="content-header">
+        <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Subject List" /> 
             @php
                 $studentCount = count($enrolledStudents);
             @endphp
@@ -1317,9 +1317,9 @@
                                                 @foreach ($students as $enrolledStudent)
                                                     <tr>
                                                         <td >{{ $gender == 'Male' ? $studentNumberMale++ : $studentNumberFemale++ }}</td>
-                                                        <td >{{ $enrolledStudent->student->id_number }}</td>
-                                                        <td class="fixed-column" style="background-color:white; height" >{{ $enrolledStudent->student->last_name }}, {{ $enrolledStudent->student->name }} {{ $enrolledStudent->student->middle_name }}</td>
-                                                        <td >{{ $enrolledStudent->student->course }}</td>
+                                                        <td ><b>{{ $enrolledStudent->student->id_number }}</b></td>
+                                                        <td class="fixed-column" style="background-color:white; height" ><b>{{ $enrolledStudent->student->last_name }}, {{ $enrolledStudent->student->name }} {{ $enrolledStudent->student->middle_name }}</b></td>
+                                                        <td ><b>{{ $enrolledStudent->student->course }}</b></td>
                                                         @php
                                                             $totalPointsForAssessmentType = 0;
                                                             $currentColIndex = 1; 
@@ -1934,7 +1934,7 @@
                     @csrf
                     <input type="hidden" name="subject_code" id="subject_code" value="{{ $subject->subject_code }}">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="assessmentModalLabel">Set Assessment</h5>
+                        <h5 class="modal-title" id="assessmentModalLabel">Add Assessment</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

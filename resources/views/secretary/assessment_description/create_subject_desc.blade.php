@@ -6,8 +6,8 @@
     @endphp
     <div class="content-wrappers">
         <section class="content-header">
-            <h2></h2>
-           <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+            <h2><br></h2>
+          
 
         </section>
         <section class="content">
@@ -48,6 +48,7 @@
                 </div>
             </div>
         </section>
+         <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
     </div>
 
    

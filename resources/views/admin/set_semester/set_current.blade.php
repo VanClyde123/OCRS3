@@ -18,7 +18,7 @@
     @if($semesters->isEmpty())
         @include('messages')
             <div class="content-wrappers">
-                <!-- Content Header (Page header) -->
+               
                 <section class="content-header">
                     <h2>Create Semester</h2>
                     <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
@@ -75,7 +75,7 @@
         <div class="content-wrappers">
             <section class="content-header">
               
-                <div  style="text-align: left;">
+                <div  style="text-align: right;">
                     <a href="{{ url('admin/set_semester/view_semesters')}}" class="btn btn-success">Modify Semesters</a>
                 </div>
             </section>

@@ -7,15 +7,19 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2>Semesters</h2>
-            <div  style="text-align: left;">
-               <input type="button" onclick="window.location.href='{{ url('admin/set_semester/set_current') }}';" class="btn btn-info" value="Back" />
+           
+            <div  style="text-align: right;">
+               
                 <a href="{{ route('semesters.create') }}" class="btn btn-success">Add Semester</a>
             </div>
         </section>
         @include('messages')
         <section class="content">
+           
             <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Semester List</h3>
+                </div>
                 <div class="card-body ">
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -50,6 +54,7 @@
                     </div>
                 </div>
             </div>
+            <input type="button" onclick="window.location.href='{{ url('admin/set_semester/set_current') }}';" class="btn btn-info" value="Back" />
         </section>
     </div>
 @endsection

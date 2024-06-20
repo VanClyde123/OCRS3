@@ -7,20 +7,23 @@
    <div class="content-wrappers">
         <style>
             small.small-tag {
-                font-size: 0.8em; /* Adjust this value to make the tag smaller */
+                font-size: 0.8em; 
                 position: relative;
-                top: -10px; /* Adjust this value to elevate the tag from the ground */
+                top: -10px; 
             }
         </style>
         <section class="content-header">
-            <h2>Edit User</h2>
-           <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
+           <br>
+           
         </section>
 
         <section class="content">
             <div class="card ">
                 <form method="post" action="">
                 {{ csrf_field() }}
+                 <div class="card-header">
+                    <h3 class="card-title">Edit {{ $getData->name }} {{ $getData->middle_name }}. {{ $getData->last_name }} Account Information </h3>
+                </div>
                 <div class="card-body">
                     <small class="small-tag">* Required</small>
                     <div class="form-group">
@@ -77,6 +80,8 @@
                 </div>
                 </form>
             </div>
+
+            <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back" />
         </section>
     </div>
 

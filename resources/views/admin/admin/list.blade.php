@@ -5,7 +5,7 @@
     <div class="content-wrappers">
         <section class="content-header">
           
-            <div style="text-align: left;">
+            <div style="text-align: right;">
                 <a href="{{ url('admin/admin/add')}}" class="btn  btn-success">Add User</a>
                 <a href="{{ url('admin/student_list/view_students')}}" class="btn  btn-success">Student List</a>
                 

@@ -6,15 +6,15 @@
         $header_title = "Subject List";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Subject List</h2>
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
             <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-info">Past Subjects</a>
         </section>
         <section class="content">
             @include('messages')
             <div class="card">
                 <div class="card-header">
-
+                    Subject List
                 </div>
                 <div class="card-body ">
                     <div>

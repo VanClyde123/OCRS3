@@ -6,12 +6,15 @@
     @endphp
     <div class="content-wrappers">
         <section class="content-header">
-            <h3>Edit Semester</h3>
-            <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
+            <h3><br></h3>
+            
 
         </section>
         <section class="content">
             <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Edit Semester</h3>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <form method="post" action="{{ route('semesters.update1', $semester->id) }}">
@@ -31,5 +34,6 @@
                 </div>
             </div>
         </section>
+        <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
     </div>
 @endsection

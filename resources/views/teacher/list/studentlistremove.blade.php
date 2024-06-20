@@ -5,13 +5,16 @@
         $header_title = "Remove Students";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Enrolled Students List</h2>
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
         </section>
         <section class="content">
             @include('messages')
             <div class="card">
+                 <div class="card-header">
+                    <h3 class="card-title">Enrolled Students List</h3>
+                </div>
                 <div class="card-body ">
                     <div class="table-responsive">
                         <table class="table table-striped">

@@ -5,13 +5,16 @@
         $header_title = "Past Semester Subjects";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Previously Enrolled Subjects</h2>
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
             <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
         </section>
         @include('messages')
         <section class="content">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Past Subjects</h3>
+                </div>
                 @if (empty($pastStudentSubjects))
                     <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
                 @else

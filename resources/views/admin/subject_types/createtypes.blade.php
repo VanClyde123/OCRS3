@@ -53,8 +53,8 @@
     </style>
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Create Class Type</h2>
-           <input type="button" onclick="window.location.href='{{ url('admin/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
+            <h2><br></h2>
+           
 
         </section>
         <section class="content">
@@ -85,6 +85,7 @@
                 </div>
             </div>
         </section>
+        <input type="button" onclick="window.location.href='{{ url('admin/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
     </div>
 
 @endsection

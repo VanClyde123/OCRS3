@@ -6,15 +6,18 @@
     @endphp
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h2>Semesters</h2>
-            <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/set_current') }}';" class="btn btn-info" value="Back" />
+        <section class="content-header"  style="text-align: right;">
+            <h2></h2>
+            
 
             <a href="{{ route('semesters.create1') }}" class="btn btn-success">Add Semester</a>
         </section>
         <section class="content">
             <div class="card">
                 @include('messages')
+                  <div class="card-header">
+                    <h3 class="card-title">Semester List</h3>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -39,7 +42,7 @@
                                         <form action="{{ route('semesters.destroy1', $semester->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')" {{ $semester->is_current ? 'disabled' : '' }}>Delete</button>
                                          </form>
                                         </td>
                                     </tr>
@@ -50,6 +53,7 @@
                 </div>
             </div>
         </section>
+        <input type="button" onclick="window.location.href='{{ url('secretary/set_semester/set_current') }}';" class="btn btn-info" value="Back" />
     </div>
 @endsection
 

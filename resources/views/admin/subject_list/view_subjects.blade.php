@@ -7,14 +7,14 @@
    <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2 class="mb-5">Subject List</h2>
+            <h2 class="mb-5"></h2>
         </section>
           
         <section class="content">
             @include('messages')
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Subjects in the current Semester</h3>
+                    <h3 class="card-title">Subjects in the Current Semester</h3>
                 </div>
                 <div class="card-body ">
                     <div class="table-responsive">

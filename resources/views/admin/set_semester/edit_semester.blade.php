@@ -6,15 +6,19 @@
     @endphp
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Edit Semester</h2>
-           <input type="button" onclick="window.location.href='{{ url('admin/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
+            <h2> <br></h2>
+          
         </section>
         <section class="content">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Edit Semester</h3>
+                </div>
                 <div class="card-body">
                     <form method="post" action="{{ route('semesters.update', $semester->id) }}">
                         @csrf
                         @method('PUT')
+                        
                         <div class="form-group">
                             <label for="name">Semester</label>
                             <select class="form-control" name="semester_name" required>
@@ -38,6 +42,7 @@
                 </div>
             </div>
         </section>
+         <input type="button" onclick="window.location.href='{{ url('admin/set_semester/view_semesters') }}';" class="btn btn-info" value="Back" />
     </div>
     
 <script>

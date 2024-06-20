@@ -8,8 +8,8 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
            
-            <div  style="text-align: left;">
-                 <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
+            <div  style="text-align: right;">
+                
                 <a href="{{ route('assessment-descriptions.create1', ['subjectDescId' => $subjectDescId]) }}" class="btn btn-success">Create New Description</a>
             </div>
         </section>
@@ -69,5 +69,6 @@
         </div>
     </div>
 </section>
+ <input type="button" onclick="window.location.href='{{ url('secretary/subject_descriptions') }}';" class="btn btn-info" value="Back" />
     </div>
 @endsection

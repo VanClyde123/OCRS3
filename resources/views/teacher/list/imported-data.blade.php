@@ -48,12 +48,15 @@
 
     <div class="content-wrappers">
         <section class="content-header">
-            <h2 class="mb-5">Class List Data</h2>
+            <h2 class="mb-5"></h2>
         </section>
      <div class="alert {{ $message === 'The subject from the imported class list is present in the current course' ? 'alert-info' : 'alert-danger' }}">{{ $message }}</div>
         @include('messages')
         <section class="content">
             <div class="card">
+                <div class="card-header">
+                    Class List Data
+                </div>
                 <div class="card-body">
                     <div class="class-info">
                         <table class="class-info-table">

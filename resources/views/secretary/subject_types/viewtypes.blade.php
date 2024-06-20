@@ -6,14 +6,17 @@
     @endphp
     <div class="content-wrappers">
         <section class="content-header">
-            <h2>Class Types for Lec and Lab Subjects</h2>
-            <div  style="text-align: left;">
+            <h2></h2>
+            <div  style="text-align: right;">
                 <a href="{{ route('subject_types.create1') }}" class="btn btn-success">Add Class Type</a>
             </div>
         </section>
         @include('messages')
         <section class="content">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Subject Type List</h3>
+                </div>
                 <div class="card-body ">
                     <div class="table-responsive">
                         <table class="table table-striped">

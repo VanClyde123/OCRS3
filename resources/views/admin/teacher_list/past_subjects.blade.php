@@ -7,13 +7,13 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2>List of Past Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h2>
-           <input type="button" onclick="window.location.href='{{ url('admin/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />
+            <h2><br></h2>
+           
         </section>
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Past Subjects</h3>
+                    <h3 class="card-title">Past Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h3>
                 </div>
                 <div class="card-body">
                     <!-- Search form -->
@@ -63,5 +63,6 @@
                 </div>
             </div>
         </section>
+        <input type="button" onclick="window.location.href='{{ url('admin/teacher_list/instructor_list') }}';" class="btn btn-info" value="Back" />
     </div>
 @endsection

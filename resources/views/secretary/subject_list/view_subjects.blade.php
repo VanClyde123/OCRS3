@@ -8,13 +8,15 @@
    <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            
+            <h2 class="mb-5"></h2>
         </section>
 
         @include('messages')
         <section class="content">
             <div class="card">
-                <!-- /.card-header -->
+                 <div class="card-header">
+                    <h3 class="card-title">Subjects in the Current Semester</h3>
+                </div>
                 <div class="card-body ">
                     <div class="table-responsive">
                             @if (empty($importedClasses ))

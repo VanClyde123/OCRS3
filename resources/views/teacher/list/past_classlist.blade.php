@@ -2,22 +2,22 @@
 
 @section('content')
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Past Subject List</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Subject List" /> 
         </section>
         @include('messages')
         <section class="content">
             <div class="card">
                 <div class="card-header">
-
+               Past Subject List
                 </div>
                 <div class="card-body">
                     <div>
                         <form action="{{ route('teacher.searchPastSubjects') }}" method="GET" class="form-inline mb-2">
                             <div class="form-group">
                                 <label for="search">Search:</label>
-                                <input type="text" class="form-control" id="search" name="search" placeholder="Search by Subject Code, Description, Section, Days, Time, or Room" size="60">
+                                <input type="text" class="form-control" id="search" name="search" placeholder="Search by Subject Code, Description, Section, Days, Time, or Room" size="50">
                             </div>
                             <div class="form-group mx-sm-3">
                                 <label for="term">Term:</label>

@@ -5,13 +5,16 @@
         $header_title = "Assessment List";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Assessments for {{ $subject->description }}</h2>
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
            <input type="button" onclick="window.location.href='{{ route('teacher.list.studentlist', ['subject' => $subject]) }}';" class="btn btn-info" value="Back" />
         </section>
         @include('messages')
         <section class="content">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Assessments for {{ $subject->subject_code}}| {{ $subject->description }} | {{ $subject->section }}</h3>
+                </div>
                 <div class="table-responsive">
                     <div class="card-body">
                         @php

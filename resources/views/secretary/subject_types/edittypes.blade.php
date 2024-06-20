@@ -51,13 +51,16 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2>Edit Subject Type {{ $subjectType->subject_type }}</h2>
-            <input type="button" onclick="window.location.href='{{ url('secretary/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
+            <h2><br></h2>
+            
 
         </section>
         <!-- Main content -->
         <section class="content">
             <div class="card">
+                 <div class="card-header">
+                    <h3 class="card-title">Edit Class Calculation for {{ $subjectType->subject_type }}</h3>
+                </div>
                 <div class="card-body">
                     <form action="{{ route('subject_types.update1', $subjectType->id) }}" method="POST">
                             @csrf
@@ -82,6 +85,7 @@
                 </div>
             </div>
         </section>
+        <input type="button" onclick="window.location.href='{{ url('secretary/subject_types/viewtypes') }}';" class="btn btn-info" value="Back" />
     </div>
 
 

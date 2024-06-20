@@ -31,13 +31,16 @@
         </script>
     @endpush
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Scores</h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Subject List" />
         </section>
         <section class="content">
             @include('messages')
             <div class="card">
+                 <div class="card-header">
+                    <h3 class="card-title">Records</h3>
+                </div>
                 <div class="card-body">
                     @if ($scores->isNotEmpty())
                         <div class="card-body ">

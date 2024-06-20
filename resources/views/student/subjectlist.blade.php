@@ -5,8 +5,8 @@
         $header_title = "Subject List";
     @endphp
     <div class="content-wrappers">
-        <section class="content-header">
-            <h2>Enrolled Subjects</h2>
+        <section class="content-header" style="text-align: right;">
+            <h2></h2>
             <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-info">Past Subjects</a>
         </section>
 
