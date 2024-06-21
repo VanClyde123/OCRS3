@@ -90,7 +90,7 @@
                 @if(!$grades->groupBy('assessment.grading_period')->isNotEmpty())
                     <div class="card">
                         <div class="card-body">
-                            <p>No activity or grade published yet.</p>
+                            <p>No activity recorded yet.</p>
                         </div>
                     </div>
                 @endif

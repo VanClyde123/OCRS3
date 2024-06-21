@@ -85,6 +85,13 @@
                         </div>
                     </div>
                 @endforeach
+                 @if(!$grades->groupBy('assessment.grading_period')->isNotEmpty())
+                    <div class="card">
+                        <div class="card-body">
+                            <p>No activity recorded yet.</p>
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
     </div>

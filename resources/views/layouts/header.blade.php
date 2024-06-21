@@ -17,7 +17,7 @@
 
                 <div>
                      <div>
-                        <a class="nav-link" style="color:white; font-size: 90%;">
+                        <a class="nav-link" style="color:white; font-size: 80%;">
                             {{ $currentSemesterText }}
                         </a>
                     </div>

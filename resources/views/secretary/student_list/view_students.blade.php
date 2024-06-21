@@ -20,6 +20,9 @@
                 </div>
                 <div class="card-body ">
                     <div>
+                           <div id="reset-message" class="mb-2" style="display: none;">
+                                <a href="{{ url('secretary/student_list/view_students')}}" class="btn btn-warning btn-sm">Click here to reset</a>
+                            </div>
                         <form action="{{ route('secretary.searchStudents1') }}" method="GET" class="mb-2">
                             <div class="input-group">
                                 <input type="text" name="search" class="form-control" placeholder="Search by ID Number, Last Name, First Name or Middle Name">
@@ -28,6 +31,13 @@
                                 </div>
                             </div>
                         </form>
+
+                        <div class="alphabet-filter mt-3">
+                            <a href="#" class="btn btn-outline-info mr-2 alphabet-link" data-letter="All" style="font-size: 12px; padding: 5px 7px;">All</a>
+                            @foreach(range('A', 'Z') as $letter)
+                                <a href="#" class="btn btn-outline-info mr-2 alphabet-link" data-letter="{{ $letter }}" style="font-size: 12px; padding: 5px 9.5px;">{{ $letter }}</a>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -48,9 +58,10 @@
                                         <td>{{ $student->name }}</td>
                                         <td>{{ $student->middle_name }}</td>
                                         <td>
-                                            <a href="{{ route('secretary.viewEnrolledSubjects1', ['studentId' => $student->id]) }}" class="btn btn-info">View Enrolled Subjects</a>
-                                            <br><br>
-                                            <a href="{{ route('secretary.viewPastEnrolledSubjects1', ['studentId' => $student->id]) }}" class="btn btn-info">View Past Semester Subjects</a>
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.viewEnrolledSubjects', ['studentId' => $student->id]) }}" class="btn btn-info">View Enrolled Subjects</a>
+                                                <a href="{{ route('admin.viewPastEnrolledSubjects', ['studentId' => $student->id]) }}" class="btn btn-info">View Past Semester Subjects</a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,4 +72,38 @@
             </div>
         </section>
     </div>
+
+    <style>
+        .alphabet-link {
+            font-size: 14px; 
+            padding: 5px 10px; 
+        }
+
+          .btn-group {
+            display: flex; 
+            gap: 5px; 
+        }
+    </style>
+
+    <script>
+       $(document).ready(function() {
+        if ("{{ request()->search }}") {
+            $('#reset-message').show();
+            $('.alphabet-filter').hide();
+        }
+        $('.alphabet-link').on('click', function(e) {
+            e.preventDefault();
+            const selectedLetter = $(this).data('letter').toUpperCase();
+
+            $('tbody tr').each(function() {
+                const lastName = $(this).find('td:nth-child(2)').text().trim();
+                if (selectedLetter === 'ALL' || lastName.startsWith(selectedLetter)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+ </script>
 @endsection

@@ -9,8 +9,8 @@ Updates:
 - removed the fetched exsiting assessment in the add assessment modal. 
 - updated the assign subject to have a check if the subject with the same section already exists
 - updated the add section to have a check if the section already exists
-Test Accounts:
 
+Test Accounts:
 Admin Account: admin
 Admin Password: admin12345
 Secretary Account: 00001000

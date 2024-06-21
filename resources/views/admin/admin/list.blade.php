@@ -7,8 +7,6 @@
           
             <div style="text-align: right;">
                 <a href="{{ url('admin/admin/add')}}" class="btn  btn-success">Add User</a>
-                <a href="{{ url('admin/student_list/view_students')}}" class="btn  btn-success">Student List</a>
-                
                 {{-- 
                 <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
                 --}}
@@ -19,23 +17,32 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">User List</h3>
+                       <div style="text-align: right;">
+                            <a href="{{ url('admin/student_list/view_students')}}" class="btn  btn-success">Student List</a>
+                        </div>
                 </div>
                 <div class="card-body">
                     <div>
-                        <form action="{{ url('admin/admin/list') }}" method="GET" class="mb-2">
-                            <div class="input-group mb-2">
-                                <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request('search') }}">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-info">Search</button>
+                       <form action="{{ url('admin/admin/list') }}" method="GET" class="mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control" placeholder="Search" value="{{ request('search') }}">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-info">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select onchange="this.form.submit()" class="form-control" name="role" id="roleSelect">
+                                        <option value="" disabled selected>--Select Role--</option>
+                                        <option value="">Show All</option>
+                                        <option value="1" {{ request('role') == 1 ? 'selected' : '' }}>Admin</option>
+                                        <option value="2" {{ request('role') == 2 ? 'selected' : '' }}>Instructor</option>
+                                        <option value="4" {{ request('role') == 4 ? 'selected' : '' }}>Secretary</option>
+                                    </select>
                                 </div>
                             </div>
-                            <select onchange="this.form.submit()"class="form-control" name="role" id="roleSelect" style="width:20%"  placeholder="--Select Role--">
-                                <option value="" disabled selected>--Select Role--</option>
-                                <option value="">Show All</option>
-                                <option value="1" {{ request('role') == 1 ? 'selected' : '' }}>Admin</option>
-                                <option value="2" {{ request('role') == 2 ? 'selected' : '' }}>Instructor</option>
-                                <option value="4" {{ request('role') == 4 ? 'selected' : '' }}>Secretary</option>
-                            </select>
                         </form>
                     </div>
                     <div class="table-responsive">
