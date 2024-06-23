@@ -19,6 +19,11 @@ class ImportedClasslist extends Model
                 });
     }
 
+     public function previousInstructor()
+    {
+        return $this->belongsTo(User::class, 'previous_instructor_id', 'id');
+    }
+
     public function subject()
      {
       return $this->belongsTo(Subject::class, 'subjects_id');
@@ -33,6 +38,7 @@ class ImportedClasslist extends Model
     protected $fillable = [
     'subjects_id',
     'instructor_id',
+    'previous_instructor_id',
     'days',
     'time',
     'room',

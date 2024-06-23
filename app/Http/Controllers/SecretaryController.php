@@ -406,18 +406,23 @@ public function viewStudentPoints($studentId, $subjectId)
          $instructors = User::where('role', 2)
                        ->orWhere('secondary_role', 2)
                        ->get();
-            return view('secretary.subject_list.change_instructor', compact('importedClass', 'instructors'));
+
+          $currentInstructorId = $importedClass->instructor_id;
+
+        return view('secretary.subject_list.change_instructor', compact('importedClass', 'instructors', 'currentInstructorId'));
         }
 
     public function changeInstructor1($importedClassId, Request $request)
     {
-          //// fetch the selected imported class
-        $importedClass = ImportedClasslist::findOrFail($importedClassId);
+          
+      $importedClass = ImportedClasslist::findOrFail($importedClassId);
 
-        ///// update the instructor_id in the imported class
+        
+        $importedClass->previous_instructor_id = $importedClass->instructor_id;
+
+        
         $importedClass->instructor_id = $request->input('newInstructor');
         $importedClass->save();
-
 
         return redirect()->route('secretary.viewSubjects1')->with('success', 'Instructor changed successfully');
     }
@@ -447,7 +452,7 @@ public function viewStudentPoints($studentId, $subjectId)
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->back()->with('success', ' Your password changed successfully.');
+         return redirect()->route('user.profile')->with('success', 'Your password changed successfully.');
     }
 
    //////////change password - newly logged in///////////////////

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('subjects_id');
             $table->unsignedBigInteger('instructor_id');
+            $table->unsignedBigInteger('previous_instructor_id');
             $table->string('days');
             $table->string('time');
             $table->string('room');
@@ -22,6 +23,7 @@ return new class extends Migration
 
             $table->foreign('subjects_id')->references('id')->on('subjects');
             $table->foreign('instructor_id')->references('id')->on('users')->where('role', 2);
+            $table->foreign('previous_instructor_id')->references('id')->on('users')->where('role', 2);
         });
     }
 

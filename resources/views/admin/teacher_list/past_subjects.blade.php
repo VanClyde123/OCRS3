@@ -50,8 +50,9 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Subject Name</th>
-                                        <th>Subject Code</th>
+                                         <th>Subject Code</th>
+                                        <th>Description</th>
+                                       
                                         <th>Section</th>
                                         <th>Term</th>
                                         <th>Action</th>
@@ -60,8 +61,9 @@
                                 <tbody id="subject-table-body">
                                     @foreach($pastSubjects as $subject)
                                         <tr>
+                                             <td>{{ $subject->subject->subject_code }}</td>
                                             <td>{{ $subject->subject->description }}</td>
-                                            <td>{{ $subject->subject->subject_code }}</td>
+                                           
                                             <td>{{ $subject->subject->section }}</td>
                                             <td>{{ $subject->subject->term }}</td>
                                             <td>

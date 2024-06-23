@@ -21,14 +21,15 @@
                         @if (empty($importedClasses))
                             <p>Subjects will not show since there is no active semester set. Please set a semester</p>
                         @else
-                            <table class="table table-striped">
+                             <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Subject Code</th>
                                         <th>Description</th>
                                         <th>Section</th>
-                                        <th>Semester</th>
+                                         <th>Previous Instructor</th>
                                         <th>Current Instructor</th>
+                                       
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -38,12 +39,23 @@
                                             <td>{{ $importedClass->subject->subject_code }}</td>
                                             <td>{{ $importedClass->subject->description }}</td>
                                             <td>{{ $importedClass->subject->section}}</td>
-                                            <td>{{ $importedClass->subject->term}}</td>
-                                            <td>@if ($importedClass->instructor && ($importedClass->instructor->role == 2 || $importedClass->instructor->secondary_role == 2))
+                                          
+                                          
+                                            <td>
+                                                @if ($importedClass->previousInstructor && ($importedClass->previousInstructor->role == 2 || $importedClass->previousInstructor->secondary_role == 2))
+                                                    {{ $importedClass->previousInstructor->name }} {{ $importedClass->previousInstructor->middle_name }} {{ $importedClass->previousInstructor->last_name }}
+                                                @else
+                                                    No Previous Instructor
+                                                @endif
+                                            </td>
+
+                                                  <td>
+                                                    @if ($importedClass->instructor && ($importedClass->instructor->role == 2 || $importedClass->instructor->secondary_role == 2))
                                                     {{ $importedClass->instructor->name }} {{ $importedClass->instructor->middle_name }} {{ $importedClass->instructor->last_name }}
                                                 @else
-                                                   No Assigned
-                                                @endif</td>
+                                                    No Assigned
+                                                @endif
+                                            </td>
                                             <td>
                                                 <a href="{{ route('admin.changeInstructorForm',  ['importedClassId' => $importedClass->id]) }}" class="btn btn-primary">Change Instructor</a>
                                             </td>

@@ -10,13 +10,13 @@
     </section>
 
     @include('messages')
-    <section class="content">
-        <div class="card">
+    <section class="content d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card" style="width: 400px; transform: translateY(-20%);">
             <div class="card-header">
-                    <h3 class="card-title">Change Account Password</h3>
-                </div>
+                <h3 class="card-title">Change Account Password</h3>
+            </div>
             <div class="card-body">
-                    @if ($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -24,7 +24,7 @@
                             @endforeach
                         </ul>
                     </div>
-                   @endif
+                @endif
 
                 <form action="{{ route('change-password') }}" method="POST">
                     @csrf
@@ -71,6 +71,7 @@
             </div>
         </div>
     </section>
+
 </div>
 
 <script>

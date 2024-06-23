@@ -199,7 +199,7 @@ private function getRoleNumber($roleName) {
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->back()->with('success', ' Your password changed successfully.');
+        return redirect()->route('user.profile')->with('success', 'Your password changed successfully.');
     }
 
 
@@ -426,16 +426,21 @@ private function getRoleNumber($roleName) {
         $instructors = User::where('role', 2)
                        ->orWhere('secondary_role', 2)
                        ->get();
+     
+        $currentInstructorId = $importedClass->instructor_id;
 
-            return view('admin.subject_list.change_instructor', compact('importedClass', 'instructors'));
-        }
+        return view('admin.subject_list.change_instructor', compact('importedClass', 'instructors', 'currentInstructorId'));
+    }
 
     public function changeInstructor($importedClassId, Request $request)
     {
-          //// fetch the selected imported class
+         
         $importedClass = ImportedClasslist::findOrFail($importedClassId);
 
-        ///// update the instructor_id in the imported class
+        
+        $importedClass->previous_instructor_id = $importedClass->instructor_id;
+
+        
         $importedClass->instructor_id = $request->input('newInstructor');
         $importedClass->save();
 
@@ -823,5 +828,7 @@ public function updateSubject(Request $request)
     
     return redirect()->back()->with('success', 'Section deleted successfully');
 }
+
+
 
 }

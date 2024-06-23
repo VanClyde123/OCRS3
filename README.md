@@ -9,6 +9,10 @@ Updates:
 - removed the fetched exsiting assessment in the add assessment modal. 
 - updated the assign subject to have a check if the subject with the same section already exists
 - updated the add section to have a check if the section already exists
+- added an indicator for the previous(original) instructor if the current subject has a reassigned instructor
+- created a user's profile page, access by clicking the logged in user's name in the nav bar
+- removed the change password link from the nav bar and placed it in the user's profile page
+- minor GUI changes
 
 Test Accounts:
 Admin Account: admin

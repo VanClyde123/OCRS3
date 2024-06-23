@@ -496,7 +496,7 @@ class InstructorController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->back()->with('success', ' Your password changed successfully.');
+        return redirect()->route('user.profile')->with('success', 'Your password changed successfully.');
     }
 
     //////////change password - newly logged in///////////////////

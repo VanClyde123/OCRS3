@@ -10,8 +10,8 @@
     </section>
 
     @include('messages')
-    <section class="content">
-        <div class="card">
+      <section class="content d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card" style="width: 400px; transform: translateY(-20%);">
             <div class="card-body">
                     @if ($errors->any())
                     <div class="alert alert-danger">

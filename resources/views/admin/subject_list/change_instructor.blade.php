@@ -20,10 +20,12 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <select class="form-control" name="newInstructor" required>
-                                <option value="" disabled selected>--- Select Instructor ---</option>
+                           <select class="form-control" name="newInstructor" required>
+                                <option value="" disabled {{ is_null($currentInstructorId) ? 'selected' : '' }}>--- Select Instructor ---</option>
                                 @foreach($instructors as $instructor)
-                                <option value="{{ $instructor->id }}">{{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</option>
+                                    <option value="{{ $instructor->id }}" {{ $instructor->id == $currentInstructorId ? 'selected' : '' }}>
+                                        {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

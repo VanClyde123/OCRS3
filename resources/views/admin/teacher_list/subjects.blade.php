@@ -31,8 +31,9 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Subject Name</th>
-                                <th>Subject Code</th>
+                                 <th>Subject Code</th>
+                                <th>Description</th>
+                               
                                 <th>Section</th>
                                 <th>Action</th>
                             </tr>
@@ -40,8 +41,9 @@
                         <tbody>
                             @foreach($subjects as $subject)
                                 <tr>
-                                    <td>{{ $subject->subject->description }}</td>
                                     <td>{{ $subject->subject->subject_code }}</td>
+                                    <td>{{ $subject->subject->description }}</td>
+                                    
                                     <td>{{ $subject->subject->section }}</td>
                                     <td><a href="{{ route('admin.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}" class="btn btn-info">View Enrolled Students</a></td>
                                 </tr>

@@ -9,8 +9,8 @@
         <h2></h2>
     </section>
         @include('messages')
-    <section class="content">
-        <div class="card">
+    <section class="content d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card" style="width: 400px; transform: translateY(-20%);">
             <div class="card-header">
                     <h3 class="card-title">Change Account Password</h3>
                 </div>

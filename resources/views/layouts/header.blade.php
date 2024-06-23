@@ -22,9 +22,9 @@
                         </a>
                     </div>
                    <div>
-                        <a class="nav-link" style="color:white;">
-                            {{ Auth::user()->name }} {{ Auth::user()->last_name }}
-                        </a>
+                   <a href="{{ route('user.profile') }}" class="nav-link clickable-name" style="color:white;">
+                        {{ Auth::user()->name }} {{ Auth::user()->last_name }}
+                    </a>
                         <a class="nav-link" style="color:white; font-size: 90%;">
                             {{ $roles[Auth::user()->role] }}
                                   @if (Auth::user()->secondary_role)
@@ -89,11 +89,7 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-item">
-                    <a href="{{ route('change-password') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
-                        <p>Change Password</p>
-                    </a>
-                </li>
+               
 
             @elseif(Auth::user()->role == 2)
                   @if (Auth::user()->secondary_role == 1)
@@ -141,11 +137,7 @@
                         <p>Import </p>
                     </a>
                 </li>
-                 <li class="nav-item">
-                    <a href="{{ route('change-password2') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
-                        <p>Change Password</p>
-                    </a>
-                </li>
+                 
 
             @elseif(Auth::user()->role == 3)
                 <li class="nav-item">
@@ -153,11 +145,7 @@
                         <p>Subjects</p>
                     </a>
                 </li>
-                 <li class="nav-item">
-                    <a href="{{ route('change-password3') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
-                        <p>Change Password</p>
-                    </a>
-                </li>
+                 
             @elseif(Auth::user()->role == 4)
 
                  @if (Auth::user()->secondary_role == 1)
@@ -197,13 +185,7 @@
                         <p>Semester</p>
                     </a>
                 </li>
-                   <li class="nav-item">
-                    <a href="{{ route('change-password1') }}"class="nav-link @if (Request::segment(2) == 'change-password') active @endif">
-                        <p>Change Password</p>
-                    </a>
-                </li>
-
-              
+                  
             @endif
                 </div>
             @endif
@@ -220,6 +202,19 @@
 <div id="butt" class="butt">
     <button id="openbtn" class="openbtn" onclick="openNav()"> ☰ </button>
 </div>
+
+<style>
+    .clickable-name {
+    color: white; 
+    text-decoration: none; 
+    cursor: pointer;
+    }
+
+    .clickable-name:hover {
+        text-decoration: underline; 
+        color: lightblue; 
+    }
+</style>
 
 <script>
     const openBtn = document.getElementById('openbtn'); 

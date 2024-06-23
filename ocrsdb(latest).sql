@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2024 at 09:41 AM
+-- Generation Time: Jun 23, 2024 at 06:28 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -95,6 +95,54 @@ CREATE TABLE `enrolled_students` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `enrolled_students`
+--
+
+INSERT INTO `enrolled_students` (`id`, `student_id`, `imported_classlist_id`, `created_at`, `updated_at`) VALUES
+(1, 69, 1, '2024-06-19 22:13:16', '2024-06-19 22:13:16'),
+(2, 70, 1, '2024-06-19 22:13:16', '2024-06-19 22:13:16'),
+(3, 71, 1, '2024-06-19 22:13:16', '2024-06-19 22:13:16'),
+(4, 72, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(5, 73, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(6, 74, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(7, 75, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(8, 76, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(9, 77, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(10, 78, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(11, 79, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(12, 80, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(13, 81, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(14, 82, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(15, 83, 1, '2024-06-19 22:13:17', '2024-06-19 22:13:17'),
+(16, 84, 1, '2024-06-19 22:13:18', '2024-06-19 22:13:18'),
+(17, 85, 1, '2024-06-19 22:13:18', '2024-06-19 22:13:18'),
+(18, 86, 1, '2024-06-19 22:13:18', '2024-06-19 22:13:18'),
+(19, 87, 1, '2024-06-19 22:13:18', '2024-06-19 22:13:18'),
+(20, 88, 1, '2024-06-19 22:13:18', '2024-06-19 22:13:18'),
+(21, 89, 1, '2024-06-19 22:13:18', '2024-06-19 22:13:18'),
+(22, 69, 2, '2024-06-19 23:38:56', '2024-06-19 23:38:56'),
+(23, 70, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(24, 71, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(25, 72, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(26, 73, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(27, 74, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(28, 75, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(29, 76, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(30, 77, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(31, 78, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(32, 79, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(33, 80, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(34, 81, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(35, 82, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(36, 83, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(37, 84, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(38, 85, 2, '2024-06-19 23:38:57', '2024-06-19 23:38:57'),
+(39, 86, 2, '2024-06-19 23:38:58', '2024-06-19 23:38:58'),
+(40, 87, 2, '2024-06-19 23:38:58', '2024-06-19 23:38:58'),
+(41, 88, 2, '2024-06-19 23:38:58', '2024-06-19 23:38:58'),
+(42, 89, 2, '2024-06-19 23:38:58', '2024-06-19 23:38:58');
+
 -- --------------------------------------------------------
 
 --
@@ -163,12 +211,21 @@ CREATE TABLE `imported_classlist` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `subjects_id` bigint(20) UNSIGNED NOT NULL,
   `instructor_id` bigint(20) UNSIGNED NOT NULL,
+  `previous_instructor_id` bigint(20) UNSIGNED DEFAULT NULL,
   `days` varchar(255) NOT NULL,
   `time` varchar(255) NOT NULL,
   `room` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `imported_classlist`
+--
+
+INSERT INTO `imported_classlist` (`id`, `subjects_id`, `instructor_id`, `previous_instructor_id`, `days`, `time`, `room`, `created_at`, `updated_at`) VALUES
+(1, 1, 67, NULL, 'W/F, T', '9:00 AM-10:00 AM, 8:00 AM-11:00 AM', 'F215, CA01', '2024-06-19 22:13:16', '2024-06-19 22:13:16'),
+(2, 2, 1, 67, 'M', '10:00 AM-11:00 AM', 'F213', '2024-06-19 23:38:56', '2024-06-22 18:24:45');
 
 -- --------------------------------------------------------
 
@@ -227,6 +284,13 @@ CREATE TABLE `sections` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `sections`
+--
+
+INSERT INTO `sections` (`id`, `subject_description_id`, `section_name`, `created_at`, `updated_at`) VALUES
+(1, 3, 'IDB', '2024-06-19 22:59:35', '2024-06-19 22:59:35');
+
 -- --------------------------------------------------------
 
 --
@@ -247,8 +311,8 @@ CREATE TABLE `semesters` (
 --
 
 INSERT INTO `semesters` (`id`, `semester_name`, `school_year`, `is_current`, `created_at`, `updated_at`) VALUES
-(1, 'First Semester', '2023 - 2024', 1, '2024-05-21 18:09:33', '2024-06-02 18:09:16'),
-(2, 'Second Semester', '2023 - 2024', 0, '2024-05-21 18:55:19', '2024-05-27 20:11:47'),
+(1, 'First Semester', '2023 - 2024', 1, '2024-05-21 18:09:33', '2024-06-22 17:36:50'),
+(2, 'Second Semester', '2023 - 2024', 0, '2024-05-21 18:55:19', '2024-06-20 18:52:14'),
 (3, 'Short Term', '2023 - 2024', 0, '2024-05-21 22:52:02', '2024-05-27 21:47:26'),
 (4, 'First Semester', '2022 - 2023', 0, '2024-05-22 23:15:37', '2024-05-22 23:15:37'),
 (5, 'Second Semester', '2022 - 2023', 0, '2024-05-22 23:15:55', '2024-05-22 23:15:55'),
@@ -270,6 +334,14 @@ CREATE TABLE `subjects` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `subjects`
+--
+
+INSERT INTO `subjects` (`id`, `subject_code`, `description`, `section`, `term`, `subject_type`, `created_at`, `updated_at`) VALUES
+(1, 'DSALGO1', 'DATA STRUCTURES AND ALGORITHM', 'IDC4', 'First Semester, 2023 - 2024', 'LecLab4060', '2024-06-19 22:13:15', '2024-06-19 22:13:15'),
+(2, 'SYSINT2', 'SYTEMS INTEGRATION AND ARCHITECTURE', 'IDC2', 'First Semester, 2023 - 2024', 'Lec', '2024-06-19 23:38:55', '2024-06-19 23:38:55');
 
 -- --------------------------------------------------------
 
@@ -351,12 +423,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `course`, `gender`, `password`, `role`, `secondary_role`, `password_changed`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Dante', 'E', 'Sparda', NULL, NULL, '$2y$10$xMfHyc1RQhQfEkXVzF8GNOgJ9Onj4HqtphxKUgbyqfAKMV5gP/HBm', 1, 2, 1, 'AKLTMs40Ddxd9o58BFV0bq1yvSu4BWhj9eAxwIFqxGJ5pYFhmYrNirGu37iD', NULL, '2024-05-27 18:33:13'),
-(67, '10001000', 'Richard', 'R', 'Deckard', NULL, NULL, '$2y$10$2nDMazrP/fb0pas158hUhOmbMKgLC16JmyLbntS93KNwm2Yw6dFci', 2, 1, 1, '9bsd1qEPRsNL1jX431WQbX16xjIh2owHhOYUzTAsYhxVIaQCrZSoPUhcIT56', '2024-04-30 18:45:54', '2024-05-01 17:45:51'),
-(68, '00001000', 'Rachel', 'D', 'Tyrell', NULL, NULL, '$2y$10$2vtM.i2n4Xj9Ltf3FbnnLO6NtHXOPW.05kR6PDelzA6UCvQxvEURe', 4, 1, 1, 'DYc1sGWgx0DdWbQZr5RkyMgw9tdN1ZIF2i60aQPm8UHjDNwEx3JjNAC936Zc', '2024-04-30 18:46:33', '2024-05-27 18:33:35'),
-(69, '20151000', 'Tariq', 'R.', 'Andrews', 'BSIT', 'Male', '$2y$10$dAJhARKEwfe0CITsVoHVgOtZ/Ve4xHkoNYwSdBiV/kl3zh8.7Sh2e', 3, NULL, 1, '0Vm2JSW6GXCE66qNTisaRgoGa52t7ek6I9rJBGAizR65kkY8t8tKxB6U3jPB', '2024-04-30 20:38:44', '2024-05-29 23:35:31'),
+(1, 'admin', 'Dante', 'E', 'Sparda', NULL, NULL, '$2y$10$OP67yxQ9.JvCnXloBf69lev.2m.ufSHKZtandn.QQKeV1hXrPTXD2', 1, 2, 1, 'rwWJkq3YJiZN1v4JUfqEbIIwzSwkR297MvAmnzsJ1HZXj3EQawzZ8GxxXpXn', NULL, '2024-06-22 19:57:06'),
+(67, '10001000', 'Richard', 'R', 'Deckard', NULL, NULL, '$2y$10$rG.BMOvNzvMYF6YGZVCUE.qwmQ3EZ0oQBAE8oPefVee6zFGWf7En2', 2, 1, 1, 'iOy2Px5avGMrIFwg0RaeZ2dniYEeaCDlTAqIrxQpR4b2dWIBaRWOz9OJFZqP', '2024-04-30 18:45:54', '2024-06-22 19:58:16'),
+(68, '00001000', 'Rachel', 'D', 'Tyrell', NULL, NULL, '$2y$10$TiCsOT87z1/CmqeLGJJDy.LQVqZ1PKV./48tn07AyCFfGf9ZNNGcm', 4, 1, 1, 'vxI3Z0vajtwUpJ5umv6amW9ZpcfG8wW1SwDM2fiZMRV2DeSlaD44ixC22xsI', '2024-04-30 18:46:33', '2024-06-22 19:59:00'),
+(69, '20151000', 'Tariq', 'R.', 'Andrews', 'BSIT', 'Male', '$2y$10$0M8irBF1IEqgJlJAjz6brecRCU/vuAW9TCiUYQmSCtHmPGx./0OXG', 3, NULL, 1, 'l64Ctqs6Stye2EwJav6VJO7YHBBPp1sf34m8UV1QNtWc9jt8seTMkaIHzRC7', '2024-04-30 20:38:44', '2024-06-22 19:59:50'),
 (70, '20151110', 'Raphael', 'S.', 'Archer', 'BSIT', 'Male', '$2y$10$SvLJ2HanrBqyGFMidmbhQOrGnb9K4U1dsf3L6RV7i.YikpVQrObLy', 3, NULL, 1, 'MhVO5CxVrjCdMt8epdzCalr2USI5FEEWR7UGljyFRf3RwIuCYTgOboowU62I', '2024-04-30 20:38:44', '2024-05-30 18:27:15'),
-(71, '20151120', 'Brian', 'L.', 'Cooke', 'BSCS', 'Male', '$2y$10$hopBoOiuHvyKFkLSsck87ONcXrCrKS4eygUvEG3LomvKhETq2dHBe', 3, NULL, 1, 'GwmF2HZbtjy2hA1SySpCPvCDeSRVd8zcjHRNJfjoo3Nfwg3FMWORA1HUfxWk', '2024-04-30 20:38:45', '2024-05-30 20:21:46'),
+(71, '20151120', 'Brian', 'L.', 'Cooke', 'BSCS', 'Male', '$2y$10$hopBoOiuHvyKFkLSsck87ONcXrCrKS4eygUvEG3LomvKhETq2dHBe', 3, NULL, 1, '3V84FoZ7V0YzMJaxpj106l8xB0ATAkp3yVP3gKbCkXBxtHCJv8zVjlDowc82', '2024-04-30 20:38:45', '2024-05-30 20:21:46'),
 (72, '20151130', 'Timothy', 'U.', 'Dejesus', 'BSCS', 'Male', '$2y$10$.OlocPtyUfrGrWCp8gXNB.N8zjy9YB4AV.W683LbTSKID2nt6/IfO', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
 (73, '20151140', 'Vincent', 'M.', 'Fernandez', 'BSCS', 'Male', '$2y$10$6s5ox7l5uhZNBvzRJXoyr.sjOmz7k4T5Kcll3yY5MFtGCIyM7zyBi', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
 (74, '20151150', 'Olly', 'P.', 'Ford', 'BSCS', 'Male', '$2y$10$kw.UsNC.9I0OkCwTdDkxsOj4SToHa2rIzuqa3DPh0sw3.pVkIQW76', 3, NULL, 0, NULL, '2024-04-30 20:38:45', '2024-04-30 20:38:45'),
@@ -365,7 +437,7 @@ INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `cou
 (77, '20151180', 'Jakob', 'W.', 'Harding', 'BSCS', 'Male', '$2y$10$B6doZFHoUhjl64IGVrgBCea6mLyxMxjMsX1Q0pE1cPXqICzAySgeq', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
 (78, '20151190', 'Mike', 'A.', 'Ingram', 'BSCS', 'Male', '$2y$10$CeV2AwAmDZtWH7A5AdPtROE3YNBW53DxPV1hkFvBCAlMuBhb/Pz46', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
 (79, '20151200', 'Omer', 'X.', 'Leonard', 'BSCS', 'Male', '$2y$10$kRvXZkqB7CT38AtIqee8suB2.d1pikZxiruFJqjOSs17zG2uWy5tG', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
-(80, '20151210', 'Mike', 'S.', 'Morton', 'BSCS', 'Male', '$2y$10$EzaEkzTr9ZxCJKCcyQJhweUFWHUCoOAaQdxQQ01fNz05OVwF/NfxC', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
+(80, '20151210', 'Mike', 'S.', 'Morton', 'BSCS', 'Male', '$2y$10$EzaEkzTr9ZxCJKCcyQJhweUFWHUCoOAaQdxQQ01fNz05OVwF/NfxC', 3, NULL, 0, 'ilqFufdFJql7TeilEA2NNhSF1q9G1GhAkKqi2dVIqHF1N7OBzvgayxO1qiCY', '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
 (81, '20151220', 'Trystan', 'Q.', 'Mullen', 'BSCS', 'Male', '$2y$10$g3XA6tUkXBl6wilMJ2pKwuubjn3B.TEFuMOerG7Prdt/fEqJbHT.G', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
 (82, '20151230', 'Dewey', 'M.', 'Stein', 'BSCS', 'Male', '$2y$10$RW646hehohfJRhUMA/FoeO9Z6qwOQV4hj3YJZfcxQ46M.nmlw56Me', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
 (83, '20151240', 'Shannon', 'H.', 'Summers', 'BSCS', 'Male', '$2y$10$31o/3ydUWrajEN53bkeGAOLFRETt1drOGxWYvTLoH8ys8S2TzN/6q', 3, NULL, 0, NULL, '2024-04-30 20:38:46', '2024-04-30 20:38:46'),
@@ -375,7 +447,7 @@ INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `cou
 (87, '20151454', 'Eryn', 'W.', 'Douglas', 'BSIT', 'Female', '$2y$10$Udx./R5VNItFwutZDiIIQ.Ewti6RbYX/XNVKDck4RM7MoMAMtaY/2', 3, NULL, 0, NULL, '2024-04-30 20:38:47', '2024-04-30 20:38:47'),
 (88, '20151970', 'Jayden', 'M.', 'Giles', 'BSCS', 'Female', '$2y$10$ThDCJ9Atia6rQm5KVQh48ur/LpdWV.KZp8uEqVI/J8zopMoLUIlKy', 3, NULL, 0, NULL, '2024-04-30 20:38:47', '2024-04-30 20:38:47'),
 (89, '20151750', 'Evangeline', 'S.', 'Holloway', 'BSCS', 'Female', '$2y$10$ALh28kx9lx1Q4oiNLxWh6esP8vWJo9Q7Yqh8jiZgk5VySH8iQtF1u', 3, NULL, 0, NULL, '2024-04-30 20:38:47', '2024-04-30 20:38:47'),
-(90, '20091220', 'Juan', 'L.', 'Dela Cruz', 'BSCS', 'Male', '$2y$10$wgd/Nvkg9EERRjBoKPsHIuJs2RUcpfmzNX0VQBtPMtuXsrg2TeNMm', 3, NULL, 1, 'JtiLWTGlRJJaaOyxBkJ8EbE7yZd1yobqAG8SP57miK1oa3b7gwEaGPUiuZ4j', '2024-05-01 17:50:15', '2024-06-15 21:00:31'),
+(90, '20091220', 'Juan', 'L.', 'Dela Cruz', 'BSCS', 'Male', '$2y$10$wgd/Nvkg9EERRjBoKPsHIuJs2RUcpfmzNX0VQBtPMtuXsrg2TeNMm', 3, NULL, 1, '13IPbSYWICYln9JIojhnNYJcJU3JGfS10Ul17f4krphhIbSB4qmK0q8tCXU0', '2024-05-01 17:50:15', '2024-06-15 21:00:31'),
 (91, '20019312', 'Glenn', 'S.', 'Howard', 'BSCS', 'Male', '$2y$10$/OFJc3MBm1p3.hp/8EddPexciYT6GHm0yqdxlUrL20D/fwo8stqYq', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
 (92, '20012312', 'Testname', 'S.', 'Test', 'BSCS', 'Male', '$2y$10$A/yCiAaUZsAtxQvKx8evNeGAO72iKWCxGPsfsMpw6M4dN9ve5sNVK', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
 (93, '21232122', 'Testname2', 'S.', 'Test', 'BSCS', 'Male', '$2y$10$RsbBxXvXshZf7olropT7JenIiCIRu1bFplNGiVEFlCbgPaKneR/.u', 3, NULL, 0, NULL, '2024-05-01 17:50:15', '2024-05-01 17:50:15'),
@@ -440,7 +512,8 @@ ALTER TABLE `grades`
 ALTER TABLE `imported_classlist`
   ADD PRIMARY KEY (`id`),
   ADD KEY `imported_classlist_subjects_id_foreign` (`subjects_id`),
-  ADD KEY `imported_classlist_instructor_id_foreign` (`instructor_id`);
+  ADD KEY `imported_classlist_instructor_id_foreign` (`instructor_id`),
+  ADD KEY `fk_previous_instructor` (`previous_instructor_id`);
 
 --
 -- Indexes for table `migrations`
@@ -529,7 +602,7 @@ ALTER TABLE `assessment_views`
 -- AUTO_INCREMENT for table `enrolled_students`
 --
 ALTER TABLE `enrolled_students`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -547,7 +620,7 @@ ALTER TABLE `grades`
 -- AUTO_INCREMENT for table `imported_classlist`
 --
 ALTER TABLE `imported_classlist`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -565,7 +638,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `semesters`
@@ -577,7 +650,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `subject_descriptions`
@@ -638,6 +711,7 @@ ALTER TABLE `grades`
 -- Constraints for table `imported_classlist`
 --
 ALTER TABLE `imported_classlist`
+  ADD CONSTRAINT `fk_previous_instructor` FOREIGN KEY (`previous_instructor_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `imported_classlist_instructor_id_foreign` FOREIGN KEY (`instructor_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `imported_classlist_subjects_id_foreign` FOREIGN KEY (`subjects_id`) REFERENCES `subjects` (`id`);
 

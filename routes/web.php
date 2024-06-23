@@ -22,6 +22,7 @@ use App\Http\Controllers\SecretaryController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SubjectDescriptionController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,7 +40,7 @@ use App\Http\Controllers\SectionController;
 Route::get('/', [AuthController::class, 'login']);
 Route::post('login', [AuthController::class, 'AuthLogin']);
 Route::get('logout', [AuthController::class, 'logout']);
-
+Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
 
 
 
