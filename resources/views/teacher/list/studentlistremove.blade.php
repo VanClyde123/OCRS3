@@ -7,7 +7,7 @@
     <div class="content-wrappers">
         <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+           <input type="button" onclick="window.location.href='{{ route('teacher.list.studentlist', ['subject' => $subject]) }}';" class="btn btn-info" value="Back" />
         </section>
         <section class="content">
             @include('messages')

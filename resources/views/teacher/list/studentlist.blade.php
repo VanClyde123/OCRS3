@@ -627,7 +627,7 @@
                         $(this).data('original-value', currentValue);
 
                         if (parseFloat(currentValue) > maxPoints) {
-                            showMessage(`Inserted points exceeded the max points of ${assessmentDescription} for ${studentName}. Considered as bonus points.`);
+                            showMessage(`Inserted points exceeded the max points of ${assessmentDescription} for ${studentName} -  Considered as Bonus Points.`);
                         } else {
                             hideMessage();
                         }

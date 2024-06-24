@@ -55,6 +55,8 @@ class ClassRecordController extends Controller
     $term = $this->extractLine($cellB5Value, 3);
 
     $section = $this->extractInformation($cellB5Value, 'Section :');
+
+  
     $section = $this->cleanSectionName($section);
    
     $subjectInfo = $this->extractInformation($cellB5Value, 'Subject:');
@@ -265,19 +267,12 @@ private function cleanSectionName($section)
              /////dd($subjectType);
                         
            
-                foreach ($maleStudentValues as $student) {
-                    $this->createOrRetrieveStudent($student, true);
-                }
-
-              
-                foreach ($femaleStudentValues as $student) {
-                    $this->createOrRetrieveStudent($student, false);
-                }
+           
               
                 $subject = Subject::where('subject_code', $subjectCode)->where('section', $section)->first();
 
 
-                             if (!$subject) {
+                if (!$subject) {
                     $subject = Subject::create([
                         'subject_code' => $subjectCode,
                         'description' => $subjectDescription,
@@ -304,6 +299,14 @@ private function cleanSectionName($section)
                 ]);
             }
 
+               foreach ($maleStudentValues as $studentInfo) {
+                $this->processStudent($studentInfo, true, $importedClasslist->id);
+            }
+
+            foreach ($femaleStudentValues as $studentInfo) {
+                $this->processStudent($studentInfo, false, $importedClasslist->id);
+            }
+
           
          
              $enrolledStudentsExist = EnrolledStudents::where('imported_classlist_id', $importedClasslist->id)->exists();
@@ -312,26 +315,7 @@ private function cleanSectionName($section)
             $enrolledStudentsStatus = $enrolledStudentsExist ? 'Updated' : 'Added';
 
           
-            foreach ($maleStudentValues as $studentInfo) {
-                $student = $this->createOrRetrieveStudent($studentInfo);
-
-            
-                EnrolledStudents::firstOrCreate([
-                    'student_id' => $student->id,
-                    'imported_classlist_id' => $importedClasslist->id,
-                ]);
-            }
-
-            
-            foreach ($femaleStudentValues as $studentInfo) {
-                $student = $this->createOrRetrieveStudent($studentInfo);
-
-                
-                EnrolledStudents::firstOrCreate([
-                    'student_id' => $student->id,
-                    'imported_classlist_id' => $importedClasslist->id,
-                ]);
-            }
+           
 
           
             $subjectExists = $subject->wasRecentlyCreated ? 'saved successfully' : 'already exists';
@@ -343,15 +327,35 @@ private function cleanSectionName($section)
                     
                  }
      
-    private function createOrRetrieveStudent($studentInfo, $isMale = true)
-    {
-        
-        $gender = $isMale ? 'Male' : 'Female';
+    private function processStudent($studentInfo, $isMale = true, $importedClasslistId)
+        {
+            $gender = $isMale ? 'Male' : 'Female';
 
-        $student = User::where('id_number', $studentInfo['id_number'])->first();
+            
+            $student = User::where('id_number', $studentInfo['id_number'])->first();
 
-        if (!$student) {
-            ///// student doesn't exist, create new student accont
+            if ($student) {
+                
+                if ($student->gender !== $gender) {
+                    $student->gender = $gender;
+                    $student->save();
+                }
+            } else {
+               
+                $student = $this->createStudent($studentInfo, $isMale);
+            }
+
+           
+            EnrolledStudents::firstOrCreate([
+                'student_id' => $student->id,
+                'imported_classlist_id' => $importedClasslistId,
+            ]);
+        }
+
+        private function createStudent($studentInfo, $isMale = true)
+        {
+            $gender = $isMale ? 'Male' : 'Female';
+
             $student = new User([
                 'id_number' => $studentInfo['id_number'],
                 'name' => $studentInfo['name'],
@@ -359,14 +363,13 @@ private function cleanSectionName($section)
                 'last_name' => $studentInfo['last_name'],
                 'course' => $studentInfo['course'],
                 'password' => bcrypt('student12345'), 
-                'role' => 3,
+                'role' => 3, 
                 'gender' => $gender,
             ]);
             $student->save();
-        }
 
-        return $student;
-    }
+            return $student;
+        }
 }
 
    
