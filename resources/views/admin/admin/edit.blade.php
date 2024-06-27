@@ -73,6 +73,7 @@
                                 </button>
                             </div>
                         </div>
+                         <small class="text-muted instruction-text">Leave the Password Textbox empty if there is no password change</small>
                     </div>
                 </div>
                 <div class="card-footer">

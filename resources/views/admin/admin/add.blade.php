@@ -52,6 +52,18 @@
                                 <option value="3">Student</option>
                             </select>
                         </div>
+                        <div class="form-group hidden" id="courseGroup">
+                            <label>Course *</label>
+                            <input type="text" class="form-control" name="course" id="course" placeholder="Course">
+                        </div>
+                        <div class="form-group hidden" id="genderGroup">
+                            <label>Gender *</label>
+                            <select class="form-control" name="gender" id="gender">
+                                <option value="" disabled selected>--- Select Gender ---</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>Password *</label>
                             <div class="input-group">
@@ -97,6 +109,11 @@
             return $password . $number; 
         }
     @endphp
+    <style>   
+    .hidden {
+        display: none;
+    }
+    </style>
     <script>
         const genbut = document.getElementById('generate'); 
         const idInput = document.getElementById('id_number'); 
@@ -170,6 +187,25 @@
             }
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Show or hide course input field based on selected role
+            $('#roleSelect').change(function() {
+                if ($(this).val() == 3) { // 3 corresponds to "Student"
+                    $('#courseGroup').removeClass('hidden');
+                    $('#course').prop('required', true);
+                    $('#genderGroup').removeClass('hidden');
+                    $('#gender').prop('required', true);
+                } else {
+                    $('#courseGroup').addClass('hidden');
+                    $('#course').prop('required', false);
+                    $('#genderGroup').addClass('hidden');
+                    $('#gender').prop('required', false);
+                }
+            });
 
+
+        });
+    </script>
 
 @endsection

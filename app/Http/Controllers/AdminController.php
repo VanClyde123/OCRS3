@@ -87,6 +87,8 @@ private function getRoleNumber($roleName) {
         $user->middle_name = trim($request->middle_name); 
         $user->last_name = trim($request->last_name);    
         $user->id_number = trim($request->id_number);
+        $user->course = trim($request->course);
+        $user->gender = trim($request->gender);
         $user->role = ($request->role);
         $user->password = ($request->password);
         $user->save();
