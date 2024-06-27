@@ -189,9 +189,9 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Show or hide course input field based on selected role
+        
             $('#roleSelect').change(function() {
-                if ($(this).val() == 3) { // 3 corresponds to "Student"
+                if ($(this).val() == 3) {
                     $('#courseGroup').removeClass('hidden');
                     $('#course').prop('required', true);
                     $('#genderGroup').removeClass('hidden');
