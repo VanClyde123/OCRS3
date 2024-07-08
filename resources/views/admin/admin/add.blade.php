@@ -135,6 +135,7 @@
             if(gen === '1') {
                 genbut.hidden = false;
                 password = generateRandomPassword();
+                passwordInput.readonly=true;
             }else if(gen === '2') {
                 password = '';
                 password = idrole();
