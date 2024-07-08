@@ -86,6 +86,7 @@
 </div>
 
 <script>
+    const baseURL = "{{ url('/') }}";
 document.addEventListener('DOMContentLoaded', function() {
     const yearLevelSelect = document.getElementById('year_level');
     const subjectCodeSelect = document.getElementById('subject_code');
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const url = `/ocrs/secretary/get-sections/${subjectDescriptionId}`;
+        const url = `${baseURL}/secretary/get-sections/${subjectDescriptionId}`;
 
         fetch(url)
             .then(response => {

@@ -42,6 +42,7 @@
                     <h3 class="card-title">Records</h3>
                 </div>
                 <div class="card-body">
+                  
                     @if ($scores->isNotEmpty())
                         <div class="card-body ">
                             <div id="accordion">
@@ -59,6 +60,11 @@
                                             <div class="card-body">
                                                 <div id="assessmentAccordion{{ $loop->index }}">
                                                     @foreach($assessmentTypes as $assessmentType)
+                                                          @if (
+                                                                ($subjectType == 'Lec' && !in_array($assessmentType, ['Lab Activity', 'Lab Exam'])) ||
+                                                                ($subjectType == 'Lab' && !in_array($assessmentType, ['Quiz', 'OtherActivity', 'Exam'])) ||
+                                                                (str_starts_with($subjectType, 'LecLab'))
+                                                            )
                                                         <div class="card">
                                                             <div class="card-header" id="assessmentHeading{{ $loop->parent->index }}{{ $loop->index }}">
                                                                 <h5 class="mb-0">
@@ -89,12 +95,12 @@
                                                                                     </tr>
                                                                                 @endif
                                                                             @endforeach
-
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    @endif
                                                     @endforeach
 
                                                     @foreach($scores as $score)

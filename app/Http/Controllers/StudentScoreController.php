@@ -44,6 +44,13 @@ class StudentScoreController extends Controller
 
         $scores = $enrolledStudent->studentgrades;
 
+        
+        $subjectType = DB::table('subjects')
+            ->join('imported_classlist', 'subjects.id', '=', 'imported_classlist.subjects_id')
+            ->join('enrolled_students', 'imported_classlist.id', '=', 'enrolled_students.imported_classlist_id')
+            ->where('enrolled_students.id', $enrolledStudentId)
+            ->value('subject_type');
+
 
         $latestPublishedAssessment = $enrolledStudent->importedclasses->subject->latestPublishedAssessment();
         if ($latestPublishedAssessment) {
@@ -53,7 +60,7 @@ class StudentScoreController extends Controller
             }
         }
 
-        return view('student.scores.showscores', compact('scores', 'gradingPeriods', 'assessmentTypes'));
+        return view('student.scores.showscores', compact('scores', 'gradingPeriods', 'assessmentTypes', 'subjectType'));
     } else {
         return redirect()->route('login')->with('error', 'Access denied.');
     }
