@@ -118,6 +118,8 @@
 
 
         <script>
+
+        const baseURL = "{{ url('/') }}";
        document.getElementById('semester_name').addEventListener('change', function () {
         var term = this.value;
         var schoolYearDropdown = document.getElementById('school_year');
@@ -126,7 +128,7 @@
         schoolYearDropdown.innerHTML = '<option value="" disabled selected>--- Select School Year ---</option>';
 
      
-        fetch(`/ocrs/admin/getSchoolYears/${term}`)
+        fetch(`${baseURL}/admin/getSchoolYears/${term}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data); 

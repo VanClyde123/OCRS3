@@ -1173,7 +1173,7 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
                 $event->sheet->mergeCells('A1:Z4');
 
               
-                $event->sheet->setCellValue('A1', "Subject Code: {$subject->subject_code}                                                                              Days: {$subject->importedClasses->first()->days}\nDescription: {$subject->description}                                                               Time: {$subject->importedClasses->first()->time}\nTerm: {$subject->term}                                                         Section: {$subject->section}\nInstructor: {$subject->importedClasses->first()->instructor->name} {$subject->importedClasses->first()->instructor->middle_name} {$subject->importedClasses->first()->instructor->last_name}                                                                 Room: {$subject->importedClasses->first()->room}");
+                $event->sheet->setCellValue('A1', "Subject Code: {$subject->subject_code}                                                                                   Days: {$subject->importedClasses->first()->days}\nDescription: {$subject->description}           Time: {$subject->importedClasses->first()->time}\nTerm: {$subject->term}                                                               Section: {$subject->section}\nInstructor: {$subject->importedClasses->first()->instructor->name} {$subject->importedClasses->first()->instructor->middle_name} {$subject->importedClasses->first()->instructor->last_name}                                                                      Room: {$subject->importedClasses->first()->room}");
 
 
                
