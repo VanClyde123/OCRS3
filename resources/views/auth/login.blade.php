@@ -20,7 +20,6 @@
                 Test Accounts
             </div>
             <div class="card-body" style="align-items: center;">
-                <h4 class="card-title">Updated database(ocrsdb(updated, again))</h4>
                 <p class="card-text">Admin Account:  admin <br>Admin Password: admin12345<br>Secretary Account:  00001000<br>Sec Password: rachel12345<br>Teacher Account: 10001000<br>Teacher Password: richard12345<br>Student Account:  20151000<br>Student Password: student12345</p>
             </div>
         </div>

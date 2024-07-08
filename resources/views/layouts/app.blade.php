@@ -61,18 +61,21 @@
                 }
             }
             .openbtn {
+                opacity: .5;
                 font-size: 20px;
                 cursor: pointer;  
-                background-color: darkslategrey;
-                color: white;
+                background-color: white;
+                color: black;
                 padding: 10px 15px;
                 border: none;
+                border: solid;
                 &:hover {
-                    color:yellow;
-                    background-color: black; 
+                    color:white;
+                    background-color:black; 
                 }
             }
             .closebtn {
+                opacity: .5;
                 position:fixed; 
                 padding: 16px; 
                 z-index: 999;  
@@ -80,14 +83,14 @@
                 left: 216px;
                 font-size: 20px;
                 cursor: pointer;  
-                background-color: white;
-                color: darkslategrey;
+                background-color: black;
+                color: white;
                 padding: 10px 15px;
                 border: none;
+                border: solid;
                 &:hover {
-                    opacity:0.3;
-                    color:yellow;
-                    background-color: white; 
+                    color:black;
+                    background-color:white; 
                 }
             }
             #main {
@@ -110,9 +113,6 @@
                 z-index: 999;  
                 top: 0; 
                 left: 0;
-                &:hover{
-                    opacity:0.3;
-                }
             }
         </style>
         @yield('style')

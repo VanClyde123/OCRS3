@@ -89,7 +89,7 @@
                         <div class="form-group col-md-6">
                             <label for="semester_name">Term:</label>
                             <select class="form-control" id="semester_name" name="semester_name" required>
-                                <option value="" disabled>--- Select Term ---</option>
+                                <option selected="selected" value="" disabled>--- Select Term ---</option>
                                 <option value="First Semester" {{ isset($currentSemester) && $currentSemester->semester_name == 'First Semester' ? 'selected' : '' }}>First Semester</option>
                                 <option value="Second Semester" {{ isset($currentSemester) && $currentSemester->semester_name == 'Second Semester' ? 'selected' : '' }}>Second Semester</option>
                                 <option value="Short Term" {{ isset($currentSemester) && $currentSemester->semester_name == 'Short Term' ? 'selected' : '' }}>Short Term</option>
@@ -98,7 +98,7 @@
                         <div class="form-group col-md-6">
                             <label for="school_year">School Year:</label>
                             <select class="form-control" id="school_year" name="school_year" required>
-                                <option value="" disabled>--- Select School Year ---</option>
+                                <option selected="selected" value="" disabled>--- Select School Year ---</option>
                                 @if(isset($schoolYears))
                                     @foreach($schoolYears as $year)
                                         <option value="{{ $year }}" {{ isset($currentSemester) && $currentSemester->school_year == $year ? 'selected' : '' }}>{{ $year }}</option>
