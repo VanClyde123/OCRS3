@@ -7,7 +7,7 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-           
+           <h2></h2>
             <div  style="text-align: right;">
                 
                 <a href="{{ route('assessment-descriptions.create1', ['subjectDescId' => $subjectDescId]) }}" class="btn btn-success">Create New Description</a>

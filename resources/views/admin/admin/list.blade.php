@@ -10,6 +10,7 @@
                 {{-- 
                 <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" /> 
                 --}}
+            <h2></h2>
             </div>
         </section>
         @include('messages')

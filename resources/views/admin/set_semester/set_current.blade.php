@@ -75,6 +75,7 @@
         <div class="content-wrappers">
             <section class="content-header">
               
+                <h2></h2>
                 <div  style="text-align: right;">
                     <a href="{{ url('admin/set_semester/view_semesters')}}" class="btn btn-success">Modify Semesters</a>
                 </div>

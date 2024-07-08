@@ -4,14 +4,13 @@
 @php
         $header_title = "Section List";
     @endphp
-   <div class="container">
+    <div class="content-wrappers">
         <section class="content-header">
         
-          
-        <h2></h2>
+            <h2><br></h2>
         </section>
-      @include('messages')
-        <div class="card mt-4">
+        @include('messages')
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Sections for {{ $subjectDescription->subject_name }}</h3>
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addSectionModal">Add Section</button>

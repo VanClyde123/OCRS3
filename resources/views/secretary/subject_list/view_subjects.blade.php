@@ -8,7 +8,7 @@
    <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2 class="mb-5"></h2>
+            <h2><br></h2>
         </section>
 
         @include('messages')

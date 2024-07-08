@@ -7,7 +7,7 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-           
+           <h2></h2>
             <div  style="text-align: right;">
                
                 <a href="{{ route('semesters.create') }}" class="btn btn-success">Add Semester</a>

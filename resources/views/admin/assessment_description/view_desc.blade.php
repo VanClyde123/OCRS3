@@ -5,14 +5,11 @@
         $header_title = "Description List";
     @endphp
     <div class="content-wrappers">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
-            
             <div style="text-align: right;">
-              
-
                 <a href="{{ route('assessment-descriptions.create', ['subjectDescId' => $subjectDescId]) }}" class="btn btn-success">Create New Description</a>
             </div>
+            <h2></h2>
         </section>
         @include('messages')
      <section class="content">

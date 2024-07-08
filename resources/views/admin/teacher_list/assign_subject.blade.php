@@ -4,85 +4,86 @@
 @php
         $header_title = "Assign Subject";
     @endphp
-<div class="container">
-   <section class="content-header"  style="text-align: right;">
-     <input type="button" onclick="window.location.href='{{ route('admin.teacher_list.future_subjects', ['instructorId' => $instructor->id]) }}';" class="btn btn-info" value="Back to Subject List" />
-      </section>
+    <div class="content-wrappers">
+        <section class="content-header"  style="text-align: right;">
+            <input type="button" onclick="window.location.href='{{ route('admin.teacher_list.future_subjects', ['instructorId' => $instructor->id]) }}';" class="btn btn-info" value="Back to Subject List" />
+            <h2></h2>
+        </section>
 
-    <div class="card">
-        <div class="card-header">
-            Assign Subjects to {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{{ route('admin.teacher_list.store_subject') }}">
-                @csrf
-                <input type="hidden" name="instructor_id" value="{{ $instructor->id }}">
+        <div class="card">
+            <div class="card-header">
+                Assign Subjects to {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.teacher_list.store_subject') }}">
+                    @csrf
+                    <input type="hidden" name="instructor_id" value="{{ $instructor->id }}">
 
-                <div class="form-group">
-                    <label for="year_level">Year Level</label>
-                    <select class="form-control" id="year_level" name="year_level" required>
-                        <option value="" disabled selected>--- Select Year Level ---</option>
-                        @foreach(range(1, 5) as $yearLevel)
-                            <option value="{{ $yearLevel }}">Year Level {{ $yearLevel }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="subject_code">Subject Code</label>
-                    <select class="form-control" id="subject_code" required>
-                        <option value="" disabled selected>--- Select Subject Code ---</option>
-                        @foreach($subjectDescriptions as $subjectDescription)
-                            <option value="{{ $subjectDescription->id }}" data-year-level="{{ $subjectDescription->year_level }}" data-description="{{ $subjectDescription->subject_name }}" data-code="{{ $subjectDescription->subject_code }}">
-                                {{ $subjectDescription->subject_code }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" id="subject_code_hidden" name="subject_code">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" name="description" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="section">Section</label>
-                    <select class="form-control" id="section" required>
-                        <option value="" disabled selected>--- Select Section ---</option>
-                    </select>
-                    <input type="hidden" id="section_hidden" name="section">
-                </div>
-                <div class="form-group">
-                    <label for="term">Term</label>
-                    <input type="text" class="form-control" id="term" name="term" required readonly>
-                </div>
-                 <div class="form-group">
-                    <label for="subject_type">Subject Type</label>
-                    <select class="form-control" id="subject_type" name="subject_type" required>
-                        <option value="" disabled selected>--- Select Subject Type ---</option>
-                        <option value="Lec">Lec</option>
-                        <option value="Lab">Lab</option>
-                        @foreach($subjectTypes as $subjectType)
-                            <option value="{{ $subjectType->subject_type }}">{{ $subjectType->subject_type }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="days">Days</label>
-                    <input type="text" class="form-control" id="days" name="days" required>
-                </div>
-                <div class="form-group">
-                    <label for="time">Time</label>
-                    <input type="text" class="form-control" id="time" name="time" required>
-                </div>
-                <div class="form-group">
-                    <label for="room">Room</label>
-                    <input type="text" class="form-control" id="room" name="room" required>
-                </div>
+                    <div class="form-group">
+                        <label for="year_level">Year Level</label>
+                        <select class="form-control" id="year_level" name="year_level" required>
+                            <option value="" disabled selected>--- Select Year Level ---</option>
+                            @foreach(range(1, 5) as $yearLevel)
+                                <option value="{{ $yearLevel }}">Year Level {{ $yearLevel }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject_code">Subject Code</label>
+                        <select class="form-control" id="subject_code" required>
+                            <option value="" disabled selected>--- Select Subject Code ---</option>
+                            @foreach($subjectDescriptions as $subjectDescription)
+                                <option value="{{ $subjectDescription->id }}" data-year-level="{{ $subjectDescription->year_level }}" data-description="{{ $subjectDescription->subject_name }}" data-code="{{ $subjectDescription->subject_code }}">
+                                    {{ $subjectDescription->subject_code }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <input type="hidden" id="subject_code_hidden" name="subject_code">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="section">Section</label>
+                        <select class="form-control" id="section" required>
+                            <option value="" disabled selected>--- Select Section ---</option>
+                        </select>
+                        <input type="hidden" id="section_hidden" name="section">
+                    </div>
+                    <div class="form-group">
+                        <label for="term">Term</label>
+                        <input type="text" class="form-control" id="term" name="term" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject_type">Subject Type</label>
+                        <select class="form-control" id="subject_type" name="subject_type" required>
+                            <option value="" disabled selected>--- Select Subject Type ---</option>
+                            <option value="Lec">Lec</option>
+                            <option value="Lab">Lab</option>
+                            @foreach($subjectTypes as $subjectType)
+                                <option value="{{ $subjectType->subject_type }}">{{ $subjectType->subject_type }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="days">Days</label>
+                        <input type="text" class="form-control" id="days" name="days" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time</label>
+                        <input type="text" class="form-control" id="time" name="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="room">Room</label>
+                        <input type="text" class="form-control" id="room" name="room" required>
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Assign Subject</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Assign Subject</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 <script>
     const baseURL = "{{ url('/') }}";

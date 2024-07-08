@@ -10,6 +10,7 @@
         <section class="content-header" style="text-align: right;">
            
            <input type="button" onclick="window.location.href='{{ url('admin/admin/list') }}';" class="btn btn-info" value="Back to User List" />
+           <h2></h2>
         </section>
         <section class="content">
             @include('messages')

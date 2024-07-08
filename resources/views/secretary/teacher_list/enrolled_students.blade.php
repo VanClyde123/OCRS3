@@ -7,12 +7,12 @@
     <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2></h2>
+            <h2><br></h2>
             
         </section>
         <section class="content">
-    <div class="card">
-        <div class="card-header">
+            <div class="card">
+                <div class="card-header">
                     <h3 class="card-title">Enrolled Students for {{ $subject->description }} ({{ $subject->subject_code }})</h3>
                 </div>
                 <div class="card-body">
@@ -49,7 +49,7 @@
                 </div>
             </div>
         </section>
-        <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
-    </div>
+    <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+</div>
 @endsection
 

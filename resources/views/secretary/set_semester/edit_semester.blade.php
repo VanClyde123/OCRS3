@@ -6,7 +6,7 @@
     @endphp
     <div class="content-wrappers">
         <section class="content-header">
-            <h3><br></h3>
+            <h2><br></h2>
             
 
         </section>

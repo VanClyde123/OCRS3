@@ -796,6 +796,7 @@
                 $studentCount = count($enrolledStudents);
             @endphp
             <a href="#demo" class="btn btn-info" data-toggle="collapse">Show Class Info</a>
+            <h2></h2>
             <div id="demo" class="collapse card" >
                 <div class="table-responsive">
                     <div class="card-body">

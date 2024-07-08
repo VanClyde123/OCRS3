@@ -4,10 +4,10 @@
 @php
         $header_title = "Subject List";
     @endphp
-   <div class="content-wrappers">
+    <div class="content-wrappers">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h2 class="mb-5"></h2>
+            <h2><br></h2>
         </section>
           
         <section class="content">

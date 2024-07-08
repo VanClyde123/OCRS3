@@ -14,6 +14,23 @@
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ url('public/dist/css/adminlte.min.css')}}">
     </head>
+    
+<style>
+    .btnaa {
+      background-color: green;
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      cursor: pointer;
+      font-size: 15px;
+      size: 15px;
+    }
+    
+    /* Darker background on mouse-over */
+    .btnaa:hover {
+      background-color: RoyalBlue;
+    }
+    </style>
     <body class="hold-transition login-page">
         <div class="card" style="align-items: center;">
             <div class="card-header">
@@ -21,6 +38,10 @@
             </div>
             <div class="card-body" style="align-items: center;">
                 <p class="card-text">Admin Account:  admin <br>Admin Password: admin12345<br>Secretary Account:  00001000<br>Sec Password: rachel12345<br>Teacher Account: 10001000<br>Teacher Password: richard12345<br>Student Account:  20151000<br>Student Password: student12345</p>
+                <p>Download Excel Class List Sample
+                    
+                    <button class="btnaa"><i class="fa fa-download"></i> Download</button>
+                </p>
             </div>
         </div>
 

@@ -4,12 +4,11 @@
 @php
         $header_title = "Next Semester Subjects";
     @endphp
-<div class="container">
-    
-      <section class="content-header">
-      <br>
-     <br>
-      </section>
+    <div class="content-wrappers">
+
+        <section class="content-header">
+            <h2><br></h2>
+        </section>
        @include('messages')
     <div class="card">
         <div class="card-header">

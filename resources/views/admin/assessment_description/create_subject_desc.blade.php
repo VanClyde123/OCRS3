@@ -6,11 +6,10 @@
     @endphp
     <div class="content-wrappers">
         <section class="content-header">
-        <br>
-           
-
+        
         </section>
         <section class="content">
+            <h2><br></h2>
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Add New Subject</h3>
