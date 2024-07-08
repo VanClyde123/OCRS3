@@ -151,7 +151,7 @@
 
             @elseif(Auth::user()->role == 3)
                 <li class="nav-item">
-                    <a  href="{{ url('student/subjectlist', ['studentId' => Auth::user()->id]) }}" class="nav-link @if (Request::segment(2) == 'subjectlist') active @elseif (Request::segment(2) == 'past_subjectlist') active @elseif (Request::segment(1) == 'sections') active  @endif">
+                    <a  href="{{ url('student/subjectlist', ['studentId' => Auth::user()->id]) }}" class="nav-link @if (Request::segment(2) == 'subjectlist') active @elseif (Request::segment(1) == 'student') active @elseif (Request::segment(1) == 'sections') active  @endif">
                         <p>Subjects</p>
                     </a>
                 </li>
