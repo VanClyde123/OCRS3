@@ -44,7 +44,6 @@ class StudentScoreController extends Controller
 
         $scores = $enrolledStudent->studentgrades;
 
-        
         $subjectType = DB::table('subjects')
             ->join('imported_classlist', 'subjects.id', '=', 'imported_classlist.subjects_id')
             ->join('enrolled_students', 'imported_classlist.id', '=', 'enrolled_students.imported_classlist_id')

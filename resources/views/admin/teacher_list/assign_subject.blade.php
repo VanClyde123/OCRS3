@@ -86,7 +86,7 @@
 
 <script>
     const baseURL = "{{ url('/') }}";
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const yearLevelSelect = document.getElementById('year_level');
     const subjectCodeSelect = document.getElementById('subject_code');
     const descriptionInput = document.getElementById('description');

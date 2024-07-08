@@ -42,7 +42,6 @@
                     <h3 class="card-title">Records</h3>
                 </div>
                 <div class="card-body">
-                  
                     @if ($scores->isNotEmpty())
                         <div class="card-body ">
                             <div id="accordion">
