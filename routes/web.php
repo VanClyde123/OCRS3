@@ -23,6 +23,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SubjectDescriptionController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DownloadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,7 +43,7 @@ Route::post('login', [AuthController::class, 'AuthLogin']);
 Route::get('logout', [AuthController::class, 'logout']);
 Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
 
-
+Route::get('/download/classlist', [DownloadController::class, 'downloadClasslist'])->name('download.classlist');
 
 //admin side
 Route::group(['middleware' => 'admin'], function () {
