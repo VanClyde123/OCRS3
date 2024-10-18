@@ -734,7 +734,7 @@ public function assignSubject(Request $request)
     ]);
 
    
-    return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])->with('success', 'Future subject assigned successfully');
+    return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])->with('success', 'Next Semester Subject assigned successfully');
 }
 
 public function editSubject($instructorId, $subjectId)
@@ -762,15 +762,20 @@ public function updateSubject(Request $request)
         'room' => 'required',
     ]);
 
+    ///track the subject being updated
+    $subject = Subject::findOrFail($request->subject_id);
+    
+    ///for checking exsiting subjects
     $existingSubject = Subject::where('subject_code', $request->subject_code)
                               ->where('section', $request->section)
+                              ->where('id', '!=', $subject->id) /// exclude the current id being edited
                               ->first();
 
     if ($existingSubject) {
-         return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])->with('error', 'Subject already exists');
+        return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])
+                         ->with('error', 'Subject already exists');
     }
 
-    $subject = Subject::findOrFail($request->subject_id);
     $subject->update([
         'subject_code' => $request->subject_code,
         'description' => $request->description,
@@ -779,6 +784,7 @@ public function updateSubject(Request $request)
         'subject_type' => $request->subject_type,
     ]);
 
+    
     $importedClass = ImportedClasslist::where('subjects_id', $subject->id)->first();
     $importedClass->update([
         'days' => $request->days,
@@ -786,7 +792,8 @@ public function updateSubject(Request $request)
         'room' => $request->room,
     ]);
 
-    return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])->with('success', 'Subject updated successfully');
+    return redirect()->route('admin.teacher_list.future_subjects', ['instructorId' => $request->instructor_id])
+                     ->with('success', 'Subject updated successfully');
 }
 
    public function viewSection(SubjectDescription $subjectDescription)

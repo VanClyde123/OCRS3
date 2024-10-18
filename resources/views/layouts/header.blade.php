@@ -182,11 +182,12 @@
                         <p>Student List</p>
                     </a>
                 </li>
-                  <li class="nav-item">
-                    <a href="{{ url('secretary/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @elseif (Request::segment(2) == 'subject_list' && Request::segment(3) == 'changeInstructor') active @endif">
-                        <p>Change Instructor</p>
+                <li class="nav-item">
+                    <a href="{{ url('secretary/set_semester/set_current')}}" class="nav-link @if (Request::segment(3) == 'set_current') active @endif">
+                        <p>Semester</p>
                     </a>
                 </li>
+                 
                   <li class="nav-item">
                     <a href="{{ url('secretary/subject_descriptions')}}" class="nav-link @if (Request::segment(3) == 'view_subject_desc') active @elseif (Request::segment(1) == 'secretary' && Request::segment(2) == 'subject_descriptions') active  @elseif (Request::segment(1) == 'secretary' && Request::segment(2) == 'assessment_description') active @elseif (Request::segment(1) == 'sections') active  @endif">
                         <p>Subjects</p>
@@ -197,11 +198,12 @@
                         <p>Class Types</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url('secretary/set_semester/set_current')}}" class="nav-link @if (Request::segment(3) == 'set_current') active @endif">
-                        <p>Semester</p>
+                 <li class="nav-item">
+                    <a href="{{ url('secretary/subject_list/view_subjects')}}" class="nav-link @if (Request::segment(3) == 'view_subjects') active @elseif (Request::segment(2) == 'subject_list' && Request::segment(3) == 'changeInstructor') active @endif">
+                        <p>Change Instructor</p>
                     </a>
                 </li>
+                
                   
             @endif
                 </div>
