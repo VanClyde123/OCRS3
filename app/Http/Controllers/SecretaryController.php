@@ -587,7 +587,7 @@ public function assignSubject1(Request $request)
     ]);
 
    
-    return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('success', 'Future subject assigned successfully');
+    return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('success', 'Next Semester Subject assigned successfully');
 }
 
 public function editSubject1($instructorId, $subjectId)
@@ -615,15 +615,19 @@ public function updateSubject1(Request $request)
         'room' => 'required',
     ]);
 
+    ///track the subject being updated
+    $subject = Subject::findOrFail($request->subject_id);
+    
+    ///for checking exsiting subjects
     $existingSubject = Subject::where('subject_code', $request->subject_code)
                               ->where('section', $request->section)
+                              ->where('id', '!=', $subject->id) /// exclude the current id being edited
                               ->first();
 
     if ($existingSubject) {
          return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('error', 'Subject already exists');
     }
 
-    $subject = Subject::findOrFail($request->subject_id);
     $subject->update([
         'subject_code' => $request->subject_code,
         'description' => $request->description,
@@ -632,12 +636,14 @@ public function updateSubject1(Request $request)
         'subject_type' => $request->subject_type,
     ]);
 
+    
     $importedClass = ImportedClasslist::where('subjects_id', $subject->id)->first();
     $importedClass->update([
         'days' => $request->days,
         'time' => $request->time,
         'room' => $request->room,
     ]);
+
 
     return redirect()->route('secretary.teacher_list.future_subjects1', ['instructorId' => $request->instructor_id])->with('success', 'Subject updated successfully');
 }

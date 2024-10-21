@@ -48,7 +48,7 @@ class SubjectDescriptionController extends Controller
     {
         $request->validate([
             'year_level' => 'required|integer',
-            'subject_code' => 'required|string',
+            'subject_code' => 'required|string|unique:subject_descriptions,subject_code',
             'subject_name' => 'required|string',
         ]);
 
@@ -62,21 +62,22 @@ class SubjectDescriptionController extends Controller
     }
 
     public function destroy(SubjectDescription $subjectDescription)
-    {
-        try {
-            $subjectDescription->delete();
-            return redirect()
+{
+    try {
+       
+        $subjectDescription->sections()->delete();
+        $subjectDescription->delete();
+        
+        return redirect()
             ->route('subject_descriptions.viewsubdesc')
-            ->with('success', 'Subject description deleted successfully.');
-    
-        } catch (\Exception $e) {
-    
-            return redirect()
+            ->with('success', 'Subject Description and the related sections deleted successfully.');
+
+    } catch (\Exception $e) {
+        return redirect()
             ->route('subject_descriptions.viewsubdesc')
             ->with('error', 'Error deleting subject description: ' . $e->getMessage());
-    
-        }
     }
+}
 
     
     public function show(SubjectDescription $subjectDescription)
@@ -107,6 +108,7 @@ class SubjectDescriptionController extends Controller
     public function store1(Request $request)
     {
        $request->validate([
+        'year_level' => 'required|integer',
         'subject_code' => 'required|string|unique:subject_descriptions,subject_code',
         'subject_name' => 'required|string',
     ], [
@@ -114,6 +116,7 @@ class SubjectDescriptionController extends Controller
     ]);
 
     SubjectDescription::create([
+        'year_level' => $request->year_level,
         'subject_code' => $request->subject_code,
         'subject_name' => $request->subject_name,
     ]);
@@ -128,10 +131,12 @@ class SubjectDescriptionController extends Controller
 
     public function update1(Request $request, SubjectDescription $subjectDescription){
         $request->validate([
-            'subject_code' => 'required|string',
+            'year_level' => 'required|integer',
+            'subject_code' => 'required|string|unique:subject_descriptions,subject_code',
             'subject_name' => 'required|string',
         ]);
         $subjectDescription->update([
+            'year_level' => $request->year_level,
             'subject_code' => $request->subject_code,
             'subject_name' => $request->subject_name,
         ]);
@@ -139,19 +144,24 @@ class SubjectDescriptionController extends Controller
         return redirect()->route('subject_descriptions.viewsubdesc1')->with('success', 'Subject description updated successfully.');
     }
     public function destroy1(SubjectDescription $subjectDescription){
-        try {
-            $subjectDescription->delete();
-            
-            return redirect()->route('subject_descriptions.viewsubdesc1')->with('success', 'Subject description deleted successfully.');
+       try {
+       
+        $subjectDescription->sections()->delete();
+        $subjectDescription->delete();
         
+        return redirect()
+            ->route('subject_descriptions.viewsubdesc1')
+            ->with('success', 'Subject Description and the related sections deleted successfully.');
+
         } catch (\Exception $e) {
-        
-            return redirect()->route('subject_descriptions.viewsubdesc1')->with('error', 'Error deleting subject description: ' . $e->getMessage());
+            return redirect()
+                ->route('subject_descriptions.viewsubdesc1')
+                ->with('error', 'Error deleting subject description: ' . $e->getMessage());
         }
     }
     public function show1(SubjectDescription $subjectDescription)
     {
-        // Fetch assessment descriptions associated with the selected subject
+        //// fetch assessment descriptions associated with the selected subject
         $assessmentDescriptions = $subjectDescription->assessmentDescriptions;
 
          return redirect()->route('assessment_descriptions.view', $subjectDescription->id);

@@ -17,24 +17,18 @@
         <div class="card-body">
             <form method="POST" action="{{ route('secretary.teacher_list.update_subject1') }}">
                 @csrf
-                <input type="hidden" name="instructor_id" value="{{ $instructor->id }}">
+                 <input type="hidden" name="instructor_id" value="{{ $instructor->id }}">
                 <input type="hidden" name="subject_id" value="{{ $subject->id }}">
 
                 <div class="form-group">
-                    <label for="year_level">Year Level</label>
-                    <select class="form-control" id="year_level" name="year_level" required>
-                        <option value="" disabled selected>--- Select Year Level ---</option>
-                        @foreach(range(1, 5) as $yearLevel)
-                            <option value="{{ $yearLevel }}" {{ $subject->year_level == $yearLevel ? 'selected' : '' }}>Year Level {{ $yearLevel }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="subject_code">Subject Code</label>
                     <select class="form-control" id="subject_code" required>
-                        <option value="" disabled selected>--- Select Subject Code ---</option>
+                        <option value="" disabled>--- Select Subject Code ---</option>
                         @foreach($subjectDescriptions as $subjectDescription)
-                            <option value="{{ $subjectDescription->id }}" data-year-level="{{ $subjectDescription->year_level }}" data-description="{{ $subjectDescription->subject_name }}" data-code="{{ $subjectDescription->subject_code }}" {{ $subject->subject_code == $subjectDescription->subject_code ? 'selected' : '' }}>
+                            <option value="{{ $subjectDescription->id }}"
+                                data-description="{{ $subjectDescription->subject_name }}"
+                                data-code="{{ $subjectDescription->subject_code }}"
+                                {{ $subject->subject_code == $subjectDescription->subject_code ? 'selected' : '' }}>
                                 {{ $subjectDescription->subject_code }}
                             </option>
                         @endforeach
@@ -56,7 +50,7 @@
                     <label for="term">Term</label>
                     <input type="text" class="form-control" id="term" name="term" value="{{ $subject->term }}" required readonly>
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="subject_type">Subject Type</label>
                     <select class="form-control" id="subject_type" name="subject_type" required>
                         <option value="" disabled>--- Select Subject Type ---</option>
@@ -90,7 +84,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const yearLevelSelect = document.getElementById('year_level');
     const subjectCodeSelect = document.getElementById('subject_code');
     const descriptionInput = document.getElementById('description');
     const sectionSelect = document.getElementById('section');
@@ -100,18 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const currentSemester = @json($currentSemester);
 
-    function filterSubjectCodes() {
-        const selectedYearLevel = yearLevelSelect.value;
-        for (const option of subjectCodeSelect.options) {
-            if (option.value) {
-                option.style.display = option.getAttribute('data-year-level') == selectedYearLevel ? '' : 'none';
-            }
-        }
-        subjectCodeSelect.value = '';
-        descriptionInput.value = '';
-        sectionSelect.innerHTML = '<option value="" disabled selected>--- Select Section ---</option>';
-    }
-
     function fetchSections(subjectDescriptionId) {
         if (!subjectDescriptionId) {
             sectionSelect.innerHTML = '<option value="" disabled selected>--- Select Section ---</option>';
@@ -120,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const url = `/ocrs/secretary/get-sections/${subjectDescriptionId}`;
 
-        fetch(url)
+         fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -145,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     sectionSelect.appendChild(option);
                 });
 
+                
                 sectionSelect.value = sectionHidden.value;
             })
             .catch(error => {
@@ -181,8 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
         termInput.value = `${nextTerm}, ${nextYear}`;
     }
 
-    yearLevelSelect.addEventListener('change', filterSubjectCodes);
-
     subjectCodeSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         const description = selectedOption.getAttribute('data-description');
@@ -194,16 +174,19 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchSections(subjectDescriptionId);
     });
 
-    sectionSelect.addEventListener('change', function() {
-        sectionHidden.value = this.options[this.selectedIndex].text;
-    });
-
-    setNextTerm();
-    filterSubjectCodes();
-    subjectCodeSelect.value = '{{ $subject->subject_code }}';
+   
+    subjectCodeSelect.value = '{{ $subject->id }}';
     descriptionInput.value = '{{ $subject->description }}';
-    sectionSelect.value = '{{ $subject->section }}';
+    sectionSelect.value = '{{ $subject->section }}'; 
     subjectCodeHidden.value = '{{ $subject->subject_code }}';
+
+    
+    fetchSections(subjectCodeSelect.value);
+    
+   
+    sectionSelect.addEventListener('change', function() {
+        sectionHidden.value = this.value;
+    });
 });
 </script>
 @endsection
