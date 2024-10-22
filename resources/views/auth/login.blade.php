@@ -38,10 +38,12 @@
             </div>
             <div class="card-body" style="align-items: center;">
                 <p class="card-text">Admin Account:  admin <br>Admin Password: admin12345<br>Secretary Account:  00001000<br>Sec Password: rachel12345<br>Teacher Account: 10001000<br>Teacher Password: richard12345<br>Student Account:  20151000<br>Student Password: student12345</p>
-                <p>Download Excel Class List Sample
-                      <a href="{{ route('download.classlist') }}" class="btnaa">
+                <p>Download Excel Class List Sample <br>
+                    <center>
+                        <a href="{{ route('download.classlist') }}" class="btnaa">
                             <i class="fa fa-download"></i> Download
                         </a>
+                    </center>
                 </p>
             </div>
         </div>
