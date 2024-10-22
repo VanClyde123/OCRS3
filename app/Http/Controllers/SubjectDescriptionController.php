@@ -48,8 +48,10 @@ class SubjectDescriptionController extends Controller
     {
         $request->validate([
             'year_level' => 'required|integer',
-            'subject_code' => 'required|string|unique:subject_descriptions,subject_code',
+            'subject_code' => 'required|string|unique:subject_descriptions,subject_code,' . $subjectDescription->id,
             'subject_name' => 'required|string',
+        ], [
+            'subject_code.unique' => 'Subject code already exists.',
         ]);
 
         $subjectDescription->update([
@@ -132,9 +134,11 @@ class SubjectDescriptionController extends Controller
     public function update1(Request $request, SubjectDescription $subjectDescription){
         $request->validate([
             'year_level' => 'required|integer',
-            'subject_code' => 'required|string|unique:subject_descriptions,subject_code',
+           'subject_code' => 'required|string|unique:subject_descriptions,subject_code,' . $subjectDescription->id,
             'subject_name' => 'required|string',
-        ]);
+         ], [
+                'subject_code.unique' => 'Subject code already exists.',
+            ]);
         $subjectDescription->update([
             'year_level' => $request->year_level,
             'subject_code' => $request->subject_code,

@@ -21,9 +21,11 @@ class SemesterController extends Controller
 
     public function store(Request $request)
     {
-         $request->validate([
+        $request->validate([
         'semester_name' => 'required',
-        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,'.$request->semester_name,
+        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,' . $request->semester_name,
+    ], [
+        'school_year.unique' => 'The semester already exists.',
     ]);
 
         Semester::create($request->all());
@@ -41,7 +43,9 @@ class SemesterController extends Controller
     {
         $request->validate([
         'semester_name' => 'required',
-        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,'.$request->semester_name,
+        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,' . $request->semester_name,
+    ], [
+        'school_year.unique' => 'The semester already exists.',
     ]);
 
         $semester = Semester::findOrFail($id);
@@ -116,9 +120,11 @@ public function viewSemester1()
     public function store1(Request $request)
     {
         $request->validate([
-            'semester_name' => 'required',
-            'school_year' => 'required',
-        ]);
+        'semester_name' => 'required',
+        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,' . $request->semester_name,
+    ], [
+        'school_year.unique' => 'The semester already exists.',
+    ]);
 
         Semester::create($request->all());
 
@@ -133,10 +139,12 @@ public function viewSemester1()
 
     public function update1(Request $request, $id)
     {
-        $request->validate([
-            'semester_name' => 'required',
-            'school_year' => 'required',
-        ]);
+       $request->validate([
+        'semester_name' => 'required',
+        'school_year' => 'required|regex:/^\d{4} - \d{4}$/|unique:semesters,school_year,NULL,id,semester_name,' . $request->semester_name,
+    ], [
+        'school_year.unique' => 'The semester already exists.',
+    ]);
 
         $semester = Semester::findOrFail($id);
         $semester->update($request->all());

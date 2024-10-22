@@ -18,13 +18,15 @@
     @if($semesters->isEmpty())
         @include('messages')
             <div class="content-wrappers">
-               
+               <h2><br></h2>
                 <section class="content-header">
-                    <h2>Create Semester</h2>
-                    <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back" />
+        
                 </section>
                 <section class="content">
-                    <div class="card ">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Create Semester</h3>
+                        </div>
                         <div class="card-body">
                             <form method="post" action="{{ route('semesters.store') }}">
                                 @csrf

@@ -23,12 +23,23 @@ class SubjectTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subject_type' => 'required|unique:subject_type_percentage',
-            'lec_percentage' => 'required|numeric|min:0|max:1',
-            'lab_percentage' => 'required|numeric|min:0|max:1',
+        'subject_type' => 'required|unique:subject_type_percentage',
+        'lec_percentage' => 'required|numeric|min:0|max:1',
+        'lab_percentage' => 'required|numeric|min:0|max:1',
+        ], [
+            'subject_type.unique' => 'The class type name must be unique.',
         ]);
 
-        SubjectType::create($request->all());
+       
+        $existingType = SubjectType::where('lec_percentage', $request->lec_percentage)
+                                    ->where('lab_percentage', $request->lab_percentage)
+                                    ->first();
+
+    if ($existingType) {
+            return redirect()->back()->withErrors(['The lecture and lab percentages combination already exists.'])->withInput();
+        }
+
+    SubjectType::create($request->all());
 
         return redirect('admin/subject_types/viewtypes')->with('success', 'Subject type added successfully.');
     }
@@ -48,9 +59,21 @@ class SubjectTypeController extends Controller
             'subject_type' => 'required|unique:subject_type_percentage,subject_type,' . $id,
             'lec_percentage' => 'required|numeric|min:0|max:1',
             'lab_percentage' => 'required|numeric|min:0|max:1',
+        ], [
+            'subject_type.unique' => 'The class type name must be unique.',
         ]);
 
-        $subjectType->update($request->all());
+       
+        $existingType = SubjectType::where('lec_percentage', $request->lec_percentage)
+                                    ->where('lab_percentage', $request->lab_percentage)
+                                    ->where('id', '!=', $id) 
+                                    ->first();
+
+        if ($existingType) {
+            return redirect()->back()->withErrors(['The lecture and lab percentages combination already exists.'])->withInput();
+        }
+
+    $subjectType->update($request->all());
 
          return redirect('admin/subject_types/viewtypes')->with('success', 'Subject type updated successfully.');
     }
@@ -79,13 +102,24 @@ class SubjectTypeController extends Controller
 
     public function store1(Request $request)
     {
-        $request->validate([
-            'subject_type' => 'required|unique:subject_type_percentage',
-            'lec_percentage' => 'required|numeric|min:0|max:1',
-            'lab_percentage' => 'required|numeric|min:0|max:1',
+       $request->validate([
+        'subject_type' => 'required|unique:subject_type_percentage',
+        'lec_percentage' => 'required|numeric|min:0|max:1',
+        'lab_percentage' => 'required|numeric|min:0|max:1',
+        ], [
+            'subject_type.unique' => 'The class type name must be unique.',
         ]);
 
-        SubjectType::create($request->all());
+       
+        $existingType = SubjectType::where('lec_percentage', $request->lec_percentage)
+                                    ->where('lab_percentage', $request->lab_percentage)
+                                    ->first();
+
+    if ($existingType) {
+            return redirect()->back()->withErrors(['The lecture and lab percentages combination already exists.'])->withInput();
+        }
+
+    SubjectType::create($request->all());
 
         return redirect('secretary/subject_types/viewtypes')->with('success', 'Subject type added successfully.');
     }
@@ -105,10 +139,21 @@ class SubjectTypeController extends Controller
             'subject_type' => 'required|unique:subject_type_percentage,subject_type,' . $id,
             'lec_percentage' => 'required|numeric|min:0|max:1',
             'lab_percentage' => 'required|numeric|min:0|max:1',
+        ], [
+            'subject_type.unique' => 'The class type name must be unique.',
         ]);
 
-        $subjectType->update($request->all());
+       
+        $existingType = SubjectType::where('lec_percentage', $request->lec_percentage)
+                                    ->where('lab_percentage', $request->lab_percentage)
+                                    ->where('id', '!=', $id) 
+                                    ->first();
 
+        if ($existingType) {
+            return redirect()->back()->withErrors(['The lecture and lab percentages combination already exists.'])->withInput();
+        }
+
+    $subjectType->update($request->all());
          return redirect('secretary/subject_types/viewtypes')->with('success', 'Subject type updated successfully.');
     }
 

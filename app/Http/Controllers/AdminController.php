@@ -119,7 +119,7 @@ private function getRoleNumber($roleName) {
         $existingUser = User::where('id_number', $request->id_number)->where('id', '!=', $id)->first();
 
         if($existingUser) {
-            return redirect('admin/admin/list')->withErrors(['ID number already exists']); 
+           return redirect()->back()->withErrors(['ID number already exists'])->withInput();
           }
 
         $user->name = trim($request->name);

@@ -175,8 +175,10 @@
                     });
                 });
 
-                $('#saveAssessmentsBtn').click(function () {
+            $('#saveAssessmentsBtn').click(function () {
                     const assessments = [];
+                    let isValid = true;
+
                     $('.assessment-container').each(function (index) {
                         const isNew = $(this).data('isNew');
                         const gradingPeriod = $('#gradingPeriod').val();
@@ -186,11 +188,48 @@
                         const max_points = $(this).find('.form-control[name="max_points"]').val();
                         const activity_date = $(this).find('.form-control[name="activity_date"]').val();
 
+                        //////for validation for desc
+                        if (!description && !manualDescription) {
+                            isValid = false;
+                            $(this).find('select[name="description"]').addClass('is-invalid');
+                            $(this).find('input[name="manual_description"]').addClass('is-invalid');
+                        } else {
+                            $(this).find('select[name="description"]').removeClass('is-invalid');
+                            $(this).find('input[name="manual_description"]').removeClass('is-invalid');
+                        }
+
+                        //////validation based on selected assessment type
+                        if (
+                            type !== 'Additional Points Quiz' &&
+                            type !== 'Additional Points OT' &&
+                            type !== 'Additional Points Exam' &&
+                            type !== 'Additional Points Lab' &&
+                            type !== 'Direct Bonus Grade'
+                        ) {
+                            if (!max_points || max_points <= 0) {
+                                isValid = false;
+                                $(this).find('input[name="max_points"]').addClass('is-invalid');
+                            } else {
+                                $(this).find('input[name="max_points"]').removeClass('is-invalid');
+                            }
+
+                            if (!activity_date) {
+                                isValid = false;
+                                $(this).find('input[name="activity_date"]').addClass('is-invalid');
+                            } else {
+                                $(this).find('input[name="activity_date"]').removeClass('is-invalid');
+                            }
+                        }
+
                         assessments.push({ isNew, grading_period: gradingPeriod, type, description, manual_description: manualDescription, max_points, activity_date });
                     });
 
-                    console.log('Assessments to save:', assessments);
+                    if (!isValid) {
+                        alert('Please fill out the required fields.');
+                        return; 
+                    }
 
+                    console.log('Assessments to save:', assessments);
                     
                     const newAssessmentsToSave = assessments.filter(assessment => assessment.isNew);
 
@@ -205,10 +244,11 @@
                         },
                         success: function (response) {
                             $('#assessmentModal').modal('hide');
-                            window.location.href = window.location.href;
+                            window.location.href = window.location.href; 
                         },
                         error: function (error) {
                             console.error('Error:', error);
+                            
                         },
                     });
                 });
@@ -768,6 +808,17 @@
                         }
                     });
                 }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const addAssessmentFieldsBtn = document.getElementById('addAssessmentFieldsBtn');
+                const saveAssessmentsBtn = document.getElementById('saveAssessmentsBtn');
+
+                addAssessmentFieldsBtn.addEventListener('click', function() {
+                    saveAssessmentsBtn.classList.remove('d-none');
+                });
             });
         </script>
     @endpush
@@ -1966,7 +2017,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="addAssessmentFieldsBtn">+</button>
-                        <button type="button" class="btn btn-primary" id="saveAssessmentsBtn">save</button>
+                        <button type="button" class="btn btn-primary d-none" id="saveAssessmentsBtn">Save</button>
                     </div>
                 </form>
             </div>

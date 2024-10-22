@@ -10,6 +10,15 @@
 
         </section>
         <section class="content">
+            @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Edit Subject Description of {{ $subjectDescription->subject_code }} - {{ $subjectDescription->subject_name }}</h3>
