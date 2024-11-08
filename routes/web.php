@@ -57,7 +57,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/admin/delete/{id}', [AdminController::class, 'delete']);
     Route::get('/admin/admin/list/search', [AdminController::class, 'search']);
 
-
+    Route::get('admin/admin/toggle-status/{id}', [AdminController::class, 'toggleStatus'])->name('admin.toggleStatus');
 
      Route::get('/admin/initial-change-password', [AdminController::class, 'showInitialChangePasswordForm'])->name('initial-change-password');
     Route::post('/admin/initial-change-password', [AdminController::class, 'initialChangePassword']);

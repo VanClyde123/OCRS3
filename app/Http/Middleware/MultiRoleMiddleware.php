@@ -16,6 +16,11 @@ class MultiRoleMiddleware
      */
     public function handle(Request $request, Closure $next, $roles)
     {
+         
+        if (!Auth::check()) {
+            return redirect('/')->with('error', 'Please log in to access this page.');
+        }
+
         $roles = explode('|', $roles);
 
         foreach ($roles as $role) {
@@ -25,7 +30,7 @@ class MultiRoleMiddleware
         }
 
         Auth::logout();
-        return redirect(url(''));
+        return redirect('/')->with('error', 'Unauthorized access.');
     }
 
     private function checkRole($role)

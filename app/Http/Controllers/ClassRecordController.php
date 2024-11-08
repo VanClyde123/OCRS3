@@ -334,10 +334,41 @@ private function cleanSectionName($section)
             
             $student = User::where('id_number', $studentInfo['id_number'])->first();
 
+            $updated = false;
+
             if ($student) {
                 
                 if ($student->gender !== $gender) {
                     $student->gender = $gender;
+                    $student->save();
+                }
+
+                
+                if ($student->name !== $studentInfo['name']) {
+                    $student->name = $studentInfo['name'];
+                    $updated = true;
+                }
+
+                
+                if ($student->middle_name !== $studentInfo['middle_name']) {
+                    $student->middle_name = $studentInfo['middle_name'];
+                    $updated = true;
+                }
+
+                
+                if ($student->last_name !== $studentInfo['last_name']) {
+                    $student->last_name = $studentInfo['last_name'];
+                    $updated = true;
+                }
+
+               
+                if ($student->course !== $studentInfo['course']) {
+                    $student->course = $studentInfo['course'];
+                    $updated = true;
+                }
+
+             
+                if ($updated) {
                     $student->save();
                 }
             } else {

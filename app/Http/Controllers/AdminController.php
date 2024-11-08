@@ -42,7 +42,7 @@ class AdminController extends Controller
     if ($role) {
       $query->where('role', $role);
     }
-    $data['getData'] = $query->simplePaginate(10);
+    $data['getData'] = $query->paginate(10);
     return view('admin.admin.list', $data);
 }
 
@@ -66,6 +66,18 @@ private function getRoleNumber($roleName) {
     
     return null;
 }
+
+
+    public function toggleStatus($id)
+    {
+        $user = User::find($id);
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        return redirect()->back()->with('success', 'User status updated.');
+    }
+
+
 
     public function add(){
         $data['header_title'] = "Add User";

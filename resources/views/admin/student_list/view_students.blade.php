@@ -45,7 +45,7 @@
                                 <tr>
                                     <th>ID Number</th>
                                     <th>Last Name</th>
-                                    <th>Name</th>
+                                    <th>First Name</th>
                                     <th>Middle Name</th>
                                     <th>Action</th>
                                 </tr>

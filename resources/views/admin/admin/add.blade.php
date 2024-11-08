@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <small class="small-tag">* Required</small>
                         <div class="form-group">
-                            <label>Name *</label>
+                            <label>First Name *</label>
                             <input type="text" class="form-control" name="name" placeholder="Name" required >
                         </div>
                         <div class="form-group">

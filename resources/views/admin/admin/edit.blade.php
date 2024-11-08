@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <small class="small-tag">* Required</small>
                     <div class="form-group">
-                        <label>Name *</label>
+                        <label>First Name *</label>
                         <input type="text" class="form-control" name="name" value="{{ $getData->name }}" placeholder="Name" required>
                     </div>
                     <div class="form-group">
@@ -129,9 +129,6 @@
             const instructorOption = new Option('Instructor', '2');
             secondaryRoleSelect.add(instructorOption);
         } else if (selectedRole == 4) { 
-            const adminOption = new Option('Admin', '1');
-            secondaryRoleSelect.add(adminOption);
-        } else if (selectedRole == 2) {
             const adminOption = new Option('Admin', '1');
             secondaryRoleSelect.add(adminOption);
         } 

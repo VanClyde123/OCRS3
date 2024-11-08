@@ -23,6 +23,7 @@ return new class extends Migration
             $table->tinyInteger('role')->comment('1=admin, 2=teacher, 3=student, 4=secretary');
             $table->tinyInteger('secondary_role')->nullable();
             $table->boolean('password_changed')->default(false);
+            $table->boolean('is_active')->default(1); ////1 = actived , 0 - deactivated
             $table->rememberToken();
             $table->timestamps();
             

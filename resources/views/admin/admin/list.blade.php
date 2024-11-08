@@ -62,19 +62,20 @@
                         @endphp
                         <table class="table table-striped">
                             <thead>
-                                <th>#</th>
-                                <th>Name</th>
+                                <th>ID Number</th>
+                                <th>First Name</th>
                                 <th>Middle Name</th>
                                 <th>Last Name</th>
                                 <th>Role</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </thead>
                             <tbody id="userList">
                                 @foreach($getData->sortBy('role') as $value)
                                 <tr>
-                                    <td width="15%">{{ $value->id_number }}</td>
+                                    <td width="10%">{{ $value->id_number }}</td>
                                     <td width="15%">{{ $value->name }}</td>
-                                    <td width="15%">{{ $value->middle_name }}</td>
+                                    <td width="10%">{{ $value->middle_name }}</td>
                                     <td width="15%">{{ $value->last_name }}</td>
                                     <td width="15%">
                                             {{ $roles[$value->role] }}
@@ -82,13 +83,21 @@
                                                 / {{ $roles[$value->secondary_role] }}
                                             @endif
                                         </td>
+
+                                    <td width="10%"> 
+                                        {{ $value->is_active ? 'Active' : 'Inactive' }}
+                                    </td>
                                     <td width="15%">
                                         <a href="{{ url('admin/admin/confirm-password/'.$value->id) }}" class="btn btn-primary">Edit</a>
                                         @if($value->role != 1)
-                                            <a href="{{ url('admin/admin/delete/'.$value->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this user?')">Delete</a>
+                                           <a href="{{ url('admin/admin/toggle-status/'.$value->id) }}" 
+                                               class="btn {{ $value->is_active ? 'btn-warning' : 'btn-success' }}"
+                                               onclick="return confirm('{{ $value->is_active ? 'Are you sure you want to deactivate this account?' : 'Are you sure you want to activate this account?' }}');">
+                                               {{ $value->is_active ? 'Deactivate' : 'Activate' }}
+                                            </a>
                                         @else
                                             <button disabled class="btn btn-danger">
-                                                Delete
+                                                Deactivate
                                             </button>
                                         @endif
                                     </td>
@@ -97,8 +106,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Pagination links -->
-                    {{ $getData->links() }}
+            
+                 {{ $getData->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </section>
