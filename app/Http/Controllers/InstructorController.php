@@ -282,7 +282,7 @@ class InstructorController extends Controller
     
        $enrolledStudents = [];
 
-   //lop for getting the list of students enrolled in specific subject taught by current logged-in instructr
+   /////lop for getting the list of students enrolled in specific subject taught by current logged-in instructr
        foreach ($subject->importedClasses as $class) {
           if ($class->instructor_id == $currentInstructor->id) {
             foreach ($class->enrolledStudents as $enrolledStudent) {
@@ -300,23 +300,27 @@ class InstructorController extends Controller
      }
 
 
-    public function removeStudent($enrolledStudentId)
-    {
-         
-        $enrolledStudent = EnrolledStudents::find($enrolledStudentId);
+   public function removeStudent($enrolledStudentId)
+  {
+           
+     $enrolledStudent = EnrolledStudents::find($enrolledStudentId);
+            if (!$enrolledStudent) {
+                    return redirect()->back()->with('error', 'Student not found.');
+                }
 
-        if (!$enrolledStudent) {
-            return redirect()->back()->with('error', 'Student not found.');
+      $hasGrades = $enrolledStudent->grades()->exists();
+            if ($hasGrades) {
+                return redirect()->back()->with('error', 'Cannot remove this student because they have existing assessments.');
+            }
+
+          
+            DB::transaction(function () use ($enrolledStudent) {
+                $enrolledStudent->grades()->delete();
+                $enrolledStudent->delete();
+            });
+
+            return redirect()->back()->with('success', 'Student removed successfully.');
         }
-
-        
-        DB::transaction(function () use ($enrolledStudent) {
-            $enrolledStudent->grades()->delete();
-            $enrolledStudent->delete();
-        });
-
-        return redirect()->back()->with('success', 'Student Removed.');
-    }
 
     public function editAssessments($subjectId)
     {
@@ -353,6 +357,19 @@ class InstructorController extends Controller
 
         
         return redirect()->route('instructor.editAssessments', ['subjectId' => $assessment->subject_id])->with('success', 'Assessment updated successfully');
+    }
+
+    public function deleteAssessment($assessmentId)
+    {
+        $assessment = Assessment::findOrFail($assessmentId);
+
+            DB::transaction(function () use ($assessment) {
+                
+                    $assessment->grades()->delete();
+                    $assessment->delete();
+                });
+
+        return redirect()->back()->with('success', 'Assessment removed successfully.');
     }
 
     public function getAssessmentDescriptions(Request $request)

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class NoCache
 {
@@ -14,12 +15,17 @@ class NoCache
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
 
-        return $response->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                        ->header('Pragma', 'no-cache')
-                        ->header('Expires', '0');
+      
+        if (!($response instanceof BinaryFileResponse)) {
+            $response = $response->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                                 ->header('Pragma', 'no-cache')
+                                 ->header('Expires', '0');
+        }
+
+        return $response;
     }
 }

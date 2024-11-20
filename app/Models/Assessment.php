@@ -13,10 +13,21 @@ class Assessment extends Model
         return $this->hasMany(Grades::class);
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        
+              ///////for auto deleting asscoiated grades records in grades table
+                static::deleting(function ($assessment) {
+                    $assessment->grades()->delete();
+                });
+            }
+
     public function viewers()
-{
-    return $this->belongsToMany(User::class, 'assessment_views', 'assessment_id', 'student_id');
-}
+    {
+        return $this->belongsToMany(User::class, 'assessment_views', 'assessment_id', 'student_id');
+    }
    protected $table = 'assessments';
 protected $fillable = [
            'subject_id',

@@ -93,7 +93,7 @@ class AuthController extends Controller
             }
                 else
                 {
-                    return redirect()->back()->with('error', 'Incorrect ID number and password');
+                    return redirect()->back()->with('error', 'Incorrect ID number or password');
                 }
 
          } else {

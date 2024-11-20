@@ -75,6 +75,36 @@ public function showInstructorSubjects(Request $request, $instructorId)
     return view('secretary.teacher_list.subjects', compact('instructor', 'subjects'));
 }
 
+public function deleteSubject($subjectId)
+{
+
+    $subject = Subject::findOrFail($subjectId);
+
+    
+        $associatedRecordsCount = $subject->assessments()
+                                           ->with('grades')
+                                           ->exists();
+
+    if ($associatedRecordsCount) {
+        return redirect()->route('admin.teacher_list.subjects', ['instructorId' => $subject->importedClasses->first()->instructor_id])
+                         ->with('error', 'Subject cannot be deleted as there are existing records associated with the enrolled students.');
+                 }
+
+    
+    $importedClass = $subject->importedClasses;
+        foreach ($importedClass as $class) {
+            $class->enrolledStudents()->delete(); 
+        }
+
+    
+    $importedClass->each->delete(); 
+    $subject->delete();
+
+   
+    return redirect()->route('secretary.teacher_list.subjects', ['instructorId' => $subject->importedClasses->first()->instructor_id])
+                     ->with('success', 'Subject and All Enrolled Students have been removed successfully.');
+}
+
 public function showPastInstructorSubjects(Request $request, $instructorId)
 {
     $instructor = User::findOrFail($instructorId);

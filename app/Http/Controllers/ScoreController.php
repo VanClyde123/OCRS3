@@ -576,7 +576,7 @@ if ($subjectType === 'Lec') {
                 $finalsOfficialGrade = max(70, $finalsOfficialGrade);
 
                 
-                if ($finalsOfficialGrade < 75) {
+                if ($finalsOfficialGrade < 70) {
                     $finalsOfficialGrade = 70;
                 }
 
@@ -853,7 +853,7 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
      $FinalsOfficialGradeLab = max(70, $FinalsOfficialGradeLab);
 
             
-            if ($FinalsOfficialGradeLab < 75) {
+            if ($FinalsOfficialGradeLab < 70) {
                 $FinalsOfficialGradeLab = 70;
             }
 
@@ -1436,7 +1436,7 @@ if ($hasLecRecordsFinals) {
             $FNLecLab6040Grade = max(70, $FNLecLab6040Grade);
 
             
-            if ($FNLecLab6040Grade < 75) {
+            if ($FNLecLab6040Grade < 70) {
                 $FNLecLab6040Grade = 70;
             }
 

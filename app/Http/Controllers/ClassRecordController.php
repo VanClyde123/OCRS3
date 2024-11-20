@@ -96,32 +96,31 @@ class ClassRecordController extends Controller
   
   }
 private function fetchMaleStudentValues($classList, $startRow, $endRow)
-   {
+{
     $studentValues = [];
 
     for ($row = $startRow; $row <= $endRow; $row++) {
-        $idNumber = $classList->getCell('C' . $row)->getValue();
-        $nameCell = $classList->getCell('D' . $row)->getValue();
-        $course = $classList->getCell('G' . $row)->getValue();
+        
+        $idNumber = trim($classList->getCell('C' . $row)->getValue());
+        $nameCell = trim($classList->getCell('D' . $row)->getValue());
+        $course = trim($classList->getCell('G' . $row)->getValue());
 
-        ///// skip if cell is blank
+         ///// skip if cell is blank
         if (empty($idNumber) || empty($nameCell) || empty($course)) {
             continue;
         }
-        ////  if $nameCell is a string
-        $nameCellValue = is_string($nameCell) ? $nameCell : $nameCell->getValue();
+
+        //// for the student name
+        $nameParts = explode(',', $nameCell);
+        $lastName = isset($nameParts[0]) ? trim($nameParts[0]) : '';
+        $firstAndMiddleName = isset($nameParts[1]) ? trim($nameParts[1]) : '';
 
         ///// extract parts of the name
-        $nameParts = explode(',', $nameCellValue);
-        $lastName = trim($nameParts[0]);
-        $firstAndMiddleName = trim($nameParts[1]);
+        $nameParts = preg_split('/\s+/', $firstAndMiddleName); 
+        $middleName = count($nameParts) > 1 ? trim(array_pop($nameParts)) : '';
+        $firstName = implode(' ', $nameParts); 
 
-        //// split the first and middle names
-        $firstAndMiddleNameParts = explode(' ', $firstAndMiddleName, 2);
-        $firstName = trim($firstAndMiddleNameParts[0]);
-        $middleName = isset($firstAndMiddleNameParts[1]) ? trim($firstAndMiddleNameParts[1]) : '';
-
-        //// list of student array
+        //// add the student to the list
         $studentValues[] = [
             'id_number' => $idNumber,
             'last_name' => $lastName,
@@ -134,33 +133,31 @@ private function fetchMaleStudentValues($classList, $startRow, $endRow)
     return $studentValues;
 }
 private function fetchFemaleStudentValues($classList, $startRow, $endRow)
-   {
+{
     $studentValues = [];
 
     for ($row = $startRow; $row <= $endRow; $row++) {
-        $idNumber = $classList->getCell('C' . $row)->getValue();
-        $nameCell = $classList->getCell('D' . $row)->getValue();
-        $course = $classList->getCell('H' . $row)->getValue();
+       
+        $idNumber = trim($classList->getCell('C' . $row)->getValue());
+        $nameCell = trim($classList->getCell('D' . $row)->getValue());
+        $course = trim($classList->getCell('H' . $row)->getValue());
 
-         ///// skip if cell is blank
+        ///// skip if cell is blank
         if (empty($idNumber) || empty($nameCell) || empty($course)) {
             continue;
         }
 
-          ////  if $nameCell is a string
-        $nameCellValue = is_string($nameCell) ? $nameCell : $nameCell->getValue();
+        //// for the student name
+        $nameParts = explode(',', $nameCell);
+        $lastName = isset($nameParts[0]) ? trim($nameParts[0]) : '';
+        $firstAndMiddleName = isset($nameParts[1]) ? trim($nameParts[1]) : '';
 
-        ///// extract parts of the name
-        $nameParts = explode(',', $nameCellValue);
-        $lastName = trim($nameParts[0]);
-        $firstAndMiddleName = trim($nameParts[1]);
+         ///// extract parts of the name
+        $nameParts = preg_split('/\s+/', $firstAndMiddleName); 
+        $middleName = count($nameParts) > 1 ? trim(array_pop($nameParts)) : ''; 
+        $firstName = implode(' ', $nameParts);
 
-       //// split the first and middle names
-        $firstAndMiddleNameParts = explode(' ', $firstAndMiddleName, 2);
-        $firstName = trim($firstAndMiddleNameParts[0]);
-        $middleName = isset($firstAndMiddleNameParts[1]) ? trim($firstAndMiddleNameParts[1]) : '';
-
-        //// list of student array
+         //// add the student to the list
         $studentValues[] = [
             'id_number' => $idNumber,
             'last_name' => $lastName,
@@ -171,7 +168,7 @@ private function fetchFemaleStudentValues($classList, $startRow, $endRow)
     }
 
     return $studentValues;
-   }
+}
 private function extractScheduleInfo($scheduleInfo)
    {
     //// use string manipulation/regular expressions to extract days, time, and room
@@ -195,7 +192,7 @@ private function extractScheduleInfo($scheduleInfo)
 
 private function extractSubjectInfo($subjectInfo)
    {
-   /////// use string manipulation or regular expressions to extract subject code and description assuming the subject code is a sequence of uppercase letters and numbers and the description is everything after the subject code
+   /////// this use string manipulation/regular expressions for extracting sub code and desc assuming the subject code is a sequence of uppercase letters and numbers and the description is everything after the subject code
     $matches = [];
     preg_match('/^([A-Z0-9]+)\s*(.*)$/i', $subjectInfo, $matches);
 

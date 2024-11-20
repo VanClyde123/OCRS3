@@ -8,7 +8,7 @@
         <section class="content-header">
             <h2><br></h2>
         </section>
-
+            @include('messages')
         <section class="content">
             <div class="card">
                 <div class="card-header">
@@ -44,7 +44,12 @@
                                         <td>{{ $subject->subject->description }}</td>
                                         
                                         <td>{{ $subject->subject->section }}</td>
-                                        <td><a href="{{ route('admin.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}" class="btn btn-info">View Enrolled Students</a></td>
+                                        <td><a href="{{ route('admin.teacher_list.enrolled_students', ['subject' => $subject->subject->id]) }}" class="btn btn-info">View Enrolled Students</a>
+                                        <form action="{{ route('admin.subject.delete', ['subjectId' => $subject->subject->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this subject and all its enrolled students from this instructor?')">Remove</button>
+                                        </form></td>
                                     </tr>
                                 @endforeach
                             </tbody>

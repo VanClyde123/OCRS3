@@ -761,20 +761,20 @@
                                 var lec_fg_grade = grade.lec_fg_grade !== null ? grade.lec_fg_grade : '';
                                 var total_fg_lab = grade.total_fg_lab !== null ? grade.total_fg_lab : '';
                                 var lab_fg_grade = grade.lab_fg_grade !== null ? grade.lab_fg_grade : '';
-                                var total_fg_grade = grade.total_fg_grade !== null ? grade.total_fg_grade : '';
+                                var total_fg_grade = grade.total_fg_grade !== null ? Math.round(grade.total_fg_grade) : '';
                                 var fg_grade = grade.fg_grade !== null ? grade.fg_grade : '';
                                 var total_midterms_lec  = grade.total_midterms_lec !== null ? grade.total_midterms_lec  : '';
                                 var lec_midterms_grade  = grade.lec_midterms_grade  !== null ? grade.lec_midterms_grade  : '';
                                 var total_midterms_lab = grade.total_midterms_lab !== null ? grade.total_midterms_lab : '';
                                 var lab_midterms_grade = grade.lab_midterms_grade !== null ? grade.lab_midterms_grade : '';
-                                var total_midterms_grade = grade.total_midterms_grade !== null ? grade.total_midterms_grade : '';
+                                var total_midterms_grade = grade.total_midterms_grade !== null ? Math.round(grade.total_midterms_grade) : '';
                                 var tentative_midterms_grade  = grade.tentative_midterms_grade  !== null ? grade.tentative_midterms_grade  : '';
                                 var midterms_grade = grade.midterms_grade !== null ? grade.midterms_grade : '';
                                 var total_finals_lec = grade.total_finals_lec !== null ? grade.total_finals_lec : '';
                                 var lec_finals_grade = grade.lec_finals_grade !== null ? grade.lec_finals_grade : '';
                                 var total_finals_lab  = grade.total_finals_lab  !== null ? grade.total_finals_lab : '';
                                 var lab_finals_grade = grade.lab_finals_grade!== null ? grade.lab_finals_grade : '';
-                                var total_finals_grade = grade.total_finals_grade  !== null ? grade.total_finals_grade : '';
+                                var total_finals_grade = grade.total_finals_grade  !== null ? Math.round(grade.total_finals_grade) : '';
                                 var tentative_finals_grade  = grade.tentative_finals_grade  !== null ? grade.tentative_finals_grade  : '';
                                 var finals_grade  = grade.finals_grade !== null ? grade.finals_grade  : '';
 
@@ -799,6 +799,18 @@
                                 $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="tentative_finals_grade"]').text(tentative_finals_grade);
                             $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="finals_grade"]').text(finals_grade);
 
+
+                                if (finals_grade !== null) {
+                                    var finalsGradeSpan = $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="finals_grade"]');
+                                    var finalsGradeColumn = finalsGradeSpan.closest('td.grade-column'); 
+
+                                    
+                                    if (finals_grade < 75) {
+                                        finalsGradeColumn.addClass('bg-red').removeClass('bg-default');
+                                    } else {
+                                        finalsGradeColumn.addClass('bg-default').removeClass('bg-red');
+                                    }
+                                }
                             } else {
                                 console.error('no grades fetched');
                             }
@@ -842,7 +854,7 @@
     <div class="content-wrappers">
         <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Subject List" /> 
+            <input type="button" onclick="window.location.href='{{ url('teacher/list/classlist') }}';" class="btn btn-info" value="Back to Subject List" />
             @php
                 $studentCount = count($enrolledStudents);
             @endphp
@@ -1008,6 +1020,16 @@
 
                                     .score-input.auto-zero:focus {
                                         color: #000; 
+                                    }
+
+                                    .bg-red {
+                                        background-color: red;
+                                        color: white;
+                                    }
+
+                                    .bg-default {
+                                        background-color: transparent; 
+                                        color: black; 
                                     }
                                 </style>
                                 <div class="table-container table-striped table-scroll-container">
@@ -1576,10 +1598,12 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_fg_grade">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_fg_grade !== null) {
+                                                                                 $roundedGrade = round($grade->total_fg_grade);
+
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_fg_grade . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
-                                                                            }
+                                                                                }
                                                                         }
                                                                         echo '</td>';
 
@@ -1649,8 +1673,9 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_midterms_grade">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_midterms_grade !== null) {
+                                                                                 $roundedGrade = round($grade->total_midterms_grade);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_midterms_grade  . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1734,12 +1759,26 @@
                                                                     }
 
                                                                      //// column for  fn grade
-                                                                      echo '<td class="grade-column centered-bold">';
-                                                                       foreach ($enrolledStudent->grades as $grade) {
+                                                                      $backgroundClass = 'bg-default';
+
+                                                                   
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
+                                                                            $backgroundClass = 'bg-red'; 
+                                                                            break; 
+                                                                        }
+                                                                    }
+
+                                                                   
+                                                                    echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+
+                                                                    foreach ($enrolledStudent->grades as $grade) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
                                                                         if ($grade->finals_grade !== null) {
-                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . '</span>';
-                                                                        
+                                                                           
+                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
+                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
+                                                                                '</span>';
                                                                         }
 
                                                                         if ($grade->finals_grade !== null) {
@@ -1763,8 +1802,9 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_finals_grade">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_finals_grade !== null) {
+                                                                                $roundedGrade = round($grade->total_finals_grade);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_finals_grade  . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1798,13 +1838,30 @@
                                                                 }
 
 
-                                                                     echo '<td class="grade-column centered-bold">';
-                                                                       foreach ($enrolledStudent->grades as $grade) {
+                                                                     //// column for  fn grade
+                                                                    $backgroundClass = 'bg-default';
+
+                                                                   
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
+                                                                            $backgroundClass = 'bg-red'; 
+                                                                            break; 
+                                                                        }
+                                                                    }
+
+                                                                   
+                                                                    echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+
+                                                                    foreach ($enrolledStudent->grades as $grade) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
                                                                         if ($grade->finals_grade !== null) {
-                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . '</span>';
-                                                                        
+                                                                           
+                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
+                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
+                                                                                '</span>';
                                                                         }
+
+
 
                                                                         if ($grade->finals_grade !== null) {
                                                                         echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';

@@ -57,21 +57,12 @@
                                                 <form action="{{ route('teacher.update.subject.type', ['subject' => $subject]) }}" method="POST">
                                                     @csrf
                                                     @method('PUT')
-                                                    <select name="subject_type" class="form-control" disabled >
-                                                        @foreach ($subjectTypes as $type)
-                                                            <option value="{{ $subject->subject_type }}" >{{ $subject->subject_type }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                    {{-- 
-                                                        <select name="subject_type" class="form-control" disabled >
+                                                    <select name="subject_type" class="form-control">
                                                         @foreach ($subjectTypes as $type)
                                                             <option value="{{ $type }}" {{ $subject->subject_type === $type ? 'selected' : '' }}>{{ $type }}</option>
                                                         @endforeach
                                                     </select>
                                                     <button type="submit" class="btn btn-primary mt-1">Update</button>
-                                                    --}}
-
                                                 </form>
                                             </td>
                                             <td><a href="{{ route('teacher.list.studentlist', ['subject' => $subject]) }}" class="btn btn-info mt-2">View Students</a></td>

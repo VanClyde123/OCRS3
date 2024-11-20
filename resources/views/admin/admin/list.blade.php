@@ -88,7 +88,9 @@
                                         {{ $value->is_active ? 'Active' : 'Inactive' }}
                                     </td>
                                     <td width="15%">
-                                        <a href="{{ url('admin/admin/confirm-password/'.$value->id) }}" class="btn btn-primary">Edit</a>
+                                        @if ($value->is_active)
+                                                <a href="{{ url('admin/admin/confirm-password/'.$value->id) }}" class="btn btn-primary">Edit</a>
+                                            @endif
                                         @if($value->role != 1)
                                            <a href="{{ url('admin/admin/toggle-status/'.$value->id) }}" 
                                                class="btn {{ $value->is_active ? 'btn-warning' : 'btn-success' }}"

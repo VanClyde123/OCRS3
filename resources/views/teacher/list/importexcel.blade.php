@@ -76,23 +76,24 @@
                     <div class="card-header">
                         <h6>Select Classlist Excel File</h6>
                     </div>
-                    <div class="card-body">
+
+                   <div class="card-body">
                         <div class="table-responsive">
                             <form action="{{ route('teacher.list.imported-data') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input id="fileInput" type="file" name="file" accept=".xlsx,.xls">
                                 <button id="importBtn" disabled type="submit" class="btn btn-primary">Import</button>
                             </form>
+
+                                  <br>
                             @if(isset($subjectExists) && isset($importedClasslistExists))
-                                <div class="alert alert-info" role="alert">
+                                <div class="alert {{ Str::endsWith($subjectExists, 'already exists') ? 'alert-danger' : 'alert-info' }}" role="alert">
                                     <strong>Subject:</strong> {{ $subjectExists }}
                                 </div>
-                                <div class="alert alert-info" role="alert">
+                                <div class="alert {{ Str::endsWith($importedClasslistExists, 'already exists') ? 'alert-danger' : 'alert-info' }}" role="alert">
                                     <strong>Imported Classlist:</strong> {{ $importedClasslistExists }}
                                 </div>
-                                <div class="alert alert-info" role="alert">
-                                    <strong>Student:</strong> {{ $enrolledStudentsMessage }}
-                                </div>
+                                
                             @endif
                         </div>
                     </div>

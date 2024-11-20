@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\SubjectType;
+use App\Models\Subject;
 
 class SubjectTypeController extends Controller
 {
@@ -48,6 +49,13 @@ class SubjectTypeController extends Controller
     {
         $subjectType = SubjectType::findOrFail($id);
 
+         $subjectExists = Subject::where('subject_type', $subjectType->subject_type)->exists();
+
+        
+            if ($subjectExists) {
+                    return redirect('admin/subject_types/viewtypes')->with('error', 'This class type is in use and cannot be edited.');
+                }
+
         return view('admin.subject_types.edittypes', compact('subjectType'));
     }
 
@@ -80,10 +88,20 @@ class SubjectTypeController extends Controller
 
     public function destroy($id)
     {
+            
         $subjectType = SubjectType::findOrFail($id);
-        $subjectType->delete();
+        $subjectExists = Subject::where('subject_type', $subjectType->subject_type)->exists();
 
-         return redirect('admin/subject_types/viewtypes')->with('success', 'Subject type deleted successfully.');
+        
+            if ($subjectExists) {
+                    return redirect('admin/subject_types/viewtypes')->with('error', 'This class type is in use and cannot be deleted.');
+                }
+
+       
+                 $subjectType->delete();
+
+
+         return redirect('admin/subject_types/viewtypes')->with('success', 'Class type deleted successfully.');
     }
 
     ///////////seceretay side///////////
@@ -128,6 +146,13 @@ class SubjectTypeController extends Controller
     {
         $subjectType = SubjectType::findOrFail($id);
 
+         $subjectExists = Subject::where('subject_type', $subjectType->subject_type)->exists();
+
+        
+            if ($subjectExists) {
+                    return redirect('secretary/subject_types/viewtypes')->with('error', 'This class type is in use and cannot be edited.');
+                }
+
         return view('secretary.subject_types.edittypes', compact('subjectType'));
     }
 
@@ -159,8 +184,16 @@ class SubjectTypeController extends Controller
 
     public function destroy1($id)
     {
-        $subjectType = SubjectType::findOrFail($id);
-        $subjectType->delete();
+          $subjectType = SubjectType::findOrFail($id);
+            $subjectExists = Subject::where('subject_type', $subjectType->subject_type)->exists();
+
+            
+                if ($subjectExists) {
+                        return redirect('secretary/subject_types/viewtypes')->with('error', 'This class type is in use and cannot be deleted.');
+                    }
+
+           
+                     $subjectType->delete();
 
          return redirect('secretary/subject_types/viewtypes')->with('success', 'Subject type deleted successfully.');
     }

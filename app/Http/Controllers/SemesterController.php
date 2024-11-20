@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Semester;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class SemesterController extends Controller
 {
@@ -63,15 +64,23 @@ class SemesterController extends Controller
     }
 
 
-   public function setupCurrentSemesterView()
+  public function setupCurrentSemesterView()
 {
     $semesters = Semester::all();
-    $currentSemester = Semester::where('is_current', true)->first();
-    $schoolYears = $currentSemester ? Semester::where('semester_name', $currentSemester->semester_name)->pluck('school_year') : collect();
 
+    $currentSemester = Semester::where('is_current', true)->first();
+    $currentYear = Carbon::now()->year;
+    $baseYear = 2023;
+
+    ////for generating school years strating from 2023 to ccurrent year + next year
+    $schoolYears = [];
+    for ($year = $baseYear; $year <= $currentYear + 1; $year++) {
+                $schoolYears[] = "$year - " . ($year + 1);
+            }
+
+   
     return view('admin.set_semester.set_current', compact('semesters', 'currentSemester', 'schoolYears'));
 }
-
 
 public function setupCurrentSemester(Request $request)
 {
@@ -81,15 +90,20 @@ public function setupCurrentSemester(Request $request)
         'school_year' => 'required',
     ]);
 
-    
-    DB::table('semesters')->update(['is_current' => false]);
+    //////update is current value
+    Semester::query()->update(['is_current' => false]);
 
-   
-    Semester::where('semester_name', $request->semester_name)
-        ->where('school_year', $request->school_year)
-        ->update(['is_current' => true]);
+    ////////update or create selected semester + school year and set as current 
+    Semester::updateOrCreate(
+        [
+            'semester_name' => $request->semester_name,
+            'school_year' => $request->school_year,
+        ],
+        ['is_current' => true]
+    );
 
-    return redirect('admin/set_semester/set_current')->with('success', 'Current semester updated successfully');
+    return redirect('admin/set_semester/set_current')
+        ->with('success', 'Current semester updated successfully');
 }
 
 
@@ -163,9 +177,17 @@ public function viewSemester1()
 
     public function setupCurrentSemesterView1()
 {
-   $semesters = Semester::all();
+    $semesters = Semester::all();
+
     $currentSemester = Semester::where('is_current', true)->first();
-    $schoolYears = $currentSemester ? Semester::where('semester_name', $currentSemester->semester_name)->pluck('school_year') : collect();
+    $currentYear = Carbon::now()->year;
+    $baseYear = 2023;
+
+    ////for generating school years strating from 2023 to ccurrent year + next year
+    $schoolYears = [];
+    for ($year = $baseYear; $year <= $currentYear + 1; $year++) {
+                $schoolYears[] = "$year - " . ($year + 1);
+            }
 
    
     return view('secretary.set_semester.set_current', compact('semesters', 'currentSemester', 'schoolYears'));
@@ -174,18 +196,22 @@ public function viewSemester1()
 public function setupCurrentSemester1(Request $request)
 {
     
-    $request->validate([
+     $request->validate([
         'semester_name' => 'required',
         'school_year' => 'required',
     ]);
 
-    
-    DB::table('semesters')->update(['is_current' => false]);
+    //////update is current value
+    Semester::query()->update(['is_current' => false]);
 
-   
-    Semester::where('semester_name', $request->semester_name)
-        ->where('school_year', $request->school_year)
-        ->update(['is_current' => true]);
+    ////////update or create selected semester + school year and set as current 
+    Semester::updateOrCreate(
+        [
+            'semester_name' => $request->semester_name,
+            'school_year' => $request->school_year,
+        ],
+        ['is_current' => true]
+    );
 
 
     return redirect('secretary/set_semester/set_current')->with('success', 'Current semester updated successfully');

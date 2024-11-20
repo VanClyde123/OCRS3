@@ -111,6 +111,8 @@ Route::group(['middleware' => 'admin'], function () {
   Route::get('/admin/get-sections/{subjectDescriptionId}', [AdminController::class, 'getSections'])->name('admin.get_sections');
   Route::get('/admin/teacher_list/{instructorId}/edit_subject/{subjectId}', [AdminController::class, 'editSubject'])->name('admin.teacher_list.edit_subject');
 Route::post('/admin/teacher_list/update_subject', [AdminController::class, 'updateSubject'])->name('admin.teacher_list.update_subject');
+Route::delete('/admin/teacher_list/subject/{subjectId}', [AdminController::class, 'deleteSubject'])
+    ->name('admin.subject.delete');
 
 Route::get('/sections/{subjectDescription}', [AdminController::class, 'viewSection'])->name('sections.index');
 Route::post('/sections/store', [AdminController::class, 'storeSection'])->name('sections.store');
@@ -211,6 +213,8 @@ Route::group(['middleware' => 'instructor'], function () {
     Route::get('/assessments/{assessmentId}/edit', [InstructorController::class, 'editSingleAssessment'])->name('instructor.editSingleAssessment');
     Route::put('assessments/{assessmentId}/update', [InstructorController::class, 'updateAssessment'])->name('instructor.updateAssessment');
 
+    Route::delete('/assessments/{assessmentId}', [InstructorController::class, 'deleteAssessment'])->name('instructor.deleteAssessment');
+
    Route::post('insert/score/{enrolledStudentId}', [ScoreController::class, 'insertScore'])->name('insert.score');
    Route::post('insert/scores', [ScoreController::class, 'insertScore'])->name('insert.scores');
 
@@ -291,6 +295,9 @@ Route::group(['middleware' => 'secretary'], function () {
      Route::get('/secretary/teacher_list/search', [SecretaryController::class, 'showInstructors'])->name('secretary.searchInstructors');
     Route::get('/secretary/teacher_list/{instructorId}/subjects', [SecretaryController::class, 'showInstructorSubjects'])
     ->name('secretary.teacher_list.subjects');
+Route::delete('/secretary/teacher_list/subject/{subjectId}', [SecretaryController::class, 'deleteSubject'])
+    ->name('secretary.subject.delete');
+    
      Route::get('/secretary/teacher_list/show_instructor_subjects/search/{instructorId}', [SecretaryController::class, 'showInstructorSubjects'])->name('secretary.searchInstructorSubjects');
     Route::get('/secretary/teacher_list/{instructorId}/past_subjects', [SecretaryController::class, 'showPastInstructorSubjects'])
     ->name('secretary.teacher_list.past_subjects');
@@ -543,6 +550,8 @@ Route::delete('/sections/{section}', [AdminController::class, 'destroySection'])
     Route::get('/assessments/{subjectId}', [InstructorController::class, 'editAssessments'])->name('instructor.editAssessments');
     Route::get('/assessments/{assessmentId}/edit', [InstructorController::class, 'editSingleAssessment'])->name('instructor.editSingleAssessment');
     Route::put('assessments/{assessmentId}/update', [InstructorController::class, 'updateAssessment'])->name('instructor.updateAssessment');
+
+    Route::delete('/assessments/{assessmentId}', [InstructorController::class, 'deleteAssessment'])->name('instructor.deleteAssessment');
 
    Route::post('insert/score/{enrolledStudentId}', [ScoreController::class, 'insertScore'])->name('insert.score');
    Route::post('insert/scores', [ScoreController::class, 'insertScore'])->name('insert.scores');
