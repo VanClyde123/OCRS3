@@ -914,7 +914,18 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
             }
 
             if ($hasFinalsAssessments) {
-                $assessmentRow[] = $student->grades->avg('finals_grade');
+                foreach ($student->grades as $grade) {
+                   
+                   if (isset($grade->finals_status)) {
+                        if ($grade->finals_status === 'DEFAULT') {
+                            
+                            $assessmentRow[] = $grade->finals_grade;
+                        } else {
+                            $assessmentRow[] = $grade->finals_status;
+                        }
+                        break;
+                    }
+                }
             }
 
        } else {
@@ -941,17 +952,16 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
                 $assessmentRow[] = $directBonusGradeScore;
             }
 
-             if ($hasFinalsAssessments) {
+            if ($hasFinalsAssessments) {
                 foreach ($student->grades as $grade) {
-                   
                     if (isset($grade->finals_status)) {
                         if ($grade->finals_status === 'DEFAULT') {
-                            $assessmentRow[] = $grade->avg('finals_grade');
+                            
+                            $assessmentRow[] = $grade->finals_grade;
                         } else {
                             $assessmentRow[] = $grade->finals_status;
                         }
-                        
-                        break; 
+                        break;
                     }
                 }
             }
