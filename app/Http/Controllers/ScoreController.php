@@ -569,15 +569,17 @@ if ($subjectType === 'Lec') {
                 $tentativeFinalsGrade = $this->calculateOfficialGrade($totalPointsFinals);
 
             
-                $finalsOfficialGrade = round((2 / 3) * $tentativeFinalsGrade + (1 / 3) * $midtermsOfficialGrade + $bonusPointsDirect, 0);
-
-
-
-                $finalsOfficialGrade = max(70, $finalsOfficialGrade);
-
                 
-                if ($finalsOfficialGrade < 70) {
-                    $finalsOfficialGrade = 70;
+                $rawFinalsGrade = round((2 / 3) * $tentativeFinalsGrade + (1 / 3) * $midtermsOfficialGrade, 0);
+
+               
+                $adjustedFinalsGrade = $rawFinalsGrade + $bonusPointsDirect;
+
+
+                $adjustedFinalsGrade = max(65, $adjustedFinalsGrade);
+
+                if ($adjustedFinalsGrade < 70) {
+                    $adjustedFinalsGrade = 70;
                 }
 
 
@@ -588,7 +590,8 @@ if ($subjectType === 'Lec') {
                 if ($existingRecord) {
                     $existingRecord->total_finals_grade = $totalPointsFinalsRaw;
                     $existingRecord->tentative_finals_grade = $tentativeFinalsGrade;
-                    $existingRecord->finals_grade = $finalsOfficialGrade;
+                    $existingRecord->finals_grade = $rawFinalsGrade;
+                    $existingRecord->adjusted_finals_grade = $adjustedFinalsGrade;
                     $existingRecord->save();
                 } else {
                     $newRecord = new Grades();
@@ -618,7 +621,8 @@ if ($subjectType === 'Lec') {
                     $newRecord->lab_finals_grade = null; 
                     $newRecord->total_finals_grade = $totalPointsFinalsRaw;
                     $newRecord->tentative_finals_grade = $tentativeFinalsGrade;
-                    $newRecord->finals_grade = $finalsOfficialGrade;
+                    $newRecord->finals_grade = $rawFinalsGrade;
+                    $newRecord->adjusted_finals_grade = $adjustedFinalsGrade; 
                     $newRecord->save();
                 }
             } else {
@@ -848,15 +852,18 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
     $FinalsTentativeGradeLab = $this->calculateLabOfficialGradeFinals($totalActualPointsLabFinals, $totalMaxPointsLabFinals);
 
   
-    $FinalsOfficialGradeLab = round((2 / 3) * $FinalsTentativeGradeLab + (1 / 3) * $MidtermsOfficialGradeLab + $bonusPointsDirect, 0);
+   $rawFinalsGradeLab = round((2 / 3) * $FinalsTentativeGradeLab + (1 / 3) * $MidtermsOfficialGradeLab, 0);
 
-     $FinalsOfficialGradeLab = max(70, $FinalsOfficialGradeLab);
+   
+    $adjustedFinalsGradeLab = $rawFinalsGradeLab + $bonusPointsDirect;
 
-            
-            if ($FinalsOfficialGradeLab < 70) {
-                $FinalsOfficialGradeLab = 70;
-            }
+     $adjustedFinalsGradeLab = max(65, $adjustedFinalsGradeLab);
 
+       if ($adjustedFinalsGradeLab < 70) {
+                   $adjustedFinalsGradeLab = 70;
+                }
+   
+    
    
     $existingRecord = Grades::where('enrolled_student_id', $enrolledStudentId)
         ->whereNull('assessment_id')
@@ -865,7 +872,8 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
     if ($existingRecord) {
         $existingRecord->total_finals_grade  = $actualTotalPointsLabFinals;
         $existingRecord->tentative_finals_grade = $FinalsTentativeGradeLab;
-        $existingRecord->finals_grade = $FinalsOfficialGradeLab;
+        $existingRecord->finals_grade = $rawFinalsGradeLab; 
+        $existingRecord->adjusted_finals_grade = $adjustedFinalsGradeLab;
         $existingRecord->save();
     } else {
       
@@ -896,7 +904,8 @@ if ($fgOfficialGradeLab !== null && $hasLabActivityRecordsMidterms) {
         $newRecord->lab_finals_grade = null; 
         $newRecord->total_finals_grade = $actualTotalPointsLabFinals;
         $newRecord->tentative_finals_grade = $FinalsTentativeGradeLab;
-        $newRecord->finals_grade = $FinalsOfficialGradeLab;
+        $newRecord->finals_grade = $rawFinalsGradeLab;
+        $newRecord->adjusted_finals_grade = $adjustedFinalsGradeLab;
         $newRecord->save();
     }
 } else {
@@ -1417,7 +1426,7 @@ if ($hasLecRecordsFinals) {
         $totalActualPointsLabFN = round($actualTotalPointsLabFinals, 1); 
         //dd($totalActualPointsLab);
         $finalsLabGradeInitial = $this->calculateLecLab6040OfficialGradeFinals($totalActualPointsLabFN, $totalMaxPointsLabFN);       
-        // Calculate scores based on retrieved percentages
+        ///// calculate scores based on retrieved percentages from db
         $lecPercentage = $subjectTypePercentage->lec_percentage;
         $labPercentage = $subjectTypePercentage->lab_percentage;
 
@@ -1429,16 +1438,20 @@ if ($hasLecRecordsFinals) {
             //dd($TentativeFNLecLab6040Grade);
 
             ///=(1/3)*BK9+(2/3)*CM9+CN9
-            $FNLecLab6040Grade = round((1/3) * $MDLecLab6040Grade + (2 / 3) * $TentativeFNLecLab6040Grade + $bonusPointsDirect, 0);
+          
+            $rawFNLecLab6040Grade = round((1 / 3) * $MDLecLab6040Grade + (2 / 3) * $TentativeFNLecLab6040Grade, 0);
+
+            
+            $adjustedFNLecLab6040Grade = $rawFNLecLab6040Grade + $bonusPointsDirect;
             //dd($FNLecLab6040Grade);
 
 
-            $FNLecLab6040Grade = max(70, $FNLecLab6040Grade);
+           $rawFNLecLab6040Grade = max(65, $rawFNLecLab6040Grade);
+           $adjustedFNLecLab6040Grade = max(65, $adjustedFNLecLab6040Grade);
 
-            
-            if ($FNLecLab6040Grade < 70) {
-                $FNLecLab6040Grade = 70;
-            }
+             if ($adjustedFNLecLab6040Grade < 70) {
+                    $adjustedFNLecLab6040Grade = 70;
+                }
 
 
             $existingRecord = Grades::where('enrolled_student_id', $enrolledStudentId)
@@ -1452,7 +1465,8 @@ if ($hasLecRecordsFinals) {
                 $existingRecord->total_finals_lab =  $actualTotalPointsLabFinals;
                 $existingRecord->lab_finals_grade = $finalsLabGradeInitial;
                 $existingRecord->tentative_finals_grade = $TentativeFNLecLab6040Grade; 
-                $existingRecord->finals_grade = $FNLecLab6040Grade;
+                $existingRecord->finals_grade = $rawFNLecLab6040Grade;
+                $existingRecord->adjusted_finals_grade = $adjustedFNLecLab6040Grade;
                 $existingRecord->save();
             } else {
                 $newRecord = new Grades();
@@ -1482,7 +1496,8 @@ if ($hasLecRecordsFinals) {
                 $newRecord->lab_finals_grade = $finalsLabGradeInitial;
                 $newRecord->total_finals_grade = null;
                 $newRecord->tentative_finals_grade = $TentativeFNLecLab6040Grade; 
-                $newRecord->finals_grade = $FNLecLab6040Grade; 
+                $newRecord->finals_grade = $rawFNLecLab6040Grade;
+                $newRecord->adjusted_finals_grade = $adjustedFNLecLab6040Grade;
                 $newRecord->save();
             }
         } else {

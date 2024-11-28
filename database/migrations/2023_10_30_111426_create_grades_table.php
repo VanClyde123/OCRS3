@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('fg_grade')->nullable();
             $table->integer('midterms_grade')->nullable();
             $table->integer('finals_grade')->nullable();
+            $table->integer('adjusted_finals_grade')->nullable();
             $table->boolean('published')->default(false);
             $table->boolean('published_midterms')->default(false)->nullable();
             $table->boolean('published_finals')->default(false)->nullable();

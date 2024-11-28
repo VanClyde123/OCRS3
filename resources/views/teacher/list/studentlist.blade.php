@@ -757,26 +757,27 @@
 
                             if (grade) {
                             
-                                var total_fg_lec = grade.total_fg_lec !== null ? grade.total_fg_lec : '';
+                                var total_fg_lec = grade.total_fg_lec !== null ? Math.round(grade.total_fg_lec) : '';
                                 var lec_fg_grade = grade.lec_fg_grade !== null ? grade.lec_fg_grade : '';
-                                var total_fg_lab = grade.total_fg_lab !== null ? grade.total_fg_lab : '';
+                                var total_fg_lab = grade.total_fg_lab !== null ? Math.round(grade.total_fg_lab) : '';
                                 var lab_fg_grade = grade.lab_fg_grade !== null ? grade.lab_fg_grade : '';
                                 var total_fg_grade = grade.total_fg_grade !== null ? Math.round(grade.total_fg_grade) : '';
                                 var fg_grade = grade.fg_grade !== null ? grade.fg_grade : '';
-                                var total_midterms_lec  = grade.total_midterms_lec !== null ? grade.total_midterms_lec  : '';
+                                var total_midterms_lec  = grade.total_midterms_lec !== null ? Math.round(grade.total_midterms_lec)  : '';
                                 var lec_midterms_grade  = grade.lec_midterms_grade  !== null ? grade.lec_midterms_grade  : '';
-                                var total_midterms_lab = grade.total_midterms_lab !== null ? grade.total_midterms_lab : '';
+                                var total_midterms_lab = grade.total_midterms_lab !== null ? Math.round(grade.total_midterms_lab) : '';
                                 var lab_midterms_grade = grade.lab_midterms_grade !== null ? grade.lab_midterms_grade : '';
                                 var total_midterms_grade = grade.total_midterms_grade !== null ? Math.round(grade.total_midterms_grade) : '';
                                 var tentative_midterms_grade  = grade.tentative_midterms_grade  !== null ? grade.tentative_midterms_grade  : '';
                                 var midterms_grade = grade.midterms_grade !== null ? grade.midterms_grade : '';
-                                var total_finals_lec = grade.total_finals_lec !== null ? grade.total_finals_lec : '';
+                                var total_finals_lec = grade.total_finals_lec !== null ? Math.round(grade.total_finals_lec) : '';
                                 var lec_finals_grade = grade.lec_finals_grade !== null ? grade.lec_finals_grade : '';
-                                var total_finals_lab  = grade.total_finals_lab  !== null ? grade.total_finals_lab : '';
+                                var total_finals_lab  = grade.total_finals_lab  !== null ? Math.round(grade.total_finals_lab) : '';
                                 var lab_finals_grade = grade.lab_finals_grade!== null ? grade.lab_finals_grade : '';
                                 var total_finals_grade = grade.total_finals_grade  !== null ? Math.round(grade.total_finals_grade) : '';
                                 var tentative_finals_grade  = grade.tentative_finals_grade  !== null ? grade.tentative_finals_grade  : '';
                                 var finals_grade  = grade.finals_grade !== null ? grade.finals_grade  : '';
+                                var adjusted_finals_grade  = grade.adjusted_finals_grade !== null ? grade.adjusted_finals_grade  : '';
 
                                 $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_fg_lec"]').text(total_fg_lec);
                                 $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lec_fg_grade"]').text(lec_fg_grade);
@@ -797,7 +798,9 @@
                                 $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="lab_finals_grade"]').text(lab_finals_grade);
                                 $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="total_finals_grade"]').text(total_finals_grade);
                                 $('td.grade-column[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="tentative_finals_grade"]').text(tentative_finals_grade);
-                            $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="finals_grade"]').text(finals_grade);
+                                $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="finals_grade"]').text(finals_grade);
+                                $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="adjusted_finals_grade"]').text(adjusted_finals_grade);
+
 
 
                                 if (finals_grade !== null) {
@@ -809,6 +812,16 @@
                                         finalsGradeColumn.addClass('bg-red').removeClass('bg-default');
                                     } else {
                                         finalsGradeColumn.addClass('bg-default').removeClass('bg-red');
+                                    }
+                                } 
+                                if (adjusted_finals_grade !== null) {
+                                    var adjustedFinalsGradeSpan = $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="adjusted_finals_grade"]');
+                                    var adjustedFinalsGradeColumn = adjustedFinalsGradeSpan.closest('td.grade-column'); 
+
+                                    if (adjusted_finals_grade < 75) {
+                                        adjustedFinalsGradeColumn.addClass('bg-red').removeClass('bg-default');
+                                    } else {
+                                        adjustedFinalsGradeColumn.addClass('bg-default').removeClass('bg-red');
                                     }
                                 }
                             } else {
@@ -1200,6 +1213,7 @@
                                                             <th class="text-center">Total</th>
                                                             <th class="text-center">Lab Grade</th>
                                                             <th class="text-center">TF Grade</th>
+                                                            <th class="text-center">Final Grade</th>
                                                         @endif
 
                                                            
@@ -1209,12 +1223,13 @@
                                                                 </th>
                                                         @endif
                                                         @if ($gradingPeriod == "Finals")
-                                                            <th class="text-center">Final Grade</th>
+                                                            <th class="text-center">Adjusted Final Grade</th>
                                                         @endif
                                                     @else
                                                         @if ($gradingPeriod == "Finals")
                                                             <th class="text-center">Total</th>
                                                             <th class="text-center">TF Grade</th>
+                                                            <th class="text-center">Final Grade</th>
                                                         @endif
                                                    
                                                         @if ($gradingPeriod == "Finals" && $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
@@ -1224,7 +1239,7 @@
                                                         @endif
 
                                                         @if ($gradingPeriod == "Finals")
-                                                            <th class="text-center">Final Grade</th>
+                                                            <th class="text-center">Adjusted Final Grade</th>
                                                         @endif
                                                     @endif
                                                 @endforeach
@@ -1339,6 +1354,7 @@
                                                             <th class="text-center"></th>
                                                             <th class="text-center"></th>
                                                             <th class="text-center"></th>
+                                                            <th class="text-center"></th>
                                                           @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
                                                             <th class="assessment-column">
                                                                 <p class="assessment-description"
@@ -1353,6 +1369,7 @@
                                                             
                                                             
                                                     @else
+                                                            <th class="text-center"></th>
                                                             <th class="text-center"></th>
                                                             <th class="text-center"></th>
                                                          @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
@@ -1470,8 +1487,10 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_fg_lec">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_fg_lec !== null) {
+
+                                                                                $roundedGrade = round($grade->total_fg_lec);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_fg_lec . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1500,8 +1519,10 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_midterms_lec">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_midterms_lec !== null) {
+
+                                                                                $roundedGrade = round($grade->total_midterms_lec);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_midterms_lec . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1527,8 +1548,10 @@
                                                                             echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_finals_lec">';
                                                                             foreach ($enrolledStudent->grades as $grade) {
                                                                                 if ($grade->total_finals_lec !== null) {
+
+                                                                                    $roundedGrade = round($grade->total_finals_lec);
                                                                                     echo '<div class="grade-dropdown displayed-value">';
-                                                                                    echo '<span class="displayed-value">' . $grade->total_finals_lec . '</span>';
+                                                                                    echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                     echo '</div>';
                                                                                 }
                                                                             }
@@ -1564,8 +1587,10 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_fg_lab">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_fg_lab !== null) {
+
+                                                                                $roundedGrade = round($grade->total_fg_lab);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_fg_lab . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1626,8 +1651,10 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_midterms_lab">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_midterms_lab !== null) {
+
+                                                                                $roundedGrade = round($grade->total_midterms_lab);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_midterms_lab . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1713,8 +1740,10 @@
                                                                         echo '<td class="grade-column centered-bold" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="total_finals_lab">';
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->total_finals_lab !== null) {
+
+                                                                                $roundedGrade = round($grade->total_finals_lab);
                                                                                 echo '<div class="grade-dropdown displayed-value">';
-                                                                                echo '<span class="displayed-value">' . $grade->total_finals_lab . '</span>';
+                                                                                echo '<span class="displayed-value">' . $roundedGrade . '</span>';
                                                                                 echo '</div>';
                                                                             }
                                                                         }
@@ -1742,6 +1771,33 @@
                                                                         }
                                                                         echo '</td>';
 
+
+                                                                        //// column for fn grade - actual fn grade -no additions
+                                                                        //// column for  fn grade
+                                                                      $backgroundClass = 'bg-default';
+
+                                                                   
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
+                                                                            $backgroundClass = 'bg-red'; 
+                                                                            break; 
+                                                                        }
+                                                                    }
+
+                                                                   
+                                                                    echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        echo '<div class="grade-dropdown displayed-value">';
+                                                                        if ($grade->finals_grade !== null) {
+                                                                           
+                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
+                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
+                                                                                '</span>';
+                                                                          }
+                                                                        }
+                                                                        echo '</td>';
+
                                                                    if ($assessment->type === 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
                                                                         echo '<td class="assessment-column">
                                                                             <input type="text" name="' . $textboxName . '" class="form-control score-input" ' . $disabled . '
@@ -1763,7 +1819,7 @@
 
                                                                    
                                                                     foreach ($enrolledStudent->grades as $grade) {
-                                                                        if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
+                                                                        if ($grade->adjusted_finals_grade !== null && $grade->adjusted_finals_grade < 75) {
                                                                             $backgroundClass = 'bg-red'; 
                                                                             break; 
                                                                         }
@@ -1774,14 +1830,14 @@
 
                                                                     foreach ($enrolledStudent->grades as $grade) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
-                                                                        if ($grade->finals_grade !== null) {
+                                                                        if ($grade->adjusted_finals_grade !== null) {
                                                                            
-                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
-                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
+                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="adjusted_finals_grade">' . 
+                                                                                number_format($grade->adjusted_finals_grade, $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2) . 
                                                                                 '</span>';
                                                                         }
 
-                                                                        if ($grade->finals_grade !== null) {
+                                                                        if ($grade->adjusted_finals_grade !== null) {
                                                                         echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
                                                                                 echo '<option value="DEFAULT">Grade </option>';
                                                                                 echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
@@ -1821,6 +1877,33 @@
                                                                         }
                                                                         echo '</td>';
 
+                        
+                                                                        //// column for fn grade - actual fn grade -no additions
+                                                                          //// column for  fn grade
+                                                                    $backgroundClass = 'bg-default';
+
+                                                                   
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
+                                                                            $backgroundClass = 'bg-red'; 
+                                                                            break; 
+                                                                        }
+                                                                    }
+
+                                                                   
+                                                                    echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+
+                                                                    foreach ($enrolledStudent->grades as $grade) {
+                                                                        echo '<div class="grade-dropdown displayed-value">';
+                                                                        if ($grade->finals_grade !== null) {
+                                                                           
+                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
+                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
+                                                                                '</span>';
+                                                                          }
+                                                                        }
+                                                                        echo '</td>';
+
                                                                        if ($assessment->type === 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
                                                                     echo '<td class="assessment-column">
                                                                         <input type="text" name="' . $textboxName . '" class="form-control score-input" ' . $disabled . '
@@ -1843,7 +1926,7 @@
 
                                                                    
                                                                     foreach ($enrolledStudent->grades as $grade) {
-                                                                        if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
+                                                                        if ($grade->adjusted_finals_grade !== null && $grade->adjusted_finals_grade < 75) {
                                                                             $backgroundClass = 'bg-red'; 
                                                                             break; 
                                                                         }
@@ -1854,16 +1937,16 @@
 
                                                                     foreach ($enrolledStudent->grades as $grade) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
-                                                                        if ($grade->finals_grade !== null) {
+                                                                        if ($grade->adjusted_finals_grade !== null) {
                                                                            
-                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
-                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
+                                                                            echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="adjusted_finals_grade">' . 
+                                                                                number_format($grade->adjusted_finals_grade, $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2) . 
                                                                                 '</span>';
                                                                         }
 
 
 
-                                                                        if ($grade->finals_grade !== null) {
+                                                                        if ($grade->adjusted_finals_grade !== null) {
                                                                         echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
                                                                                 echo '<option value="DEFAULT">Grade </option>';
                                                                                 echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
@@ -1985,29 +2068,39 @@
                                                             //// for Lec and Lab type
                                                             echo '<th class="grade-column"></th>';
                                                         }
-                                                    } else {
-                                                        //// for Midterms and Finals
-                                                       if (strpos($subject->subject_type, 'LecLab') !== false) {
-                                                            //// for LecLab subject type
-                                                            echo '<th class="grade-column"></th>
-                                                                  <th class="grade-column"></th>
-                                                                  <th class="grade-column"></th>';
-                                                                   if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
-                                                                    echo '<th class="assessment-column">
-                                                                              
-                                                                          </th>';
-                                                                    }
-                                                        } else {
-                                                            //// for Lec and Lab type
-                                                            echo '<th class="grade-column"></th>
-                                                                  <th class="grade-column"></th>';
-                                                                  if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
-                                                                    echo '<th class="assessment-column">
-                                                                              
-                                                                          </th>';
-                                                                    }
+                                                    }  elseif ($gradingPeriod == "Midterm") {
+                                                            if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                ///// For LecLab subject type in Midterm
+                                                                echo '<th class="grade-column"></th>
+                                                                      <th class="grade-column"></th>
+                                                                      <th class="grade-column"></th>'; 
+                                                               
+                                                            } else {
+                                                                ///// For Lec and Lab type in Midterm
+                                                                echo '<th class="grade-column"></th>
+                                                                      <th class="grade-column"></th>'; 
+                                                                
+                                                            }
+                                                        } elseif ($gradingPeriod == "Finals") {
+                                                            if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                //// For LecLab subject type in Finals
+                                                                echo '<th class="grade-column"></th>
+                                                                      <th class="grade-column"></th>
+                                                                      <th class="grade-column"></th>
+                                                                       <th class="grade-column"></th>'; 
+                                                                if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                    echo '<th class="assessment-column"></th>';
+                                                                }
+                                                            } else {
+                                                                //// For Lec and Lab type in Finals
+                                                                echo '<th class="grade-column"></th>
+                                                                      <th class="grade-column"></th>
+                                                                       <th class="grade-column"></th>'; 
+                                                                if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                    echo '<th class="assessment-column"></th>';
+                                                                }
+                                                            }
                                                         }
-                                                    }
 
                                                     echo '
                                                     <th class="grade-column">

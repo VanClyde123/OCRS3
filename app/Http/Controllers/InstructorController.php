@@ -469,7 +469,7 @@ class InstructorController extends Controller
             case 'final':
                 $grade->finals_status = $status;
                 
-                $actualGrade = $grade->finals_grade;
+                $actualGrade = $grade->adjusted_finals_grade;
                 break;
             default:
                 $grade->status = $status;
@@ -574,6 +574,7 @@ class InstructorController extends Controller
             'total_finals_grade' => $grade->total_finals_grade,
             'tentative_finals_grade' => $grade->tentative_finals_grade,
             'finals_grade' => $grade->finals_grade,
+            'adjusted_finals_grade' => $grade->adjusted_finals_grade,
            
         ];
     });
