@@ -48,9 +48,18 @@ class StudentGradeExport implements FromCollection, WithHeadings, WithStyles, Wi
         
         $data[] = ['ID Number', 'Student Name', 'Course', 'First Grading', 'Midterms', 'Finals'];
 
-       
-        foreach ($this->sortedStudents as $gender => $students) {
-            //$data[] = [$gender, '', '', '', '', '']; 
+     
+            $sortedAndGrouped = collect($this->sortedStudents)
+                ->map(function ($group) {
+                    return collect($group)->sortBy([
+                        ['student.last_name', 'asc'], 
+                        ['student.name', 'asc'],     
+                    ]);
+                });
+
+           
+            foreach ($sortedAndGrouped as $gender => $students) {
+            /////$data[] = [$gender, '', '', '', '', '']; 
             foreach ($students as $student) {
                 $rowData = [
                     $student->student->id_number,

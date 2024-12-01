@@ -624,7 +624,13 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
         ];
 
 
-    $sortedStudents = collect($students)->groupBy('student.gender');
+    $sortedStudents = collect($students)->groupBy('student.gender')
+                                                    ->map(function ($group) {
+                                                        return $group->sortBy([
+                                                            ['student.last_name', 'asc'], 
+                                                              ['student.name', 'asc'],    
+                                                            ]);
+                                                        });
 
         foreach ($sortedStudents as $gender => $students) {
             $assessmentRows[] = ['colspan' => count($assessmentHeaderRow), 'value' => $gender];

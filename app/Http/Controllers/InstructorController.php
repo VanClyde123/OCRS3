@@ -241,7 +241,7 @@ class InstructorController extends Controller
     
        $enrolledStudents = [];
 
-   //lop for getting the list of students enrolled in specific subject taught by current logged-in instructr
+   ////lop for getting the list of students enrolled in specific subject taught by current logged-in instructr
        foreach ($subject->importedClasses as $class) {
           if ($class->instructor_id == $currentInstructor->id) {
             foreach ($class->enrolledStudents as $enrolledStudent) {
@@ -250,7 +250,13 @@ class InstructorController extends Controller
         }
     }
 
-    $sortedStudents = collect($enrolledStudents)->groupBy('student.gender');
+    $sortedStudents = collect($enrolledStudents)->groupBy('student.gender')
+                                                    ->map(function ($group) {
+                                                        return $group->sortBy([
+                                                            ['student.last_name', 'asc'], 
+                                                              ['student.name', 'asc'],    
+                                                            ]);
+                                                        });
 
     $descriptions = AssessmentDescription::pluck('description', 'id');
 
@@ -292,8 +298,13 @@ class InstructorController extends Controller
     }
 
     
-    $sortedStudents = collect($enrolledStudents)->groupBy('student.gender');
-
+    $sortedStudents = collect($enrolledStudents)->groupBy('student.gender')
+                                                    ->map(function ($group) {
+                                                        return $group->sortBy([
+                                                            ['student.last_name', 'asc'], 
+                                                              ['student.name', 'asc'],    
+                                                            ]);
+                                                        });
    
 
      return view('teacher.list.studentlistremove', compact('subject', 'enrolledStudents', 'sortedStudents'));
