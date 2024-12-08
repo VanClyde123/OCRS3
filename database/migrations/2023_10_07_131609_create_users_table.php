@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('course')->nullable();
             $table->string('gender')->nullable();
             $table->string('password');
+            $table->string('email')->unique();
             $table->tinyInteger('role')->comment('1=admin, 2=teacher, 3=student, 4=secretary');
             $table->tinyInteger('secondary_role')->nullable();
             $table->boolean('password_changed')->default(false);
@@ -28,6 +29,12 @@ return new class extends Migration
             $table->timestamps();
             
         });
+
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamps('created_at');
+        });    
     }
 
     /**

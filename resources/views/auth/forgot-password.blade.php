@@ -3,14 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Log In</title>
+        <title>Recover Password</title>
         @if (session('status'))
             <div class="alert alert-success" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 {{ session('status') }}
             </div>
-        @endif 
-        
+        @endif
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -36,48 +35,31 @@
     .btnaa:hover {
       background-color: RoyalBlue;
     }
-    </style>
+</style>
     <body class="hold-transition login-page">
-        
 
         <div class="login-box">
             <div class="login-logo">
-                <a href="">Log In</a>
+                <a href="">Recover Password</a>
             </div>
                 <!-- /.login-logo -->
             <div class="card">
                 <div class="card-body login-card-body">
                 <!--from views/messages.blade.php -->
                     @include('messages')
-                    <form action="{{ url('login') }}" method="post">
+                    <form action="{{route('password.request')}}" method="post">
                         {{ csrf_field() }}
+                        <label for="email">Email</label>
                         <div class="input-group mb-2">
-                        <input type="idnumber" class="form-control" required name="id_number" placeholder="ID Number">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                            </div>
-                        </div>
-                        </div>
-                      <div class="input-group mb-2">
-                        <input type="password" class="form-control" required name="password" id="password" placeholder="Password">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="fa fa-eye-slash"></i>
-                            </button>
-                        </div>
-                    </div>
 
-                        
-                        <div class="col-8 flex">
-                            <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <a href="{{route('password.request')}}">Forgot Password?</a>
-                            </div>
+                            <input type="email" class="form-control" required name="email" placeholder="Email" value="{{old('email')}}">
                         </div>
 
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block" >Log In</button>
-                            
+                        <div >
+                            <button type="submit" class="btn btn-primary btn-block" >Send Request</button>
+                        </div>
+                        <div>
+                            <a href="{{ route('auth.login') }}">Back to Login</a>
                         </div>
                         <!-- /.col -->
                     </form>

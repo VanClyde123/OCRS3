@@ -24,6 +24,8 @@ use App\Http\Controllers\SubjectDescriptionController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\ResetPasswordController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +42,14 @@ use App\Http\Controllers\DownloadController;
 //});
 Route::get('/', [AuthController::class, 'login']);
 Route::post('login', [AuthController::class, 'AuthLogin']);
+
+Route::view('/forgot-password', 'auth.forgot-password')->name('password.request');
+Route::post('/forgot-password',[ResetPasswordController::class,'passwordEmail']);
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class,'passwordReset'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class,'passwordUpdate'])->name('password.update');
+
+
 Route::get('logout', [AuthController::class, 'logout']);
 Route::get('/profile', [ProfileController::class, 'show'])->name('user.profile');
 
@@ -774,7 +784,6 @@ Route::delete('/sections/{section}', [AdminController::class, 'destroySection'])
     Route::post('/admin/subject_list/changeInstructor/{importedClassId}', [AdminController::class, 'changeInstructor'])->name('admin.changeInstructor');
 
     
-
 });
 
 

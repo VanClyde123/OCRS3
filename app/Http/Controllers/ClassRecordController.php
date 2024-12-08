@@ -389,6 +389,7 @@ private function cleanSectionName($section)
                 'name' => $studentInfo['name'],
                 'middle_name' => $studentInfo['middle_name'],
                 'last_name' => $studentInfo['last_name'],
+                'email' => $studentInfo['id_number'] . "@s.ubaguio.edu",
                 'course' => $studentInfo['course'],
                 'password' => bcrypt('student12345'), 
                 'role' => 3, 
@@ -399,5 +400,7 @@ private function cleanSectionName($section)
             return $student;
         }
 }
+
+    
 
    

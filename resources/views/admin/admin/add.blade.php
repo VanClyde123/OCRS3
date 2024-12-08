@@ -69,15 +69,9 @@
                             <div class="input-group">
                                 <select id="passgen" class="form-control" name="passgen" required> 
                                     <option value="0" disabled selected>--- Select Password Generation Method---</option>
-                                    <option value="1">Secure Auto Generated Password</option>
                                     <option value="2">Role + ID Number</option>
                                     <option value="3">User Defined</option>
                                 </select>
-                                <div class="input-group-append">
-                                    <button hidden class="btn btn-success" type="button" id="generate" name="generate">
-                                        Generate Password
-                                    </button>
-                                </div>
                             </div><br>
                             <div class="input-group">
                                 <input type="password" class="form-control" name="password" id="password" required placeholder="Password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" title="Password must contain at least 8 characters, including at least one letter and one number." >
