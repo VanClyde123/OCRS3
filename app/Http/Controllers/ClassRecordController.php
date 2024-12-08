@@ -364,6 +364,12 @@ private function cleanSectionName($section)
                     $updated = true;
                 }
 
+                 $generatedEmail = $studentInfo['id_number'] . "@s.ubaguio.edu";
+                    if ($student->email !== $generatedEmail) {
+                        $student->email = $generatedEmail;
+                        $updated = true;
+                    }
+
              
                 if ($updated) {
                     $student->save();

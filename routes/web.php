@@ -40,7 +40,7 @@ use App\Http\Controllers\ResetPasswordController;
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-Route::get('/', [AuthController::class, 'login']);
+Route::get('/', [AuthController::class, 'login'])->name('auth.login');
 Route::post('login', [AuthController::class, 'AuthLogin']);
 
 Route::view('/forgot-password', 'auth.forgot-password')->name('password.request');

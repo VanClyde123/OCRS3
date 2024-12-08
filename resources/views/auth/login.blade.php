@@ -67,17 +67,12 @@
                         </div>
                     </div>
 
-                        
-                        <div class="col-8 flex">
-                            <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <a href="{{route('password.request')}}">Forgot Password?</a>
-                            </div>
+                         <div class="mb-3 text-end">
+                            <a href="{{ route('password.request') }}">Forgot Password?</a>
                         </div>
 
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block" >Log In</button>
-                            
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-block">Log In</button>
                         </div>
                         <!-- /.col -->
                     </form>
