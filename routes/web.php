@@ -25,6 +25,8 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\SummaryReportController;
+use App\Http\Controllers\GradeCeilingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +68,31 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/admin/edit/{id}', [AdminController::class, 'update']);
     Route::get('admin/admin/delete/{id}', [AdminController::class, 'delete']);
     Route::get('/admin/admin/list/search', [AdminController::class, 'search']);
+
+
+    ///grade cieling settings
+
+    Route::get('/admin/grade-settings', [GradeCeilingController::class, 'edit'])->name('grade-ceiling.edit');
+    Route::put('/admin/grade-settings', [GradeCeilingController::class, 'update'])->name('grade-ceiling.update');
+    
+
+
+
+
+   //////sumary report
+    Route::get('/admin/summary_report/reports', [SummaryReportController::class, 'index'])->name('admin.summary_report.reports');
+    Route::get('/admin/summary_report/getFilteredReport', [SummaryReportController::class, 'getFilteredReport'])->name('admin.summary_report.filter');
+    Route::get('/admin/summary_report/reports', [SummaryReportController::class, 'summaryReport'])->name('admin.summary_report');
+    Route::get('/admin/summary_report/get-terms', [SummaryReportController::class, 'getTerms'])->name('admin.getTerms');
+    Route::get('/admin/summary_report/getInstructors', [SummaryReportController::class, 'getInstructors'])->name('admin.summary_report.getInstructors');
+    Route::get('/admin/summary_report/getSubjects', [SummaryReportController::class, 'getSubjects'])->name('admin.summary_report.getSubjects');
+    Route::get('/admin/summary_report/getSections', [SummaryReportController::class, 'getSections'])->name('admin.summary_report.getSections');
+    Route::post('/generate-report', [SummaryReportController::class, 'generateReport'])->name('generate.report');
+    Route::get('/summary-report/export', [SummaryReportController::class, 'exportSummaryReport'])->name('summary.export');
+    Route::get('/summary-report/pdf', [SummaryReportController::class, 'exportPDF'])->name('summary.report.pdf');
+
+
+
 
     Route::get('admin/admin/toggle-status/{id}', [AdminController::class, 'toggleStatus'])->name('admin.toggleStatus');
 

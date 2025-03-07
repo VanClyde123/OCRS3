@@ -925,7 +925,7 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
                    if (isset($grade->finals_status)) {
                         if ($grade->finals_status === 'DEFAULT') {
                             
-                            $assessmentRow[] = $grade->finals_grade;
+                            $assessmentRow[] = $grade->adjusted_finals_grade;
                         } else {
                             $assessmentRow[] = $grade->finals_status;
                         }
@@ -963,7 +963,7 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
                     if (isset($grade->finals_status)) {
                         if ($grade->finals_status === 'DEFAULT') {
                             
-                            $assessmentRow[] = $grade->finals_grade;
+                            $assessmentRow[] = $grade->adjusted_finals_grade;
                         } else {
                             $assessmentRow[] = $grade->finals_status;
                         }
@@ -989,7 +989,7 @@ $hasMidtermAssessments = count($midtermAssessments) > 0;
 
 
 foreach ($assessments as $index => $assessment) {
-    $assessmentDateRow[] = $assessment->activity_date;
+    $assessmentDateRow[] = !empty($assessment->activity_date) ? $assessment->activity_date : ($assessment->manual_activity_date ?? '');
 
 
     $isLastColumn = ($index === (count($assessments) - 1));
@@ -1049,7 +1049,7 @@ foreach ($assessments as $index => $assessment) {
 
 
             foreach ($midtermAssessments as $index => $midtermAssessment) {
-                $assessmentDateRow[] = $midtermAssessment->activity_date;
+               $assessmentDateRow[] = !empty($midtermAssessment->activity_date) ? $midtermAssessment->activity_date : ($midtermAssessment->manual_activity_date ?? '');
 
                
                 $isLastColumn = ($index === (count($midtermAssessments) - 1));
@@ -1106,7 +1106,7 @@ foreach ($assessments as $index => $assessment) {
             }
    
 foreach ($finalsAssessments as $index => $finalsAssessment) {
-    $assessmentDateRow[] = $finalsAssessment->activity_date;
+    $assessmentDateRow[] = !empty($finalsAssessment->activity_date) ? $finalsAssessment->activity_date : ($finalsAssessment->manual_activity_date ?? '');
 
    
     $isLastColumn = ($index === (count($finalsAssessments) - 1));
@@ -1238,7 +1238,7 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
           
              
             $event->sheet->setCellValue('A' . ($lastDataRow + 2), "Legends:");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 3), "A - ABSENT");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 3), "AB - ABSENT");
             $event->sheet->setCellValue('A' . ($lastDataRow + 4), "E - EXCUSED");
             $event->sheet->setCellValue('A' . ($lastDataRow + 5), "Q - Quiz");
             $event->sheet->setCellValue('A' . ($lastDataRow + 6), "OT - OtherActivity");

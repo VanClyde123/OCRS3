@@ -52,7 +52,7 @@
                                                             @foreach($gradesByAssessmentType as $grade)
                                                             <tr>
                                                                 <td>{{ $grade->assessment->description }}</td>
-                                                                <td>{{ $grade->assessment->activity_date }}</td>
+                                                                <td>{{ $grade->assessment->activity_date ?? $grade->assessment->manual_activity_date }}</td>
                                                                 <td>{{ $grade->points }} / {{ number_format($grade->assessment->max_points, $grade->assessment->max_points == intval($grade->assessment->max_points) ? 0 : 2) }}</td>
                                                             </tr>
                                                             @endforeach

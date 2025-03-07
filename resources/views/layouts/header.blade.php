@@ -53,6 +53,11 @@
                                 <p>Semester</p>
                             </a>
                         </li>
+                         <li class="nav-item">
+                            <a href="{{ url('admin/summary_report/reports')}}" class="nav-link @if (Request::segment(1) == 'admin' && Request::segment(2) == 'summary_report') active @endif">
+                                <p>Summary Report</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ url('admin/teacher_list/instructor_list')}}" class="nav-link 
                             @if (Request::segment(1) == 'admin' && Request::segment(2) == 'teacher_list') active @elseif (Request::segment(1) == 'admin' && Request::segment(4) == 'subjects') active @elseif (Request::segment(1) == 'admin' && Request::segment(4) == 'past_subjects') active @elseif (Request::segment(1) == 'admin' && Request::segment(4) == 'students') active @elseif (Request::segment(1) == 'admin' && Request::segment(2) == 'view-student-points') active @endif"> 

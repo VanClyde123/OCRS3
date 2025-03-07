@@ -88,7 +88,7 @@
                                                                                 @if ($score->assessment_id && $score->points !== null && $score->assessment->published && $score->assessment->grading_period === $gradingPeriod && $score->assessment->type === $assessmentType)
                                                                                     <tr>
                                                                                         <td>{{ $score->assessment->description }}</td>
-                                                                                        <td>{{ $score->assessment->activity_date }}</td>
+                                                                                        <td>{{ $score->assessment->activity_date ?? $score->assessment->manual_activity_date }}</td>
                                                                                         <td>{{ $score->points }}/{{ number_format($score->assessment->max_points, $score->assessment->max_points == intval($score->assessment->max_points) ? 0 : 2) }}</td>
                                                                                         <td>{{ $score->assessment->published_at ?? 'N/A' }}</td> 
                                                                                     </tr>

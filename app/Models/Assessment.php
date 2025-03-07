@@ -38,6 +38,7 @@ protected $fillable = [
            'bonus_points',
            'subject_type',
            'activity_date',
+           'manual_activity_date',
            'published',
            'published_at',
            

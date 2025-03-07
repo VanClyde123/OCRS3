@@ -63,7 +63,20 @@ class ScoreController extends Controller
                 $assessment->type !== 'Direct Bonus Grade'
             ) {
                 $newAssessment->max_points = $assessment->max_points;
-                $newAssessment->activity_date = $assessment->activity_date;
+                 
+                if (!empty($assessment->manual_activity_date)) {
+                   
+                    $newAssessment->manual_activity_date = $assessment->manual_activity_date;
+                    $newAssessment->activity_date = null;
+                } elseif (!empty($assessment->activity_date) && strtotime($assessment->activity_date)) {
+                   
+                    $newAssessment->activity_date = $assessment->activity_date;
+                    $newAssessment->manual_activity_date = null;
+                } else {
+                   
+                    $newAssessment->activity_date = null;
+                    $newAssessment->manual_activity_date = null;
+                }
             }
 
             $newAssessment->subject_type = $subjectType;

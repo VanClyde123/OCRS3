@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Models\Grades;
 use App\Models\SubjectType;
 use App\Models\Semester;
+use App\Models\GradeCeilingSetting;
 
 
 class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
@@ -26,10 +27,12 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
       use Exportable;
 
     protected $subjectId;
+     protected $gradeCeiling;
 
     public function __construct($subjectId)
     {
         $this->subjectId = $subjectId;
+         $this->gradeCeiling = GradeCeilingSetting::where('identifier', 'default')->first(); // Fetch settings
     }
 
      public function title(): string
@@ -72,6 +75,10 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
 
         $courseStudents = $students->where('student.course', $course);
 
+        $gradeAbove = $this->gradeCeiling->grade_above;
+        $gradeLower = $this->gradeCeiling->grade_lower;
+        $gradeUpper = $this->gradeCeiling->grade_upper;
+
      
         $courseSummary[] = ["Course: $course"];
         $courseSummary[] = ['Particulars:', 'No. of '];
@@ -81,18 +88,18 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
             return $courseStudents->filter($condition)->count();
         };
 
-        $courseSummary[] = ['Students with grades of 80 and above', $countStudents(function ($student) {
-            return $student->grades->where('finals_grade', '>=', 80)->isNotEmpty();
+         $courseSummary[] = ["Students with grades of $gradeAbove and above", $countStudents(function ($student) use ($gradeAbove) {
+            return $student->grades->where('finals_grade', '>=', $gradeAbove)->isNotEmpty();
         })];
-        $courseSummary[] = ['Students with grades of 75 to 79', $countStudents(function ($student) {
-            return $student->grades->whereBetween('finals_grade', [75, 79])->isNotEmpty();
+         $courseSummary[] = ["Students with grades of $gradeLower to $gradeUpper", $countStudents(function ($student) use ($gradeLower, $gradeUpper) {
+            return $student->grades->whereBetween('finals_grade', [$gradeLower, $gradeUpper])->isNotEmpty();
         })];
         $courseSummary[] = ['Students with grades below 75 but completed the semester', $countStudents(function ($student) {
             return $student->grades->where('finals_grade', '<', 75)->where(function ($grade) {
                 return $grade->finals_status === 'DEFAULT' || $grade->finals_status === '';
             })->isNotEmpty();
         })];
-        $courseSummary[] = ['Students with grades below 75 and stopped attending', $countStudents(function ($student) {
+        $courseSummary[] = ['Students with grades below 75 and stopped attending (withdraw)', $countStudents(function ($student) {
             return $student->grades->where('finals_status', 'WITHDRAW')->isNotEmpty();
         })];
         $courseSummary[] = ['Students with INC grades', $countStudents(function ($student) {
@@ -103,6 +110,9 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
         })];
         $courseSummary[] = ['Students with DRP grades (never attended the class)', $countStudents(function ($student) {
             return $student->grades->where('finals_status', 'DRP')->isNotEmpty();
+        })];
+         $courseSummary[] = ['Students who officially droppped (OD)', $countStudents(function ($student) {
+            return $student->grades->where('finals_status', 'OD')->isNotEmpty();
         })];
         $courseSummary[] = ['TOTAL', $courseStudents->count()];
 
@@ -118,6 +128,11 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
 
         $nonSITStudents = $students->whereNotIn('student.course', ['BSIT', 'BSCS', 'BSCpE']);
 
+        $gradeAbove = $this->gradeCeiling->grade_above;
+        $gradeLower = $this->gradeCeiling->grade_lower;
+        $gradeUpper = $this->gradeCeiling->grade_upper;
+
+
         $nonSITSummary[] = ['Course: Non-SIT'];
         $nonSITSummary[] = ['Particulars:', 'No. of '];
 
@@ -125,12 +140,12 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
             return $nonSITStudents->filter($condition)->count();
         };
 
-        $nonSITSummary[] = ['Students with grades of 80 and above', $countNonSITStudents(function ($student) {
-            return $student->grades->where('finals_grade', '>=', 80)->isNotEmpty();
+        $nonSITSummary[] = ["Students with grades of $gradeAbove and above", $countNonSITStudents(function ($student) use ($gradeAbove) {
+            return $student->grades->where('finals_grade', '>=', $gradeAbove)->isNotEmpty();
         })];
 
-        $nonSITSummary[] = ['Students with grades of 75 to 79', $countNonSITStudents(function ($student) {
-            return $student->grades->whereBetween('finals_grade', [75, 79])->isNotEmpty();
+        $nonSITSummary[] = ["Students with grades of $gradeLower to $gradeUpper", $countNonSITStudents(function ($student) use ($gradeLower, $gradeUpper) {
+            return $student->grades->whereBetween('finals_grade', [$gradeLower, $gradeUpper])->isNotEmpty();
         })];
 
         $nonSITSummary[] = ['Students with grades below 75 but completed the semester', $countNonSITStudents(function ($student) {
@@ -139,7 +154,7 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
             })->isNotEmpty();
         })];
 
-        $nonSITSummary[] = ['Students with grades below 75 and stopped attending', $countNonSITStudents(function ($student) {
+        $nonSITSummary[] = ['Students with grades below 75 and stopped attending (withdraw)', $countNonSITStudents(function ($student) {
             return $student->grades->where('finals_status', 'WITHDRAW')->isNotEmpty();
         })];
 
@@ -153,6 +168,10 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
 
         $nonSITSummary[] = ['Students with DRP grades (never attended the class)', $countNonSITStudents(function ($student) {
             return $student->grades->where('finals_status', 'DRP')->isNotEmpty();
+        })];
+
+        $nonSITSummary[] = ['Students who officially droppped (OD)', $countNonSITStudents(function ($student) {
+            return $student->grades->where('finals_status', 'OD')->isNotEmpty();
         })];
 
         $nonSITSummary[] = ['TOTAL', $nonSITStudents->count()];

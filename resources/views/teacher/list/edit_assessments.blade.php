@@ -41,7 +41,7 @@
                                             <tr>
                                                 <td>{{ $assessment->description }}</td>
                                                 <td>{{ number_format($assessment->max_points, 0) }}</td>
-                                                <td>{{ $assessment->activity_date }}</td>
+                                               <td>{{ $assessment->activity_date ?? $assessment->manual_activity_date }}</td>
                                                 <td>
                                                     <a href="{{ route('instructor.editSingleAssessment', ['assessmentId' => $assessment->id]) }}" class="btn btn-primary">Edit</a>
                                                     <form action="{{ route('instructor.deleteAssessment', ['assessmentId' => $assessment->id]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this assessment?');">
