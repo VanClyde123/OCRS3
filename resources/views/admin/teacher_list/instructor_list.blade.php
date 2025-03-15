@@ -13,8 +13,9 @@
                 <div class="card-header">
                     <h3 class="card-title">Instructor List</h3>
                     <div style="text-align: right;">
-                    <a href="{{ route('grade-ceiling.edit') }}" class="btn  btn-success">Grade Ceiling Settings</a>
-                </div>
+                          <a href="{{ url('admin/summary_report/reports') }}" class="btn btn-primary">Summary Report</a>
+                        <a href="{{ route('grade-ceiling.edit') }}" class="btn  btn-success">Grade Ceiling Settings</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.searchInstructors') }}" method="GET" class="mb-2">
