@@ -86,7 +86,7 @@
         </select>
         
         <input type="date" class="form-control date-picker" id="datePicker${assessmentCount}" name="activity_date" value="">
-        <input type="text" class="form-control manual-date" id="manualDate${assessmentCount}" name="manual_activity_date" placeholder="Enter date (YYYY-MM-DD)" style="display: none;">
+        <input type="text" class="form-control manual-date" id="manualDate${assessmentCount}" name="manual_activity_date" placeholder="Enter date (MM/DD/YYYY)" style="display: none;">
         
         <small class="text-muted instruction-text">For Additional Points and Bonus Assessment Type, no need to insert the date</small><br>
     </div>
@@ -1316,11 +1316,11 @@ $(document).on('change', '.date-choice', function () {
                                                         @endif
                                                     @endforeach
                                                 </tr>
-                                                <tr style="background-color:white; " class="fixed-row">
-                                                    <th class="fixed-column"></th> 
-                                                    <th class="fixed-column"></th> 
-                                                    <th class="fixed-column"></th> 
-                                                    <th class="fixed-column"></th> 
+                                                <tr  class="fixed-row ">
+                                                    <th ></th> 
+                                                    <th ></th> 
+                                                    <th ></th> 
+                                                    <th ></th> 
                                                     @foreach ($gradingPeriods as $gradingPeriod)
                                                         @foreach ($assessmentTypes as $assessmentType)
                                                             @php
@@ -1519,7 +1519,7 @@ $(document).on('change', '.date-choice', function () {
                                                                         $assessmentDescription = $assessment->description;
                                                                     if ($assessment->type != 'Direct Bonus Grade') {
                                                                     echo '<td class="assessment-column">
-                                                                            <input type="text" name="' . $textboxName . '" class="form-control score-input" "style="width: 50px;  font-size: 12px;""' . $disabled . '
+                                                                            <input type="text" name="' . $textboxName . '" class="form-control score-input" "  font-size: 12px;""' . $disabled . '
                                                                                 data-grading-period="' . $assessment->grading_period . '"
                                                                                 data-enrolled-student-id="' . $enrolledStudent->id . '"
                                                                                 data-assessment-id="' . $assessment->id . '"
