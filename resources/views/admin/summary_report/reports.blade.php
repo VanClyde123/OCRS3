@@ -3,60 +3,63 @@
 @section('content')
 
 <div class="container-fluid mt-4">
+    <br>
+    <br>
+    <br>
     <div class="card shadow-lg p-4">
         <h2 class="text-center mb-4">Summary Report</h2>
         <form id="reportForm" action="{{ route('generate.report') }}" method="POST">
             @csrf
 
             <div class="row">
-                <!-- School Year -->
+               
                 <div class="col-md-6 form-group">
                     <label for="school_year" class="font-weight-bold">School Year:</label>
                     <select id="school_year" name="school_year" class="form-control">
-                        <option value="">Select School Year</option>
+                        <option value="">---Select School Year---</option>
                         @foreach($schoolYears as $year)
                             <option value="{{ $year->school_year }}">{{ $year->school_year }}</option>
                         @endforeach
                     </select>
                 </div>
 
-                <!-- Term -->
+                
                 <div class="col-md-6 form-group">
                     <label for="term" class="font-weight-bold">Term:</label>
                     <select id="term" name="term" class="form-control" disabled>
-                        <option value="">Select Term</option>
+                        <option value="">---Select Term---</option>
                     </select>
                 </div>
 
-                <!-- Instructor -->
+                
                 <div class="col-md-6 form-group">
                     <label for="instructor" class="font-weight-bold">Instructor:</label>
                     <select id="instructor" name="instructor" class="form-control" disabled>
-                        <option value="">Select Instructor</option>
+                        <option value="">---Select Instructor---</option>
                     </select>
                 </div>
 
-                <!-- Subject -->
+                
                 <div class="col-md-6 form-group">
                     <label for="subject" class="font-weight-bold">Subject:</label>
                     <select id="subject" name="subject" class="form-control" disabled>
-                        <option value="">Select Subject</option>
+                        <option value="">---Select Subject---</option>
                     </select>
                 </div>
 
-                <!-- Section -->
+               
                 <div class="col-md-6 form-group">
                     <label for="section" class="font-weight-bold">Section:</label>
                     <select id="section" name="section" class="form-control" disabled>
-                        <option value="">Select Section</option>
+                        <option value="">---Select Section---</option>
                     </select>
                 </div>
 
-                <!-- Program -->
+                
                 <div class="col-md-6 form-group">
                     <label for="program" class="font-weight-bold">Program:</label>
                     <select id="program" name="program" class="form-control">
-                        <option value="">Select Program</option>
+                        <option value="">---Select Program---</option>
                         <option value="BSCS">BSCS</option>
                         <option value="BSIT">BSIT</option>
                         <option value="BSCPE">BSCPE</option>
