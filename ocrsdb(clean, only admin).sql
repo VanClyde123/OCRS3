@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2024 at 03:47 AM
+-- Generation Time: Mar 26, 2025 at 11:57 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -36,6 +36,7 @@ CREATE TABLE `assessments` (
   `max_points` decimal(5,2) DEFAULT NULL,
   `subject_type` varchar(255) NOT NULL,
   `activity_date` date DEFAULT NULL,
+  `manual_activity_date` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT 0,
   `published_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -134,6 +135,7 @@ CREATE TABLE `grades` (
   `total_finals_grade` decimal(5,2) DEFAULT NULL,
   `tentative_finals_grade` int(11) DEFAULT NULL,
   `finals_grade` int(11) DEFAULT NULL,
+  `adjusted_finals_grade` int(11) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT 0,
   `published_midterms` tinyint(1) DEFAULT 0,
   `published_finals` tinyint(1) DEFAULT 0,
@@ -143,6 +145,29 @@ CREATE TABLE `grades` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grade_ceiling_settings`
+--
+
+CREATE TABLE `grade_ceiling_settings` (
+  `id` int(11) NOT NULL,
+  `identifier` varchar(255) NOT NULL,
+  `grade_above` int(11) DEFAULT 80,
+  `grade_lower` int(11) DEFAULT 75,
+  `grade_upper` int(11) DEFAULT 79,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `grade_ceiling_settings`
+--
+
+INSERT INTO `grade_ceiling_settings` (`id`, `identifier`, `grade_above`, `grade_lower`, `grade_upper`, `created_at`, `updated_at`) VALUES
+(1, 'default', 80, 75, 79, '2025-03-06 03:25:17', '2025-03-06 17:22:17');
 
 -- --------------------------------------------------------
 
@@ -294,11 +319,13 @@ CREATE TABLE `users` (
   `middle_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `course` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `role` tinyint(4) NOT NULL COMMENT '1=admin, 2=teacher, 3=student, 4=secretary',
   `secondary_role` tinyint(2) DEFAULT NULL,
   `password_changed` tinyint(1) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) DEFAULT 1,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -308,8 +335,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `course`, `gender`, `password`, `role`, `secondary_role`, `password_changed`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Dante', 'E', 'Sparda', NULL, NULL, '$2y$10$OP67yxQ9.JvCnXloBf69lev.2m.ufSHKZtandn.QQKeV1hXrPTXD2', 1, 2, 1, 'G5U6odJ5IPdRgtftzJY39iy31jFpahxjhCO7we8Q9tVq0skijRU4HEhB9Trt', NULL, '2024-06-22 19:57:06');
+INSERT INTO `users` (`id`, `id_number`, `name`, `middle_name`, `last_name`, `course`, `email`, `gender`, `password`, `role`, `secondary_role`, `password_changed`, `is_active`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'Stephen', 'E.', 'Strange', NULL, NULL, NULL, '$2y$10$ifbYrHEq0OvHBpHcYmNdf.niICRo50QwuG16m4JSmezVD0FTt3a1K', 1, 2, 1, 1, '7agGtMZVFJgmHtT2V6C6J4qXJ4IX6Pam6IOqmc3fUi5dCxD1lBYlrhSs2WCR', NULL, '2024-11-18 23:16:35');
 
 --
 -- Indexes for dumped tables
@@ -359,6 +386,13 @@ ALTER TABLE `grades`
   ADD PRIMARY KEY (`id`),
   ADD KEY `grades_enrolled_student_id_foreign` (`enrolled_student_id`),
   ADD KEY `grades_assessment_id_foreign` (`assessment_id`);
+
+--
+-- Indexes for table `grade_ceiling_settings`
+--
+ALTER TABLE `grade_ceiling_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `identifier` (`identifier`);
 
 --
 -- Indexes for table `imported_classlist`
@@ -428,7 +462,8 @@ ALTER TABLE `subject_type_percentage`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_id_number_unique` (`id_number`);
+  ADD UNIQUE KEY `users_id_number_unique` (`id_number`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -469,6 +504,12 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `grades`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `grade_ceiling_settings`
+--
+ALTER TABLE `grade_ceiling_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `imported_classlist`
@@ -516,13 +557,13 @@ ALTER TABLE `subject_descriptions`
 -- AUTO_INCREMENT for table `subject_type_percentage`
 --
 ALTER TABLE `subject_type_percentage`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
 
 --
 -- Constraints for dumped tables
