@@ -89,15 +89,20 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
         };
 
          $courseSummary[] = ["Students with grades of $gradeAbove and above", $countStudents(function ($student) use ($gradeAbove) {
-            return $student->grades->where('finals_grade', '>=', $gradeAbove)->isNotEmpty();
+            return $student->grades->where('adjusted_finals_grade', '>=', $gradeAbove)->isNotEmpty();
         })];
          $courseSummary[] = ["Students with grades of $gradeLower to $gradeUpper", $countStudents(function ($student) use ($gradeLower, $gradeUpper) {
-            return $student->grades->whereBetween('finals_grade', [$gradeLower, $gradeUpper])->isNotEmpty();
+            return $student->grades->whereBetween('adjusted_finals_grade', [$gradeLower, $gradeUpper])->isNotEmpty();
         })];
         $courseSummary[] = ['Students with grades below 75 but completed the semester', $countStudents(function ($student) {
-            return $student->grades->where('finals_grade', '<', 75)->where(function ($grade) {
-                return $grade->finals_status === 'DEFAULT' || $grade->finals_status === '';
-            })->isNotEmpty();
+                return $student->grades
+                    ->filter(function ($grade) {
+                        if (!is_null($grade->adjusted_finals_grade) && $grade->adjusted_finals_grade < 75) {
+                            return in_array($grade->finals_status, ['DEFAULT', '', null]);
+                        }
+                        return false;
+                    })
+                    ->isNotEmpty();
         })];
         $courseSummary[] = ['Students with grades below 75 and stopped attending (withdraw)', $countStudents(function ($student) {
             return $student->grades->where('finals_status', 'WITHDRAW')->isNotEmpty();
@@ -141,17 +146,22 @@ class StudentsSummaryExport implements FromCollection, WithEvents, WithTitle
         };
 
         $nonSITSummary[] = ["Students with grades of $gradeAbove and above", $countNonSITStudents(function ($student) use ($gradeAbove) {
-            return $student->grades->where('finals_grade', '>=', $gradeAbove)->isNotEmpty();
+            return $student->grades->where('adjusted_finals_grade', '>=', $gradeAbove)->isNotEmpty();
         })];
 
         $nonSITSummary[] = ["Students with grades of $gradeLower to $gradeUpper", $countNonSITStudents(function ($student) use ($gradeLower, $gradeUpper) {
-            return $student->grades->whereBetween('finals_grade', [$gradeLower, $gradeUpper])->isNotEmpty();
+            return $student->grades->whereBetween('adjusted_finals_grade', [$gradeLower, $gradeUpper])->isNotEmpty();
         })];
 
         $nonSITSummary[] = ['Students with grades below 75 but completed the semester', $countNonSITStudents(function ($student) {
-            return $student->grades->where('finals_grade', '<', 75)->where(function ($grade) {
-                return $grade->finals_status === 'DEFAULT' || $grade->finals_status === '';
-            })->isNotEmpty();
+            return $student->grades
+                    ->filter(function ($grade) {
+                        if (!is_null($grade->adjusted_finals_grade) && $grade->adjusted_finals_grade < 75) {
+                            return in_array($grade->finals_status, ['DEFAULT', '', null]);
+                        }
+                        return false;
+                    })
+                    ->isNotEmpty();
         })];
 
         $nonSITSummary[] = ['Students with grades below 75 and stopped attending (withdraw)', $countNonSITStudents(function ($student) {

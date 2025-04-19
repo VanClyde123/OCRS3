@@ -77,7 +77,7 @@ class SubjectDescriptionController extends Controller
     } catch (\Exception $e) {
         return redirect()
             ->route('subject_descriptions.viewsubdesc')
-            ->with('error', 'Error deleting subject description: ' . $e->getMessage());
+            ->with('error', 'The subject cannot be deleted because it is associated with other records.');
     }
 }
 
@@ -160,7 +160,7 @@ class SubjectDescriptionController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->route('subject_descriptions.viewsubdesc1')
-                ->with('error', 'Error deleting subject description: ' . $e->getMessage());
+                ->with('error', 'The subject cannot be deleted because it is associated with other records.');
         }
     }
     public function show1(SubjectDescription $subjectDescription)
