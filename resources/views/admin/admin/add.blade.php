@@ -31,11 +31,11 @@
                             <input type="text" class="form-control" name="name" placeholder="Name" required >
                         </div>
                         <div class="form-group">
-                            <label>Middle Name</label>
+                            <label>Middle Name *</label>
                             <input type="text" class="form-control" name="middle_name" placeholder="Middle Name">
                         </div>
                         <div class="form-group">
-                            <label>Last Name</label>
+                            <label>Last Name *</label>
                             <input type="text" class="form-control" name="last_name" id="lastna"placeholder="Last Name">
                         </div>
                         <div class="form-group">
