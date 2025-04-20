@@ -266,7 +266,10 @@ private function cleanSectionName($section)
            
            
               
-                $subject = Subject::where('subject_code', $subjectCode)->where('section', $section)->first();
+                $subject = Subject::where('subject_code', $subjectCode)
+                  ->where('section', $section)
+                  ->where('term', $term)
+                  ->first();
 
 
                 if (!$subject) {

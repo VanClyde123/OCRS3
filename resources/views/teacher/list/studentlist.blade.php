@@ -1115,6 +1115,21 @@ $(document).on('change', '.date-choice', function () {
                                         max-height: 70vh; 
                                         overflow-y:auto;
                                     }
+
+                                     .modal-lg-custom {
+                                        max-width: 800px; 
+                                    }
+
+                                    .modal-body-scrollable {
+                                        max-height: 70vh; 
+                                        overflow-y: auto;
+                                    }
+
+                                    @media (max-width: 768px) {
+                                        .modal-lg-custom {
+                                            max-width: 95%;
+                                        }
+                                    }
                                 </style>
                                 <div class="table-scroll-container">
                                     <div class="table-container table-striped ">
@@ -2204,7 +2219,7 @@ $(document).on('change', '.date-choice', function () {
     </div>
     <!----modal for setting the assessment--->
     <div class="modal fade" id="assessmentModal" tabindex="-1" role="dialog" aria-labelledby="assessmentModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-lg-custom" role="document">
             <div class="modal-content">
                 <form action="{{ route('assessments.store') }}" method="POST">
                     @csrf
@@ -2219,7 +2234,7 @@ $(document).on('change', '.date-choice', function () {
                     <input type="hidden" name="subject_id" id="subject_id" value="{{ $subject->id }}">
                     <input type="hidden" name="subjectType" id="subject_type" value="{{ $subject->subject_type }}">
 
-                    <div class="modal-body">
+                    <div class="modal-body modal-body-scrollable">
                         <div class="form-group">
                             <label for="gradingPeriod">Grading Period:</label>
                             <select class="form-control" id="gradingPeriod" name="grading_period" required>
