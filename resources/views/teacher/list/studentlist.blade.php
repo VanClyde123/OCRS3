@@ -92,7 +92,7 @@
     </div>
 `;
 
-// Function to handle dropdown changes
+//////handles dropdown changes
 $(document).on('change', '.description-select', function () {
     let container = $(this).closest('.assessment-container');
     let customInput = container.find(`#custom${assessmentCount}`);
@@ -1016,11 +1016,22 @@ $(document).on('change', '.date-choice', function () {
                                         text-align: center; 
                                     }
 
-                                    .fixed-column {
+                                   .fixed-column {
                                         position: sticky;
                                         left: 0;
                                         z-index: 1;
                                         border: 1px solid #000;
+                                        font-size: 0.9em; 
+                                        white-space: nowrap; 
+                                        overflow: hidden; 
+                                        text-overflow: ellipsis; 
+                                        text-align: left;
+                                        vertical-align: top;
+                                        line-height: 1.2; 
+                                    }
+
+                                    .fixed-column b {
+                                        font-size: 1.1em; 
                                     }
                                     .fixed-row {
                                         position: sticky;
@@ -1032,6 +1043,10 @@ $(document).on('change', '.date-choice', function () {
 
                                     .assessment-column {
                                         width: 70px; 
+                                        vertical-align: top;
+                                        padding-top: 4px;            
+                                        padding-bottom: 2px;         
+                                        line-height: 1.2;             
                                     }
 
                                     .assessment-column .score-input {
@@ -1057,6 +1072,7 @@ $(document).on('change', '.date-choice', function () {
                                         background-color: #f2f2f2;
                                         font-weight: bold; 
                                         padding: 6px; 
+                                        text-align: left;
                                     }
 
                                     .table-container thead th {
@@ -1129,6 +1145,28 @@ $(document).on('change', '.date-choice', function () {
                                         .modal-lg-custom {
                                             max-width: 95%;
                                         }
+                                    }
+                                     .status-dropdown {
+                                        padding: 4px 18px 4px 6px;  
+                                         padding-bottom: 2px;   
+                                        font-size: 10px;
+                                        font-weight: bold; 
+                                        border: 1px solid #ccc;
+                                        border-radius: 6px;
+                                        background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+                                        appearance: none;
+                                        -webkit-appearance: none;
+                                        -moz-appearance: none;
+                                        width: 100%;
+                                        max-width: 100px;  
+                                        min-width: 80px; 
+                                        cursor: pointer;
+                                    }
+
+                                    .grade-dropdown {
+                                        margin: 0; 
+                                        padding: 0;
+                                        max-width: 180px;
                                     }
                                 </style>
                                 <div class="table-scroll-container">
@@ -1915,27 +1953,33 @@ $(document).on('change', '.date-choice', function () {
                                                                     
                                                                         echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
 
-                                                                        foreach ($enrolledStudent->grades as $grade) {
-                                                                            echo '<div class="grade-dropdown displayed-value">';
-                                                                            if ($grade->adjusted_finals_grade !== null) {
-                                                                            
-                                                                                echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="adjusted_finals_grade">' . 
-                                                                                    number_format($grade->adjusted_finals_grade, $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2) . 
-                                                                                    '</span>';
-                                                                            }
+                                                                     foreach ($enrolledStudent->grades as $grade) {
+                                                                        echo '<div class="grade-dropdown displayed-value">';
 
-                                                                            if ($grade->adjusted_finals_grade !== null) {
+                                                                        // Only show if grade is available
+                                                                        if ($grade->adjusted_finals_grade !== null) {
+                                                                            $formattedGrade = number_format(
+                                                                                $grade->adjusted_finals_grade,
+                                                                                $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2
+                                                                            );
+
                                                                             echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
-                                                                                    echo '<option value="DEFAULT">Grade </option>';
-                                                                                    echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                                    echo '<option value="OD" ' . ($grade->finals_status === 'OD' ? 'selected' : '') . '>OD</option>';
-                                                                                        echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                                        echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
-                                                                                        echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
-                                                                                        echo '</select>';
-                                                                                    echo '</div>';
-                                                                                }
+
+                                                                            // Grade as the first option
+                                                                            echo '<option value="DEFAULT" ' . ($grade->finals_status === 'DEFAULT' ? 'selected' : '') . '>' . $formattedGrade . '</option>';
+
+                                                                            // Other status options
+                                                                            echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
+                                                                            echo '<option value="OD" ' . ($grade->finals_status === 'OD' ? 'selected' : '') . '>OD</option>';
+                                                                            echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
+                                                                            echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
+                                                                            echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
+
+                                                                            echo '</select>';
                                                                         }
+
+                                                                        echo '</div>';
+                                                                    }
                                                                         echo '</td>';
 
                                                                         
@@ -2024,26 +2068,30 @@ $(document).on('change', '.date-choice', function () {
 
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             echo '<div class="grade-dropdown displayed-value">';
+
+                                                                            // Only show if grade is available
                                                                             if ($grade->adjusted_finals_grade !== null) {
-                                                                            
-                                                                                echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="adjusted_finals_grade">' . 
-                                                                                    number_format($grade->adjusted_finals_grade, $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2) . 
-                                                                                    '</span>';
+                                                                                $formattedGrade = number_format(
+                                                                                    $grade->adjusted_finals_grade,
+                                                                                    $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2
+                                                                                );
+
+                                                                                echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
+
+                                                                                // Grade as the first option
+                                                                                echo '<option value="DEFAULT" ' . ($grade->finals_status === 'DEFAULT' ? 'selected' : '') . '>' . $formattedGrade . '</option>';
+
+                                                                                // Other status options
+                                                                                echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
+                                                                                echo '<option value="OD" ' . ($grade->finals_status === 'OD' ? 'selected' : '') . '>OD</option>';
+                                                                                echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
+                                                                                echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
+                                                                                echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
+
+                                                                                echo '</select>';
                                                                             }
 
-
-
-                                                                            if ($grade->adjusted_finals_grade !== null) {
-                                                                            echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
-                                                                                    echo '<option value="DEFAULT">Grade </option>';
-                                                                                    echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                                    echo '<option value="OD" ' . ($grade->finals_status === 'OD' ? 'selected' : '') . '>OD</option>';
-                                                                                        echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                                        echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
-                                                                                        echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
-                                                                                        echo '</select>';
-                                                                                    echo '</div>';
-                                                                                }
+                                                                            echo '</div>';
                                                                         }
                                                                         echo '</td>';
                                                                     }

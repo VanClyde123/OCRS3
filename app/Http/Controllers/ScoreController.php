@@ -209,6 +209,52 @@ public function fetchassessmentDetails($enrolledStudentId, $assessmentId)
                     'points' => $enteredPoints,
                 ]
             );
+
+                $exemptTypes = [
+                'Direct Bonus Grade',
+                'Additional Points Quiz',
+                'Additional Points OT',
+                'Additional Points Exam',
+                'Additional Points Lab',
+            ];
+
+            ///// get all scores from students, except the final status row
+            $allStudentGrades = Grades::where('enrolled_student_id', $enrolledStudentId)
+                ->whereNotNull('assessment_id')
+                ->get();
+
+            $hasGrades = $allStudentGrades->count() > 0;
+
+            $allAreAbsent = $hasGrades && $allStudentGrades->every(function ($grade) use ($exemptTypes) {
+                ///// skip assessments of exempt types from the chekcing
+                if (in_array($grade->assessment->type, $exemptTypes)) {
+                    return true; 
+                }
+                return strtoupper(trim($grade->points)) === 'A';
+            });
+
+            $hasNumericScore = $hasGrades && $allStudentGrades->contains(function ($grade) use ($exemptTypes) {
+                ///// skip assessments of exempt types from the chekcing numeric score check
+                if (in_array($grade->assessment->type, $exemptTypes)) {
+                    return false; 
+                }
+                return is_numeric($grade->points);
+            });
+
+            
+            $studentRecord = Grades::firstOrNew([
+                'enrolled_student_id' => $enrolledStudentId,
+                'assessment_id' => null,
+            ]);
+
+            if ($allAreAbsent) {
+                $studentRecord->finals_status = 'DRP';
+            } elseif ($hasNumericScore && $studentRecord->finals_status === 'DRP') {
+                   
+                    $studentRecord->finals_status = null;
+            }
+
+            $studentRecord->save();
  
    
   // //// $student = EnrolledStudents::find($enrolledStudentId);
