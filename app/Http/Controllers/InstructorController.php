@@ -466,26 +466,26 @@ class InstructorController extends Controller
  public function updateStatus(Request $request)
 {
     $gradeId = $request->input('gradeId');
-    $status = $request->input('status');  // The final status (e.g., "DRP", "INC", etc.)
-    $gradeType = $request->input('gradeType');  // We will only care about 'final' in your case
+    $status = $request->input('status');  
+    $gradeType = $request->input('gradeType');  
 
-    // Find the grade record
+    
     $grade = Grades::find($gradeId);
 
     if ($grade && $gradeType === 'final') {
-        // Update only the final status
+       
         $grade->finals_status = $status;
 
-        // Grab the actual grade for response (adjusted finals grade in this case)
+       
         $actualGrade = $grade->adjusted_finals_grade;
 
-        // Save the updated grade record
+        
         $grade->save();
 
-        // Return the success response along with the actual grade
+       
         return response()->json(['success' => true, 'actualGrade' => $actualGrade]);
     } else {
-        // If no grade found or wrong grade type, return error
+        
         return response()->json(['error' => 'Grade not found or invalid grade type'], 404);
     }
 }
