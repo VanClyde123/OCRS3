@@ -11,8 +11,8 @@
         @include('messages')
         <div class="card">
             <div class="card-header">
-            Next Semester Subjects for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
-            <a href="{{ route('admin.teacher_list.assign_subject', ['instructorId' => $instructor->id]) }}" class="btn btn-primary float-right">Assign New Subject</a>
+            Next Semester Courses for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
+            <a href="{{ route('admin.teacher_list.assign_subject', ['instructorId' => $instructor->id]) }}" class="btn btn-primary float-right">Assign New Course</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

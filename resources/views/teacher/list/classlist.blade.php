@@ -8,13 +8,13 @@
     <div class="content-wrappers">
         <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-info">Past Subjects</a>
+            <a href="{{ url('teacher/list/past_classlist')}}" class="btn btn-info">Past Courses</a>
         </section>
         <section class="content">
             @include('messages')
             <div class="card">
-                <div class="card-header">
-                    Subject List
+                <div class="card-header" style="font-size: 1.75rem;">
+                    Course List
                 </div>
                 <div class="card-body ">
                     <div>

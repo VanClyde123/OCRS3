@@ -1238,7 +1238,7 @@ foreach ($finalsAssessments as $index => $finalsAssessment) {
           
              
             $event->sheet->setCellValue('A' . ($lastDataRow + 2), "Legends:");
-            $event->sheet->setCellValue('A' . ($lastDataRow + 3), "AB - ABSENT");
+            $event->sheet->setCellValue('A' . ($lastDataRow + 3), "A - ABSENT");
             $event->sheet->setCellValue('A' . ($lastDataRow + 4), "E - EXCUSED");
             $event->sheet->setCellValue('A' . ($lastDataRow + 5), "Q - Quiz");
             $event->sheet->setCellValue('A' . ($lastDataRow + 6), "OT - OtherActivity");

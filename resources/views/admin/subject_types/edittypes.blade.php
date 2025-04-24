@@ -70,7 +70,7 @@
         <section class="content">
             <div class="card ">
                 <div class="card-header">
-                    <h3 class="card-title">Edit Class Calculation</h3>
+                    <h3 class="card-title">Edit Class Type Calculation</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('subject_types.update', $subjectType->id) }}" method="POST">

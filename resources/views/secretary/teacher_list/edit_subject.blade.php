@@ -12,7 +12,7 @@
       </section>
     <div class="card">
         <div class="card-header">
-           Edit Subject for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
+           Edit Course for {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('secretary.teacher_list.update_subject1') }}">

@@ -6,13 +6,13 @@
     @endphp
     <div class="content-wrappers">
      <section class="content-header" style="text-align: right;">
-       <input type="button" onclick="window.location.href='{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}';" class="btn btn-info" value="Back to Subject List" />
+       <input type="button" onclick="window.location.href='{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}';" class="btn btn-info" value="Back to Course List" />
 <h2></h2>
       </section>
 
     <div class="card">
         <div class="card-header">
-            Assign Subjects to {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
+            Assign Courses to {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('secretary.teacher_list.store_subject1') }}">

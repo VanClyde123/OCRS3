@@ -12,7 +12,7 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">List of Instructors</h3>
+                <h3 class="card-title" style="font-size: 1.75rem">List of Instructors</h3>
             </div>
             <div class="card-body">
                 <div>
@@ -42,8 +42,8 @@
                                     <td>{{ $instructor->name }}</td>
                                     <td>{{ $instructor->middle_name }}</td>
                                     <td>{{ $instructor->last_name }}</td>
-                                    <td>  <a href="{{ route('secretary.teacher_list.subjects', ['instructorId' => $instructor->id]) }}"class="btn btn-info">View Current Subjects</a> <a href="{{ route('secretary.teacher_list.past_subjects', ['instructorId' => $instructor->id]) }}" class="btn btn-info">View Past Semester Subjects</a>
-                                        <a href="{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}" class="btn btn-info">Set Next Semester Subjects</a>
+                                    <td>  <a href="{{ route('secretary.teacher_list.subjects', ['instructorId' => $instructor->id]) }}"class="btn btn-info">View Current Courses</a> <a href="{{ route('secretary.teacher_list.past_subjects', ['instructorId' => $instructor->id]) }}" class="btn btn-info">View Past Semester Courses</a>
+                                        <a href="{{ route('secretary.teacher_list.future_subjects1', ['instructorId' => $instructor->id]) }}" class="btn btn-info">Set Next Semester Courses</a>
                                     </td>
 
                                     </tr>

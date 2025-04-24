@@ -25,7 +25,7 @@
         @if($semesters->isEmpty())
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">No Set Semester</h3>
+                    <h3 class="card-title" style="font-size: 1.75rem">No Set Semester</h3>
                 </div>
                 <div class="card-body">
                     <p class="text-danger">Please select a semester and school year to set the current semester.</p>
@@ -56,7 +56,7 @@
         @else
             <div class="card">
                  <div class="card-header">
-                    <h3 class="card-title">Current Semester</h3>
+                    <h3 class="card-title" style="font-size: 1.75rem;">Current Semester</h3>
                 </div>
                 <form method="POST" action="{{ route('semesters.setupCurrent') }}">
                     @csrf

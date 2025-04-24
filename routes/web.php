@@ -27,6 +27,8 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SummaryReportController;
 use App\Http\Controllers\GradeCeilingController;
+use App\Http\Controllers\FinalStatusController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +78,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::put('/admin/grade-settings', [GradeCeilingController::class, 'update'])->name('grade-ceiling.update');
     
 
-
+  ///final status settings
+    Route::get('/admin/final-status-options', [FinalStatusController::class, 'index'])->name('final-status.index');
+    Route::post('/admin/final-status-options', [FinalStatusController::class, 'store'])->name('final-status.store');
+    Route::put('/admin/final-status-options/{id}', [FinalStatusController::class, 'update'])->name('final-status.update');
 
 
    //////sumary report
@@ -202,7 +207,9 @@ Route::group(['middleware' => 'instructor'], function () {
     return view('teacher.list.importexcel');
  
 });
+     //fetch final status options: 
 
+    Route::get('/teacher/final-status-options', [InstructorController::class, 'getFinalStatuses'])->name('final-status.index');
 
       Route::get('/teacher/initial-change-password', [InstructorController::class, 'showInitialChangePasswordForm2'])->name('initial-change-password2');
     Route::post('/teacher/initial-change-password', [InstructorController::class, 'initialChangePassword2']);
@@ -281,6 +288,8 @@ Route::get('fetch/grades/{subjectId}/{enrolledStudentId}', [InstructorController
       ->name('export.gradeslist');
    Route::get('/generate-summary-report/{subjectId}', [ReportController::class, 'generateSummaryReport'])->name('export.summary');
 
+    Route::get('/generate-pdf-report/{subjectId}', [ReportController::class, 'generatePdfReport'])->name('generatePdfReport');
+
    Route::delete('/delete-student/{enrolledStudentId}', [InstructorController::class, 'deleteStudent'])->name('delete.student');
    Route::get('/assessment-descriptions/fetch', [AssessmentDescriptionController::class, 'fetch'])->name('assessment-descriptions.fetch');
 
@@ -309,6 +318,10 @@ Route::group(['middleware' => 'student'], function () {
    Route::get('student/scores/showscores/{enrolledStudentId}', [StudentScoreController::class, 'showscores'])->name('student.scores.showscores');
    Route::get('/student/notifications', [StudentScoreController::class, 'showNotifications'])->name('student.notifications');
 Route::post('/student/mark-notifications-as-read', [StudentScoreController::class, 'markNotificationsAsRead'])->name('student.markNotificationsAsRead');
+
+
+Route::get('/student/records/pdf/{enrolledStudentId}', [StudentScoreController::class, 'exportPdf'])->name('student.records.pdf');
+
 
 //////Route::post('/mark-as-viewed', [StudentScoresController::class, 'markAsViewed'])->name('student.scores.markAsViewed');
 
@@ -455,6 +468,8 @@ Route::group(['middleware' => 'multiRole:admin|instructor'], function () {
     ->name('admin.edit')
     ->middleware('auth'); 
 
+
+
      Route::get('/admin/teacher_list/instructor_list', [AdminController::class, 'showInstructors']);
      Route::get('/admin/teacher_list/search', [AdminController::class, 'showInstructors'])->name('admin.searchInstructors');
     Route::get('/admin/teacher_list/{instructorId}/subjects', [AdminController::class, 'showInstructorSubjects'])
@@ -532,7 +547,7 @@ Route::delete('/sections/{section}', [AdminController::class, 'destroySection'])
     Route::get('/admin/subject_list/view_subjects',  [AdminController::class, 'viewSubjects'])->name('admin.viewSubjects');
     Route::get('/admin/subject_list/changeInstructor/{importedClassId}',[AdminController::class, 'changeInstructorForm'])->name('admin.changeInstructorForm');
     Route::post('/admin/subject_list/changeInstructor/{importedClassId}', [AdminController::class, 'changeInstructor'])->name('admin.changeInstructor');
-
+ 
 
     Route::get('teacher/dashboard', [DashboardController::class, 'dashboard']);
  
@@ -540,6 +555,9 @@ Route::delete('/sections/{section}', [AdminController::class, 'destroySection'])
     return view('teacher.list.importexcel');
  
          });
+
+     ///fetch final status options
+    Route::get('/teacher/final-status-options', [InstructorController::class, 'getFinalStatuses'])->name('final-status.index');
 
 
       Route::get('/teacher/initial-change-password', [InstructorController::class, 'showInitialChangePasswordForm2'])->name('initial-change-password2');
@@ -615,6 +633,9 @@ Route::get('fetch/grades/{subjectId}/{enrolledStudentId}', [InstructorController
    Route::get('/report/generateGradesList/{subjectId}', [ReportController::class, 'generateGradesList'])->name('report.generateGradesList');
 
     Route::get('/generate-excel/{subjectId}', [ReportController::class, 'generateExcelReport'])->name('generateExcelReport');
+
+    Route::get('/generate-pdf-report/{subjectId}', [ReportController::class, 'generatePdfReport'])->name('generatePdfReport');
+
    Route::get('/export-grades/{subjectId}', [ReportController::class, 'exportGradesList'])
       ->name('export.gradeslist');
    Route::get('/generate-summary-report/{subjectId}', [ReportController::class, 'generateSummaryReport'])->name('export.summary');

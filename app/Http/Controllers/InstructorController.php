@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Grades;
 use App\Models\SubjectType;
 use App\Models\Semester;
+use App\Models\FinalStatus;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -270,9 +271,11 @@ class InstructorController extends Controller
         })
         ->get();
 
+     $statuses = FinalStatus::all(); 
 
 
-     return view('teacher.list.studentlist', compact('subject', 'assessments', 'enrolledStudents', 'hasAssessment', 'sortedStudents', 'descriptions', 'totalMaxPoints', 'students', 'isPastSubjectList'));
+
+     return view('teacher.list.studentlist', compact('subject', 'assessments', 'enrolledStudents', 'hasAssessment', 'sortedStudents', 'descriptions', 'totalMaxPoints', 'students', 'isPastSubjectList', 'statuses'));
      }
 
 
@@ -460,44 +463,32 @@ class InstructorController extends Controller
     }
 }
 
-  public function updateStatus(Request $request)
-    {
-      $gradeId = $request->input('gradeId');
-    $status = $request->input('status');
-    $gradeType = $request->input('gradeType');
+ public function updateStatus(Request $request)
+{
+    $gradeId = $request->input('gradeId');
+    $status = $request->input('status');  // The final status (e.g., "DRP", "INC", etc.)
+    $gradeType = $request->input('gradeType');  // We will only care about 'final' in your case
 
-   
+    // Find the grade record
     $grade = Grades::find($gradeId);
 
-    if ($grade) {
-     
-        switch ($gradeType) {
-            case 'midterm':
-                $grade->midterms_status = $status;
-                
-                $actualGrade = $grade->midterms_grade;
-                break;
-            case 'final':
-                $grade->finals_status = $status;
-                
-                $actualGrade = $grade->adjusted_finals_grade;
-                break;
-            default:
-                $grade->status = $status;
-               
-                $actualGrade = $grade->fg_grade;
-                break;
-        }
+    if ($grade && $gradeType === 'final') {
+        // Update only the final status
+        $grade->finals_status = $status;
 
+        // Grab the actual grade for response (adjusted finals grade in this case)
+        $actualGrade = $grade->adjusted_finals_grade;
+
+        // Save the updated grade record
         $grade->save();
 
-        
+        // Return the success response along with the actual grade
         return response()->json(['success' => true, 'actualGrade' => $actualGrade]);
     } else {
-        
-        return response()->json(['error' => 'grade not found'], 404);
+        // If no grade found or wrong grade type, return error
+        return response()->json(['error' => 'Grade not found or invalid grade type'], 404);
     }
-    }
+}
 
      public function showChangePasswordForm2()
     {
@@ -593,5 +584,9 @@ class InstructorController extends Controller
     return response()->json(['grades' => $grades]);
 }
 
-
+    public function getFinalStatuses()
+    {
+        $statuses = FinalStatus::all(); 
+        return response()->json($statuses);
+    }
 }

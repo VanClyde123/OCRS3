@@ -22,7 +22,7 @@
                     @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Add New Subject</h3>
+                    <h3 class="card-title">Add New Course</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('subject_descriptions.store') }}" method="POST">

@@ -12,7 +12,7 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Subjects Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h3>
+                    <h3 class="card-title">Courses Taught by {{ $instructor->name }} {{ $instructor->middle_name }} {{ $instructor->last_name }}</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.searchInstructorSubjects', ['instructorId' => $instructor->id]) }}" method="GET" class="mb-2">

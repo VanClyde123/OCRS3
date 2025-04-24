@@ -2,143 +2,105 @@
 
 @section('content')
 @php
-        $header_title = "Records";
-    @endphp
-    @push('scripts')
-        <script>
-            $(document).ready(function () {
-                $('.collapse').on('shown.bs.collapse', function () {
-                    var activeCollapseId = $(this).attr('id');
-                    $('#accordion button[data-target="#' + activeCollapseId + '"]').addClass('active');
-                });
+    $header_title = "Records";
+@endphp
 
-                $('.collapse').on('hidden.bs.collapse', function () {
-                    var activeCollapseId = $(this).attr('id');
-                    $('#accordion button[data-target="#' + activeCollapseId + '"]').removeClass('active');
-                });
+<section class="content-header" style="text-align: right;">
+    <input onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Course List" />
+</section>
 
-               
-                $('.assessmentCollapse').on('shown.bs.collapse', function () {
-                    var activeAssessmentCollapseId = $(this).attr('id');
-                    $('#assessmentAccordion button[data-target="#' + activeAssessmentCollapseId + '"]').addClass('active');
-                });
+<section class="content">
+    @include('messages')
 
-                $('.assessmentCollapse').on('hidden.bs.collapse', function () {
-                    var activeAssessmentCollapseId = $(this).attr('id');
-                    $('#assessmentAccordion button[data-target="#' + activeAssessmentCollapseId + '"]').removeClass('active');
-                });
-            });
-        </script>
-    @endpush
-    <div class="content-wrappers">
-        <section class="content-header" style="text-align: right;">
-            <h2></h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Subject List" />
-        </section>
-        <section class="content">
-            @include('messages')
-            <div class="card">
-                 <div class="card-header">
-                    <h3 class="card-title">Records</h3>
-                </div>
-                <div class="card-body">
-                    @if ($scores->isNotEmpty())
-                        <div class="card-body ">
-                            <div id="accordion">
-                                @foreach($gradingPeriods as $gradingPeriod)
-                                    <div class="card">
-                                        <div class="card-header" id="heading{{ $loop->index }}">
-                                            <h5 class="mb-0">
-                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ $loop->index }}" aria-expanded="true" aria-controls="collapse{{ $loop->index }}">
-                                                    <span class="font-size-lg font-weight-bold text-center">{{ $gradingPeriod }}</span>
-                                                </button>
-                                            </h5>
-                                        </div>
-                                        
-                                        <div id="collapse{{ $loop->index }}" class="collapse" aria-labelledby="heading{{ $loop->index }}" data-parent="#accordion">
-                                            <div class="card-body">
-                                                <div id="assessmentAccordion{{ $loop->index }}">
-                                                    @foreach($assessmentTypes as $assessmentType)
-                                                          @if (
-                                                                ($subjectType == 'Lec' && !in_array($assessmentType, ['Lab Activity', 'Lab Exam'])) ||
-                                                                ($subjectType == 'Lab' && !in_array($assessmentType, ['Quiz', 'OtherActivity', 'Exam'])) ||
-                                                                (str_starts_with($subjectType, 'LecLab'))
-                                                            )
-                                                        <div class="card">
-                                                            <div class="card-header" id="assessmentHeading{{ $loop->parent->index }}{{ $loop->index }}">
-                                                                <h5 class="mb-0">
-                                                                    <button class="btn btn-link" data-toggle="collapse" data-target="#assessmentCollapse{{ $loop->parent->index }}{{ $loop->index }}" aria-expanded="true" aria-controls="assessmentCollapse{{ $loop->parent->index }}{{ $loop->index }}">
-                                                                        <span class="font-size-lg font-weight-bold text-center">{{ $assessmentType }}</span>
-                                                                    </button>
-                                                                </h5>
-                                                            </div>
-                                                            <div id="assessmentCollapse{{ $loop->parent->index }}{{ $loop->index }}" class="collapse" aria-labelledby="assessmentHeading{{ $loop->parent->index }}{{ $loop->index }}" data-parent="#assessmentAccordion{{ $loop->parent->index }}">
-                                                                <div class="card-body">
-                                                                    <table class="table">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>Assessment Description</th>
-                                                                                <th>Date Taken</th>
-                                                                                <th>Points</th>
-                                                                                <th>Release Date</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            @foreach($scores as $score)
-                                                                                @if ($score->assessment_id && $score->points !== null && $score->assessment->published && $score->assessment->grading_period === $gradingPeriod && $score->assessment->type === $assessmentType)
-                                                                                    <tr>
-                                                                                        <td>{{ $score->assessment->description }}</td>
-                                                                                        <td>{{ $score->assessment->activity_date ?? $score->assessment->manual_activity_date }}</td>
-                                                                                        <td>{{ $score->points }}/{{ number_format($score->assessment->max_points, $score->assessment->max_points == intval($score->assessment->max_points) ? 0 : 2) }}</td>
-                                                                                        <td>{{ $score->assessment->published_at ?? 'N/A' }}</td> 
-                                                                                    </tr>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    @endforeach
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Score Records For {{ $subjectDetails->subject_code }} - {{ $subjectDetails->description }} </h3>
+            <a href="{{ route('student.records.pdf', ['enrolledStudentId' => $enrolledStudentId]) }}" 
+               class="btn btn-sm btn-success float-right"
+               target="_blank">
+              Download Records
+            </a>
+        </div>
 
-                                                    @foreach($scores as $score)
-                                                    @if ($score->fg_grade !== null || $score->midterms_grade !== null || $score->finals_grade !== null)
-                                                        <tr>
-                                                            <td style="text-align: center;">
-                                                                @if ($gradingPeriod == "First Grading" && $score->fg_grade !== null && $score->published)
-                                                                    <strong style="display: block; text-align: center;">First Grading Grade: {{ $score->fg_grade }}</strong><br>
-                                                                @endif
+        <div class="card-body">
+            @if ($scores->isNotEmpty())
+                @foreach ($gradingPeriods as $gradingPeriod)
+                    <div class="text-center mt-4 mb-2">
+                        <h4 class="bg-primary text-white py-2 rounded">{{ $gradingPeriod }}</h4>
+                    </div>
 
-                                                                @if ($gradingPeriod == "Midterm" && $score->midterms_grade !== null && $score->published_midterms)
-                                                                    <strong style="display: block; text-align: center;">Midterm Grade: {{ $score->midterms_grade }}</strong><br>
-                                                                @endif
+                    @php $hasScores = false; @endphp
 
-                                                                @if ($gradingPeriod == "Finals" && $score->finals_grade !== null && $score->published_finals)
-                                                                    @if ($score->finals_status === 'DEFAULT')
-                                                                        <strong style="display: block; text-align: center;">Final Grade: {{ $score->finals_grade }}</strong> 
-                                                                    @else
-                                                                        <strong style="display: block; text-align: center;">Final Grade: {{ $score->finals_status }}</strong> 
-                                                                    @endif
-                                                                @endif
-                                                            </td>
-                                                            <td style="text-align: center;"></td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                    @foreach ($assessmentTypes as $assessmentType)
+                        @php
+                            $groupedScores = $scores->filter(function ($score) use ($gradingPeriod, $assessmentType) {
+                                return $score->assessment_id &&
+                                    $score->points !== null &&
+                                    $score->assessment->published &&
+                                    $score->assessment->grading_period === $gradingPeriod &&
+                                    $score->assessment->type === $assessmentType;
+                            });
+                        @endphp
+
+                        @if ($groupedScores->isNotEmpty())
+                            @php $hasScores = true; @endphp
+
+                            <h5 class="mt-3 mb-2 text-left text-secondary font-weight-bold border-bottom border-secondary">
+                                {{ $assessmentType }}
+                            </h5>
+
+                            <table class="table table-bordered table-sm mb-3">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Assessment Description</th>
+                                        <th>Assessment Date</th>
+                                        <th>Score</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($groupedScores as $score)
+                                        <tr>
+                                            <td>{{ $score->assessment->description }}</td>
+                                            <td>{{ $score->assessment->activity_date ?? $score->assessment->manual_activity_date }}</td>
+                                            <td>{{ $score->points }}/{{ number_format($score->assessment->max_points, $score->assessment->max_points == intval($score->assessment->max_points) ? 0 : 2) }}</td>
+                                           
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    @endforeach
+
+                    @if ($hasScores)
+                        <div class="text-center mb-4">
+                            <strong>Grade:
+                                @php
+                                    $grade = 'N/A';
+                                    foreach ($scores as $score) {
+                                        if ($gradingPeriod === "First Grading" && $score->fg_grade !== null && $score->published) {
+                                            $grade = $score->fg_grade;
+                                            break;
+                                        } elseif ($gradingPeriod === "Midterm" && $score->midterms_grade !== null && $score->published_midterms) {
+                                            $grade = $score->midterms_grade;
+                                            break;
+                                        } elseif ($gradingPeriod === "Finals" && $score->finals_grade !== null && $score->published_finals) {
+                                            $grade = $score->finals_status === 'DEFAULT' ? $score->finals_grade : $score->finals_status;
+                                            break;
+                                        }
+                                    }
+                                @endphp
+                                {{ $grade }}
+                            </strong>
                         </div>
                     @else
-                        <p>No activity/ No scores recorded for you yet</p>
+                        <p class="text-muted">No scores available for this grading period.</p>
                     @endif
-                </div>
-            </div>
-        </section>
+                @endforeach
+            @else
+                <p>No activity or scores recorded for you yet.</p>
+            @endif
+        </div>
     </div>
-
+</section>
 @endsection

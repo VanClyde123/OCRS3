@@ -74,7 +74,7 @@
             <div class="center-container">
                 <div class="card card-centered">
                     <div class="card-header">
-                        <h6>Select Classlist Excel File</h6>
+                        <h6 style="font-size: 1.75rem; text-align: center;">Select Classlist Excel File</h6>
                     </div>
 
                    <div class="card-body">

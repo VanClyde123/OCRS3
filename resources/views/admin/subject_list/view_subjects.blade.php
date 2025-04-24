@@ -14,7 +14,7 @@
             @include('messages')
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Subjects in the Current Semester</h3>
+                    <h3 class="card-title" style="font-size: 1.75rem;">Courses in the Current Semester</h3>
                 </div>
                 <div class="card-body ">
                     <div class="table-responsive">

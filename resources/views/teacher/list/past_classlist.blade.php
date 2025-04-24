@@ -4,13 +4,13 @@
     <div class="content-wrappers">
         <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Subject List" /> 
+            <input action="action" onclick="window.history.go(-1); return false;" type="submit" class="btn btn-info" value="Back to Course List" /> 
         </section>
         @include('messages')
        <section class="content">
             <div class="card">
                 <div class="card-header">
-                    Past Subject List
+                    Past Course List
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

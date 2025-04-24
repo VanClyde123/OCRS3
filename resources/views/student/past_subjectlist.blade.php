@@ -13,7 +13,7 @@
        <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Past Subjects</h3>
+                <h3 class="card-title" style="font-size: 1.75rem">Past Courses</h3>
             </div>
             @if (empty($pastStudentSubjects))
                 <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>

@@ -17,7 +17,7 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">User List</h3>
+                    <h3 class="card-title" style="font-size: 1.75rem;">Employee List</h3>
                        <div style="text-align: right;">
                             <a href="{{ url('admin/student_list/view_students')}}" class="btn  btn-success">Student List</a>
                         </div>

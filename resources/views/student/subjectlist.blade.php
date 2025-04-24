@@ -7,14 +7,14 @@
     <div class="content-wrappers">
         <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-info">Past Subjects</a>
+            <a href="{{ url('student/past_subjectlist/{studentId}')}}" class="btn btn-info">Past Courses</a>
         </section>
 
         @include('messages')
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Enrolled Subjects</h3>
+                    <h3 class="card-title" style="font-size: 1.75rem">Enrolled Courses</h3>
                 </div>
                 @if (empty($enrolledStudentSubjects))
                     <p>Subjects will not show since there is no active current semester set. Please contact the Admin or Secretary.</p>
@@ -37,10 +37,12 @@
                                     <tr>
                                         <th>Subject Code</th>
                                         <th>Subject Description</th>
+                                        <th>Section</th>
                                         <th>Instructor</th>
                                         <th>Days</th>
                                         <th>Time</th>
                                         <th>Room</th>
+                                        <th>Term</th>
                                         <th>Action</th> 
                                     </tr>
                                 </thead>
@@ -59,10 +61,12 @@
                                             
                                         </td>
                                         <td>{{ $enrolledSubject->importedclasses->subject->description }}</td>
+                                        <td>{{ $enrolledSubject->importedclasses->subject->section }}</td>
                                         <td>{{ $enrolledSubject->importedclasses->instructor->name }} {{ $enrolledSubject->importedclasses->instructor->last_name }}</td>
                                         <td>{{ $enrolledSubject->importedclasses->days }}</td>
                                         <td>{{ $enrolledSubject->importedclasses->time }}</td>
                                         <td>{{ $enrolledSubject->importedclasses->room }}</td>
+                                        <td>{{ $enrolledSubject->importedclasses->subject->term }}</td>
                                         <td>
                                             <a href="{{ route('student.scores.showscores', ['enrolledStudentId' => $enrolledSubject->id]) }}" class="btn btn-info view-scores-btn" data-assessment-id="{{ $latestPublishedAssessment ? $latestPublishedAssessment->id : '' }}">View Scores</a>
                                         </td>

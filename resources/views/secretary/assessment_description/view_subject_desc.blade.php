@@ -7,13 +7,13 @@
     <div class="content-wrappers">
         <section class="content-header"  style="text-align: right;">
             <h2></h2>
-            <a href="{{ route('subject_descriptions.create1') }}" class="btn btn-success">Add Subject</a>
+            <a href="{{ route('subject_descriptions.create1') }}" class="btn btn-success">Add Course</a>
         </section>
         @include('messages')
           <section class="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Subject List</h3>
+            <h3 class="card-title" style="font-size: 1.75rem">Course List</h3>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -26,7 +26,7 @@
                     ];
                 @endphp
                 @foreach ($level as $year => $yearName)
-                    <h4>{{ $yearName }} Subjects</h4>
+                    <h4>{{ $yearName }} Courses</h4>
                     <table class="table table-striped">
                         <thead>
                             <tr>
