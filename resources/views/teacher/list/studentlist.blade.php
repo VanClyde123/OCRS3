@@ -486,7 +486,7 @@ $(document).on('change', '.date-choice', function () {
 
                                 
                                 if (data.success) {
-                                    btn.innerText = isPublished ? 'Show Scores' : 'Hide Scores';
+                                    btn.innerText = isPublished ? 'Publish Scores' : 'Hide Scores';
                                     btn.setAttribute('data-published', isPublished ? 'false' : 'true');
                                 } else {
                                     console.error('Error:', data.message);
@@ -1019,7 +1019,6 @@ $(document).on('change', '.date-choice', function () {
                                    .fixed-column {
                                         position: sticky;
                                         left: 0;
-                                        z-index: 1;
                                         border: 1px solid #000;
                                         font-size: 0.9em; 
                                         white-space: nowrap; 
@@ -1030,14 +1029,11 @@ $(document).on('change', '.date-choice', function () {
                                         line-height: 1.2; 
                                     }
 
-                                    .fixed-column b {
-                                        font-size: 1.1em; 
-                                    }
                                     .fixed-row {
                                         position: sticky;
                                         top: 0;
-                                        z-index: 1;
                                         border: 1px solid #000;
+                                        
                                     }
 
 
@@ -1175,10 +1171,10 @@ $(document).on('change', '.date-choice', function () {
                                         <thead>
                                                 <tr >
                                                     <!-- Fixed columns -->
-                                                    <th class="fixed-column"></th>
-                                                    <th class="fixed-column"></th>
-                                                    <th class="fixed-column"></th>
-                                                    <th class="fixed-column"></th> 
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th> 
                                                     @php
                                                         $gradingPeriods = $assessments->pluck('grading_period')->unique();
                                                         $assessmentTypes = $assessments->pluck('type')->unique();
@@ -1221,10 +1217,10 @@ $(document).on('change', '.date-choice', function () {
                                                 </tr>
                                                 <tr >
                                                     <!-- Fixed columns -->
-                                                    <th class="fixed-column"></th> 
-                                                    <th class="fixed-column"></th> 
-                                                    <th class="fixed-column"></th> 
-                                                    <th class="fixed-column"></th> 
+                                                    <th></th> 
+                                                    <th></th> 
+                                                    <th></th> 
+                                                    <th></th> 
                                                     @foreach ($gradingPeriods as $gradingPeriod)
                                                         @php
                                                             $gradingPeriodAssessmentTypes = $assessments
@@ -1309,36 +1305,36 @@ $(document).on('change', '.date-choice', function () {
 
                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)
                                                             @if ($gradingPeriod == "First Grading")
-                                                                <th class="text-center">Total</th>
-                                                                <th class="text-center">Lab Grade</th>
-                                                                <th class="text-center">1st Grading Grade</th>
-                                                            @endif
+                                                                <th class="text-center fixed-row" style="background: white">Total</th>
+                                                                <th class="text-center fixed-row" style="background: white">Lab Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white" >1st Grading Grade</th>
+                                                            @endif 
                                                             @else
                                                                 @if ($gradingPeriod == "First Grading")
-                                                                    <th class="text-center">Total</th>
-                                                                    <th class="text-center">1st Grading Grade</th>
+                                                                    <th class="text-center fixed-row" style="background: white">Total</th>
+                                                                    <th class="text-center fixed-row" style="background: white" >1st Grading Grade</th>
                                                                 @endif
                                                         @endif 
                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)      
                                                             @if ($gradingPeriod == "Midterm")
-                                                                <th class="text-center">Total</th>
-                                                                <th class="text-center">Lab Grade</th>
-                                                                <th class="text-center">TM Grade</th>
-                                                                <th class="text-center">Midterm Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Total</th>
+                                                                <th class="text-center fixed-row" style="background: white">Lab Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">TM Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Midterm Grade</th>
                                                             @endif
                                                             @else
                                                                 @if ($gradingPeriod == "Midterm")
-                                                                    <th class="text-center">Total</th>
-                                                                    <th class="text-center">TM Grade</th>
-                                                                    <th class="text-center">Midterm Grade</th>
+                                                                    <th class="text-center fixed-row" style="background: white">Total</th>
+                                                                    <th class="text-center fixed-row" style="background: white">TM Grade</th>
+                                                                    <th class="text-center fixed-row" style="background: white">Midterm Grade</th>
                                                                 @endif
                                                         @endif
                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)    
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center">Total</th>
-                                                                <th class="text-center">Lab Grade</th>
-                                                                <th class="text-center">TF Grade</th>
-                                                                <th class="text-center">Final Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Total</th>
+                                                                <th class="text-center fixed-row" style="background: white">Lab Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">TF Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Final Grade</th>
                                                             @endif
 
                                                             
@@ -1348,13 +1344,13 @@ $(document).on('change', '.date-choice', function () {
                                                                     </th>
                                                             @endif
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center">Adjusted Final Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Adjusted Final Grade</th>
                                                             @endif
                                                         @else
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center">Total</th>
-                                                                <th class="text-center">TF Grade</th>
-                                                                <th class="text-center">Final Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Total</th>
+                                                                <th class="text-center fixed-row" style="background: white">TF Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Final Grade</th>
                                                             @endif
                                                     
                                                             @if ($gradingPeriod == "Finals" && $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
@@ -1364,12 +1360,12 @@ $(document).on('change', '.date-choice', function () {
                                                             @endif
 
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center">Adjusted Final Grade</th>
+                                                                <th class="text-center fixed-row" style="background: white">Adjusted Final Grade</th>
                                                             @endif
                                                         @endif
                                                     @endforeach
                                                 </tr>
-                                                <tr  class="fixed-row ">
+                                                <tr  class="fixed-row" >
                                                     <th ></th> 
                                                     <th ></th> 
                                                     <th ></th> 
@@ -1403,7 +1399,7 @@ $(document).on('change', '.date-choice', function () {
                                                             @endphp
                                                             @foreach ($gradingPeriodAssessments as $assessment)
                                                             @if ($assessmentType != 'Direct Bonus Grade')
-                                                                <th class="assessment-column">
+                                                                <th style="background-color: white; border-right: 1px solid black;"class="assessment-column">
                                                                     <p class="assessment-description"
                                                                         data-grading-period="{{ $assessment->grading_period }}"
                                                                         data-type="{{ $assessment->type }}"
@@ -1415,7 +1411,7 @@ $(document).on('change', '.date-choice', function () {
                                                             @endforeach
                                                             @if ($hasAssessments) 
                                                             @if ($assessmentType != 'Direct Bonus Grade')
-                                                                <td class="assessment-column centered-bold">
+                                                                <td style="background-color: white;" class="assessment-column centered-bold">
                                                                     <p class="assessment-description"
                                                                         data-grading-period="{{ $gradingPeriod }}"
                                                                         data-type="{{ $assessmentType }}"
@@ -2145,7 +2141,7 @@ $(document).on('change', '.date-choice', function () {
                                                                             ' . (!empty($assessment->activity_date) ? $assessment->activity_date : ($assessment->manual_activity_date ?? '')) . '
                                                                         </p>
                                                                         <button class="btn btn-sm btn-publish publish-button btn-primary" data-assessment-id="' . $assessment->id . '" data-published="' . ($assessment->published ? 'true' : 'false') . '"' . ($isPastSubjectList ? ' disabled' : '') . '>
-                                                                                ' . ($assessment->published ? 'Hide Scores' : 'Show Scores') . '
+                                                                                ' . ($assessment->published ? 'Hide Scores' : 'Publish Scores') . '
                                                                             </button>
 
                                                                     </th>';
