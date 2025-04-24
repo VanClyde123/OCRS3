@@ -468,7 +468,7 @@ $(document).on('change', '.date-choice', function () {
 
                     var isPublished = this.getAttribute('data-published') === 'true';
 
-                    var confirmPublish = confirm('Do you want to ' + (isPublished ? 'hide' : 'show') + ' scores for this assessment to the students?');
+                    var confirmPublish = confirm('Do you want to ' + (isPublished ? 'hide' : 'publish') + ' scores for this assessment to the students?');
                     if (confirmPublish) {
                         
                             fetch('{{ route("update.publish.status") }}', {
@@ -574,71 +574,54 @@ $(document).on('change', '.date-choice', function () {
 
         <script>
             $(document).ready(function() {
-                function updateDisplayedValue(dropdown, actualGrade, selectedStatus) {
-                    var displayedValue;
-                    switch (selectedStatus) {
-                        case 'DEFAULT':
-                            displayedValue = actualGrade;
-                            break;
-                        case 'DRP':
-                            displayedValue = 'DRP';
-                            break;
-                        case 'OD':
-                            displayedValue = 'OD';
-                            break;
-                        case 'WITHDRAW':
-                            displayedValue = 'Withdraw';
-                            break;
-                        case 'INC':
-                            displayedValue = 'INC';
-                            break;
-                        case 'NFE':
-                            displayedValue = 'NFE';
-                            break;
-                        default:
-                            displayedValue = actualGrade;
-                            break;
+              function updateDisplayedValue(dropdown, actualGrade, selectedStatus) {
+                    
+                    if (selectedStatus === 'DEFAULT') {
+                        dropdown.closest('.grade-dropdown').find('.displayed-value').text(actualGrade);
+                    } else {
+                       
+                        dropdown.closest('.grade-dropdown').find('.displayed-value').text(selectedStatus);
                     }
-                    dropdown.closest('.grade-dropdown').find('.displayed-value').text(displayedValue);
                 }
+                    $('.status-dropdown').change(function() {
+                        var gradeId = $(this).data('grade-id');
+                        var gradeType = $(this).data('grade-type');
+                        var selectedStatus = $(this).val();
+                        var enrolledStudentId = $(this).data('enrolled-student-id');
+                        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                        var actualGrade = $(this).closest('.grade-dropdown').find('.displayed-value').data('actual-grade');
 
-                $('.status-dropdown').change(function() {
-                    var gradeId = $(this).data('grade-id');
-                    var selectedStatus = $(this).val();
-                    var gradeType = $(this).data('grade-type');
-
-                    var dropdown = $(this);
-
-                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                
-                    $.ajax({
-                        url: '{{ route('update.grade.status') }}',
-                        method: 'POST',
-                        data: {
-                            gradeId: gradeId,
-                            status: selectedStatus,
-                            gradeType: gradeType,
-                            _token: csrfToken
-                        },
-                        success: function(response) {
-                            console.log('Response:', response);
                         
-                            updateDisplayedValue(dropdown, response.actualGrade, selectedStatus);
-                        },
-                        error: function(error) {
-                            console.error('error updating grade status:', error);
-                        }
+                        updateDisplayedValue($(this), actualGrade, selectedStatus);
+
+                       
+                        $.ajax({
+                            url: '{{ route('update.grade.status') }}',
+                            method: 'POST',
+                            data: {
+                                gradeId: gradeId,
+                                status: selectedStatus,
+                                gradeType: gradeType, 
+                                enrolledStudentId: enrolledStudentId,
+                                _token: csrfToken
+                            },
+                            success: function(response) {
+                                console.log('Status updated successfully');
+                            },
+                            error: function(error) {
+                                console.error('Error updating grade status:', error);
+                            }
+                        });
+                    });
+
+                   
+                    $('.status-dropdown').each(function() {
+                        var dropdown = $(this);
+                        var actualGrade = dropdown.closest('.grade-dropdown').find('.displayed-value').text();
+                        var selectedStatus = dropdown.val();
+                        updateDisplayedValue(dropdown, actualGrade, selectedStatus);
                     });
                 });
-
-                $('.status-dropdown').each(function() {
-                    var dropdown = $(this);
-                    var actualGrade = dropdown.closest('.grade-dropdown').find('.displayed-value').text();
-                    var selectedStatus = dropdown.val();
-                    updateDisplayedValue(dropdown, actualGrade, selectedStatus);
-                });
-            });
         </script>
 
         <script>
@@ -868,19 +851,24 @@ $(document).on('change', '.date-choice', function () {
 
                                     
                                     if (finals_grade < 75) {
-                                        finalsGradeColumn.addClass('bg-red').removeClass('bg-default');
+                                        finalsGradeSpan.addClass('text-red').removeClass('text-default');
                                     } else {
-                                        finalsGradeColumn.addClass('bg-default').removeClass('bg-red');
+                                        finalsGradeSpan.addClass('text-default').removeClass('text-red');
                                     }
                                 } 
                                 if (adjusted_finals_grade !== null) {
-                                    var adjustedFinalsGradeSpan = $('span.displayed-value[data-enrolled-student-id="' + enrolledStudentId + '"][data-grade-type="adjusted_finals_grade"]');
-                                    var adjustedFinalsGradeColumn = adjustedFinalsGradeSpan.closest('td.grade-column'); 
+                                  var gradeSelect = $('select.status-dropdown[data-adjusted-finals="true"][data-enrolled-student-id="' + enrolledStudentId + '"]');
 
+                                   var formattedGrade = adjusted_finals_grade;
+
+                                    //// update the "DEFAULT" option text
+                                    gradeSelect.find('option[value="DEFAULT"]').text(formattedGrade);
+
+                                    ///// update color based on grade value
                                     if (adjusted_finals_grade < 75) {
-                                        adjustedFinalsGradeColumn.addClass('bg-red').removeClass('bg-default');
+                                        gradeSelect.addClass('text-red').removeClass('text-default');
                                     } else {
-                                        adjustedFinalsGradeColumn.addClass('bg-default').removeClass('bg-red');
+                                        gradeSelect.addClass('text-default').removeClass('text-red');
                                     }
                                 }
                             } else {
@@ -905,6 +893,8 @@ $(document).on('change', '.date-choice', function () {
                 });
             });
         </script>
+
+    
     @endpush
 
     <style>
@@ -926,7 +916,7 @@ $(document).on('change', '.date-choice', function () {
     <div class="content-wrappers">
         <section class="content-header" style="text-align: right;">
             <h2></h2>
-            <input type="button" onclick="window.location.href='{{ url('teacher/list/classlist') }}';" class="btn btn-info" value="Back to Subject List" />
+            <input type="button" onclick="window.location.href='{{ url('teacher/list/classlist') }}';" class="btn btn-info" value="Back to Course List" />
             @php
                 $studentCount = count($enrolledStudents);
             @endphp
@@ -990,7 +980,7 @@ $(document).on('change', '.date-choice', function () {
                     </div>
                     <div class="table-responsive ">
                         <div class="card-body">
-                            <button type="button" class="btn btn-success fixed-column" id="assessmentModalButton" data-toggle="modal" data-target="#assessmentModal" {{ $isPastSubjectList ? 'disabled' : '' }}>Add Assessment</button>
+                            <button type="button" class="btn btn-success" id="assessmentModalButton" data-toggle="modal" data-target="#assessmentModal" {{ $isPastSubjectList ? 'disabled' : '' }}>Add Assessment</button>
                             <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('instructor.editAssessments', ['subjectId' => $subject->id]) }}" class="btn btn-primary {{ $isPastSubjectList ? ' disabled' : '' }}">Edit Assessments</a>
 
                             <form id="scoreForm" action="{{ route('insert.scores') }}" method="post">
@@ -1019,6 +1009,7 @@ $(document).on('change', '.date-choice', function () {
                                    .fixed-column {
                                         position: sticky;
                                         left: 0;
+                                        z-index: 1;
                                         border: 1px solid #000;
                                         font-size: 0.9em; 
                                         white-space: nowrap; 
@@ -1029,20 +1020,38 @@ $(document).on('change', '.date-choice', function () {
                                         line-height: 1.2; 
                                     }
 
-                                    .fixed-row {
+                                    .fixed-column b {
+                                        font-size: 1.1em; 
+                                    }
+                                    .fixed-row th,
+                                    .fixed-row td {
                                         position: sticky;
-                                        top: 0;
+                                        background-color: #f2f2f2;
+                                        z-index: 2;
                                         border: 1px solid #000;
-                                        
+                                        padding: 4px 6px;
                                     }
 
+                                   
+                                    .fixed-row.top-header th,
+                                    .fixed-row.top-header td {
+                                        top: 0;
+                                        z-index: 3; 
+                                    }
+
+                                   
+                                    .fixed-row.bottom-header th,
+                                    .fixed-row.bottom-header td {
+                                        top: 30px; 
+                                        z-index: 2;
+                                    }
 
                                     .assessment-column {
-                                        width: 70px; 
-                                        vertical-align: top;
-                                        padding-top: 4px;            
-                                        padding-bottom: 2px;         
-                                        line-height: 1.2;             
+                                        width: 50px; 
+                                        vertical-align: middle;
+                                        padding: 2px 4px;      
+                                        line-height: 1.2;       
+                                        background-color: #f2f2f2;      
                                     }
 
                                     .assessment-column .score-input {
@@ -1122,6 +1131,17 @@ $(document).on('change', '.date-choice', function () {
                                         background-color: transparent; 
                                         color: black; 
                                     }
+
+                                    /* grade font color change */
+                                    .text-default {
+                                        color: inherit;
+                                    }
+
+                                    .text-red {
+                                        color: red;
+                                        font-weight: bold;
+                                    }
+
                                     .table-scroll-container {
                                         border:solid 1px #000;
                                         max-height: 70vh; 
@@ -1164,6 +1184,10 @@ $(document).on('change', '.date-choice', function () {
                                         padding: 0;
                                         max-width: 180px;
                                     }
+                                    th.fixed-column-space {
+                                    border: none !important;
+                                    background-color: transparent !important;
+                                }
                                 </style>
                                 <div class="table-scroll-container">
                                     <div class="table-container table-striped ">
@@ -1171,10 +1195,10 @@ $(document).on('change', '.date-choice', function () {
                                         <thead>
                                                 <tr >
                                                     <!-- Fixed columns -->
-                                                    <th ></th>
-                                                    <th ></th>
-                                                    <th ></th>
-                                                    <th ></th> 
+                                                    <th class="fixed-column-space"></th>
+                                                    <th class="fixed-column-space"></th>
+                                                    <th class="fixed-column-space"></th>
+                                                    <th class="fixed-column-space"></th> 
                                                     @php
                                                         $gradingPeriods = $assessments->pluck('grading_period')->unique();
                                                         $assessmentTypes = $assessments->pluck('type')->unique();
@@ -1217,10 +1241,10 @@ $(document).on('change', '.date-choice', function () {
                                                 </tr>
                                                 <tr >
                                                     <!-- Fixed columns -->
-                                                    <th></th> 
-                                                    <th></th> 
-                                                    <th></th> 
-                                                    <th></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
                                                     @foreach ($gradingPeriods as $gradingPeriod)
                                                         @php
                                                             $gradingPeriodAssessmentTypes = $assessments
@@ -1305,36 +1329,36 @@ $(document).on('change', '.date-choice', function () {
 
                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)
                                                             @if ($gradingPeriod == "First Grading")
-                                                                <th class="text-center fixed-row" style="background: white">Total</th>
-                                                                <th class="text-center fixed-row" style="background: white">Lab Grade</th>
-                                                                <th class="text-center fixed-row" style="background: white" >1st Grading Grade</th>
-                                                            @endif 
+                                                                <th class="text-center">Total</th>
+                                                                <th class="text-center">Lab Grade</th>
+                                                                <th class="text-center">1st Grading Grade</th>
+                                                            @endif
                                                             @else
                                                                 @if ($gradingPeriod == "First Grading")
-                                                                    <th class="text-center fixed-row" style="background: white">Total</th>
-                                                                    <th class="text-center fixed-row" style="background: white" >1st Grading Grade</th>
+                                                                    <th class="text-center">Total</th>
+                                                                    <th class="text-center">1st Grading Grade</th>
                                                                 @endif
                                                         @endif 
                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)      
                                                             @if ($gradingPeriod == "Midterm")
-                                                                <th class="text-center fixed-row" style="background: white">Total</th>
-                                                                <th class="text-center fixed-row" style="background: white">Lab Grade</th>
-                                                                <th class="text-center fixed-row" style="background: white">TM Grade</th>
-                                                                <th class="text-center fixed-row" style="background: white">Midterm Grade</th>
+                                                                <th class="text-center">Total</th>
+                                                                <th class="text-center">Lab Grade</th>
+                                                                <th class="text-center">TM Grade</th>
+                                                                <th class="text-center">Midterm Grade</th>
                                                             @endif
                                                             @else
                                                                 @if ($gradingPeriod == "Midterm")
-                                                                    <th class="text-center fixed-row" style="background: white">Total</th>
-                                                                    <th class="text-center fixed-row" style="background: white">TM Grade</th>
-                                                                    <th class="text-center fixed-row" style="background: white">Midterm Grade</th>
+                                                                    <th class="text-center">Total</th>
+                                                                    <th class="text-center">TM Grade</th>
+                                                                    <th class="text-center">Midterm Grade</th>
                                                                 @endif
                                                         @endif
                                                         @if (strpos($subject->subject_type, 'LecLab') !== false)    
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center fixed-row" style="background: white">Total</th>
-                                                                <th class="text-center fixed-row" style="background: white">Lab Grade</th>
-                                                                <th class="text-center fixed-row" style="background: white">TF Grade</th>
-                                                                <th class="text-center fixed-row" style="background: white">Final Grade</th>
+                                                                <th class="text-center">Total</th>
+                                                                <th class="text-center">Lab Grade</th>
+                                                                <th class="text-center">TF Grade</th>
+                                                                <th class="text-center">Final Grade</th>
                                                             @endif
 
                                                             
@@ -1344,13 +1368,13 @@ $(document).on('change', '.date-choice', function () {
                                                                     </th>
                                                             @endif
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center fixed-row" style="background: white">Adjusted Final Grade</th>
+                                                                <th class="text-center">Adjusted Final Grade</th>
                                                             @endif
                                                         @else
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center fixed-row" style="background: white">Total</th>
-                                                                <th class="text-center fixed-row" style="background: white">TF Grade</th>
-                                                                <th class="text-center fixed-row" style="background: white">Final Grade</th>
+                                                                <th class="text-center">Total</th>
+                                                                <th class="text-center">TF Grade</th>
+                                                                <th class="text-center">Final Grade</th>
                                                             @endif
                                                     
                                                             @if ($gradingPeriod == "Finals" && $assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
@@ -1360,16 +1384,16 @@ $(document).on('change', '.date-choice', function () {
                                                             @endif
 
                                                             @if ($gradingPeriod == "Finals")
-                                                                <th class="text-center fixed-row" style="background: white">Adjusted Final Grade</th>
+                                                                <th class="text-center">Adjusted Final Grade</th>
                                                             @endif
                                                         @endif
                                                     @endforeach
                                                 </tr>
-                                                <tr  class="fixed-row" >
-                                                    <th ></th> 
-                                                    <th ></th> 
-                                                    <th ></th> 
-                                                    <th ></th> 
+                                                <tr  class="fixed-row top-header">
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
                                                     @foreach ($gradingPeriods as $gradingPeriod)
                                                         @foreach ($assessmentTypes as $assessmentType)
                                                             @php
@@ -1399,27 +1423,20 @@ $(document).on('change', '.date-choice', function () {
                                                             @endphp
                                                             @foreach ($gradingPeriodAssessments as $assessment)
                                                             @if ($assessmentType != 'Direct Bonus Grade')
-                                                                <th style="background-color: white; border-right: 1px solid black;"class="assessment-column">
-                                                                    <p class="assessment-description"
-                                                                        data-grading-period="{{ $assessment->grading_period }}"
-                                                                        data-type="{{ $assessment->type }}"
-                                                                        data-description="{{ $assessment->description }}">
-                                                                        {{ $assessment->abbreviation }} <br> {{ number_format($assessment->max_points, $assessment->max_points == intval($assessment->max_points) ? 0 : 2) }}
-                                                                    </p>
-                                                                </th> 
-                                                                @endif   
-                                                            @endforeach
-                                                            @if ($hasAssessments) 
-                                                            @if ($assessmentType != 'Direct Bonus Grade')
-                                                                <td style="background-color: white;" class="assessment-column centered-bold">
-                                                                    <p class="assessment-description"
-                                                                        data-grading-period="{{ $gradingPeriod }}"
-                                                                        data-type="{{ $assessmentType }}"
-                                                                        data-description="Total Max Points">
-                                                                        {{ $maxPointsTotal }}
-                                                                    </p>
-                                                                </td>
+                                                                <th class="assessment-column">
+                                                                     <span class="assessment-description"
+                                                                          data-grading-period="{{ $assessment->grading_period }}"
+                                                                          data-type="{{ $assessment->type }}"
+                                                                          data-description="{{ $assessment->description }}">
+                                                                        {{ $assessment->abbreviation }}
+                                                                    </span>
+                                                                </th>
                                                             @endif
+                                                        @endforeach
+                                                             @if ($hasAssessments && $assessmentType != 'Direct Bonus Grade')
+                                                                <th class="assessment-column centered-bold">
+                                                                    
+                                                                </th>
                                                             @endif
 
 
@@ -1478,12 +1495,12 @@ $(document).on('change', '.date-choice', function () {
                                                                 <th class="text-center"></th>
                                                             @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
                                                                 <th class="assessment-column">
-                                                                    <p class="assessment-description"
+                                                                    <span class="assessment-description"
                                                                         data-grading-period="{{ $assessment->grading_period }}"
                                                                         data-type="{{ $assessment->type }}"
                                                                         data-description="{{ $assessment->description }}">
                                                                         
-                                                                    </p>
+                                                                    </span>
                                                                 </th>
                                                             @endif
                                                                 <th class="text-center"></th>
@@ -1495,12 +1512,12 @@ $(document).on('change', '.date-choice', function () {
                                                                 <th class="text-center"></th>
                                                             @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
                                                                 <th class="assessment-column">
-                                                                    <p class="assessment-description"
+                                                                    <span class="assessment-description"
                                                                         data-grading-period="{{ $assessment->grading_period }}"
                                                                         data-type="{{ $assessment->type }}"
                                                                         data-description="{{ $assessment->description }}">
                                                                         
-                                                                    </p>
+                                                                    </span>
                                                                 </th>
                                                             @endif
                                                                 <th class="text-center"></th>
@@ -1508,6 +1525,141 @@ $(document).on('change', '.date-choice', function () {
                                                         @endif
                                                     @endforeach
                                                 </tr>
+
+
+                                                <tr  class="fixed-row bottom-header">
+                                                    <th class="fixed-column-space" ></th> 
+                                                    <th class="fixed-column-space" ></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    <th class="fixed-column-space"></th> 
+                                                    @foreach ($gradingPeriods as $gradingPeriod)
+                                                        @foreach ($assessmentTypes as $assessmentType)
+                                                            @php
+                                                                $gradingPeriodAssessments = $assessments
+                                                                    ->where('grading_period', $gradingPeriod)
+                                                                    ->where('type', $assessmentType)
+                                                                    ->sortBy(function ($assessment) {
+                                                                        $typeOrder = [
+                                                                            'Quiz' => 1,
+                                                                            'Additional Points Quiz' => 1,
+                                                                            'OtherActivity' => 2,
+                                                                            'Additional Points OT' => 2,
+                                                                            'Exam' => 3,
+                                                                            'Additional Points Exam' => 3,
+                                                                            'Lab Activity' => 4,
+                                                                            'Additional Points Lab' => 4,
+                                                                            'Lab Exam' => 5,
+                                                                            'Direct Bonus Grade' => 6,
+                                                                        ];
+                                                                        return [
+                                                                            'type_order' => $typeOrder[$assessment->type] ?? 999,
+                                                                        'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
+                                                                        ];
+                                                                    });
+                                                                $maxPointsTotal = $gradingPeriodAssessments->sum('max_points');
+                                                                $hasAssessments = $gradingPeriodAssessments->isNotEmpty();
+                                                            @endphp
+                                                             @foreach ($gradingPeriodAssessments as $assessment)
+                                                                @if ($assessmentType != 'Direct Bonus Grade')
+                                                                    <th class="assessment-column">
+                                                                        {{ number_format($assessment->max_points, $assessment->max_points == intval($assessment->max_points) ? 0 : 2) }}
+                                                                    </th>
+                                                                @endif
+                                                            @endforeach
+                                                           @if ($hasAssessments && $assessmentType != 'Direct Bonus Grade')
+                                                                    <th class="assessment-column centered-bold">
+                                                                        {{ $maxPointsTotal }}
+                                                                    </th>
+                                                                @endif
+
+
+
+                                                        
+                                                        @if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders)
+                                                        
+                                                            @if ($gradingPeriod == "First Grading" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+
+                                                            @if ($gradingPeriod == "Midterm" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+
+                                                            @if ($gradingPeriod == "Finals" && strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+                                                        @endif
+
+
+
+                                                        @endforeach
+                                                        @if ($gradingPeriod == "First Grading")
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                
+                                                            @else
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+
+                                                        @endif
+                                                        @if ($gradingPeriod == "Midterm")
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @else
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @endif
+                                                        @endif
+                                                        @if ($gradingPeriod == "Finals")
+                                                            @if (strpos($subject->subject_type, 'LecLab') !== false)
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
+                                                                <th class="assessment-column">
+                                                                    <span class="assessment-description"
+                                                                        data-grading-period="{{ $assessment->grading_period }}"
+                                                                        data-type="{{ $assessment->type }}"
+                                                                        data-description="{{ $assessment->description }}">
+                                                                        
+                                                                    </span>
+                                                                </th>
+                                                            @endif
+                                                                <th class="text-center"></th>
+                                                                
+                                                                
+                                                        @else
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                            @if ($assessments->where('grading_period', $gradingPeriod)->where('type', 'Direct Bonus Grade')->count() > 0)
+                                                                <th class="assessment-column">
+                                                                    <span class="assessment-description"
+                                                                        data-grading-period="{{ $assessment->grading_period }}"
+                                                                        data-type="{{ $assessment->type }}"
+                                                                        data-description="{{ $assessment->description }}">
+                                                                        
+                                                                    </span>
+                                                                </th>
+                                                            @endif
+                                                                <th class="text-center"></th>
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
+                                                </tr>
+
+
                                                 <tr>
                                                     <th >No.</th> 
                                                     <th >ID</th> 
@@ -1587,9 +1739,9 @@ $(document).on('change', '.date-choice', function () {
                                                                     if ($gradingPeriodAssessments->isNotEmpty()) {
                                                                     if ($assessment->type != 'Direct Bonus Grade') {
                                                                     echo '<td class="assessment-column centered-bold">
-                                                                        <p class="assessment-description" data-type="' . $assessmentType . '" data-description="Total Points" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grading-period="' . $gradingPeriod . '">
+                                                                        <span class="assessment-description" data-type="' . $assessmentType . '" data-description="Total Points" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grading-period="' . $gradingPeriod . '">
                                                                             ' . $totalPointsForAssessmentType . '
-                                                                        </p>
+                                                                        </span>
                                                                     </td>';
                                                                 }
 
@@ -1895,26 +2047,26 @@ $(document).on('change', '.date-choice', function () {
 
                                                                             //// column for fn grade - actual fn grade -no additions
                                                                             //// column for  fn grade
-                                                                        $backgroundClass = 'bg-default';
+                                                                        $textClass = 'text-default';
 
                                                                     
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
-                                                                                $backgroundClass = 'bg-red'; 
+                                                                                 $textClass = 'text-red';
                                                                                 break; 
                                                                             }
                                                                         }
 
                                                                     
-                                                                        echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+                                                                        echo '<td class="grade-column centered-bold">';
 
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             echo '<div class="grade-dropdown displayed-value">';
                                                                             if ($grade->finals_grade !== null) {
                                                                             
-                                                                                echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
-                                                                                    number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
-                                                                                    '</span>';
+                                                                                 echo '<span class="displayed-value ' . $textClass . '" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' .
+                                                                        number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) .
+                                                                        '</span>';
                                                                             }
                                                                             }
                                                                             echo '</td>';
@@ -1936,18 +2088,18 @@ $(document).on('change', '.date-choice', function () {
                                                                         }
 
                                                                         //// column for  fn grade
-                                                                        $backgroundClass = 'bg-default';
+                                                                       $textClass = 'text-default';
 
                                                                     
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->adjusted_finals_grade !== null && $grade->adjusted_finals_grade < 75) {
-                                                                                $backgroundClass = 'bg-red'; 
+                                                                                 $textClass = 'text-red';
                                                                                 break; 
                                                                             }
                                                                         }
 
                                                                     
-                                                                        echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+                                                                        echo '<td class="grade-column centered-bold ">';
 
                                                                      foreach ($enrolledStudent->grades as $grade) {
                                                                         echo '<div class="grade-dropdown displayed-value">';
@@ -1959,17 +2111,22 @@ $(document).on('change', '.date-choice', function () {
                                                                                 $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2
                                                                             );
 
-                                                                            echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
+                                                                            echo '<select 
+                                                                                class="status-dropdown ' . $textClass . '" 
+                                                                                data-grade-type="final" 
+                                                                                data-enrolled-student-id="' . $enrolledStudent->id . '" 
+                                                                                data-grade-id="' . $grade->id . '" 
+                                                                                data-adjusted-finals="true" 
+                                                                                ' . ($isPastSubjectList ? 'disabled' : '') . '>';
 
-                                                                            // Grade as the first option
-                                                                            echo '<option value="DEFAULT" ' . ($grade->finals_status === 'DEFAULT' ? 'selected' : '') . '>' . $formattedGrade . '</option>';
+                                                                                   ///// Grade as the first option
+                                                                                echo '<option value="DEFAULT" ' . ($grade->finals_status === 'DEFAULT' ? 'selected' : '') . '>' . $formattedGrade . '</option>';
 
-                                                                            // Other status options
-                                                                            echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                            echo '<option value="OD" ' . ($grade->finals_status === 'OD' ? 'selected' : '') . '>OD</option>';
-                                                                            echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                            echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
-                                                                            echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
+                                                                                 foreach ($statuses as $status) {
+                                                                                    $selected = $grade->finals_status === $status->name ? 'selected' : '';
+                                                                                    echo '<option value="' . $status->name . '" ' . $selected . '>' . $status->name . '</option>';
+                                                                                }
+
 
                                                                             echo '</select>';
                                                                         }
@@ -2007,26 +2164,26 @@ $(document).on('change', '.date-choice', function () {
                             
                                                                             //// column for fn grade - actual fn grade -no additions
                                                                             //// column for  fn grade
-                                                                        $backgroundClass = 'bg-default';
+                                                                        $textClass = 'text-default';
 
                                                                     
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->finals_grade !== null && $grade->finals_grade < 75) {
-                                                                                $backgroundClass = 'bg-red'; 
+                                                                              $textClass = 'text-red';
                                                                                 break; 
                                                                             }
                                                                         }
 
                                                                     
-                                                                        echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+                                                                        echo '<td class="grade-column centered-bold ">';
 
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             echo '<div class="grade-dropdown displayed-value">';
                                                                             if ($grade->finals_grade !== null) {
                                                                             
-                                                                                echo '<span class="displayed-value" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' . 
-                                                                                    number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) . 
-                                                                                    '</span>';
+                                                                                 echo '<span class="displayed-value ' . $textClass . '" data-enrolled-student-id="' . $enrolledStudent->id . '" data-grade-type="finals_grade">' .
+                                                                                number_format($grade->finals_grade, $grade->finals_grade == intval($grade->finals_grade) ? 0 : 2) .
+                                                                                '</span>';
                                                                             }
                                                                             }
                                                                             echo '</td>';
@@ -2049,40 +2206,46 @@ $(document).on('change', '.date-choice', function () {
 
 
                                                                         //// column for  fn grade
-                                                                        $backgroundClass = 'bg-default';
+                                                                       $textClass = 'text-default';
 
                                                                     
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             if ($grade->adjusted_finals_grade !== null && $grade->adjusted_finals_grade < 75) {
-                                                                                $backgroundClass = 'bg-red'; 
+                                                                               $textClass = 'text-red';
                                                                                 break; 
                                                                             }
                                                                         }
 
                                                                     
-                                                                        echo '<td class="grade-column centered-bold ' . $backgroundClass . '">';
+                                                                        echo '<td class="grade-column centered-bold ">';
 
                                                                         foreach ($enrolledStudent->grades as $grade) {
                                                                             echo '<div class="grade-dropdown displayed-value">';
 
-                                                                            // Only show if grade is available
+                                                                            ///Only show if grade is available
                                                                             if ($grade->adjusted_finals_grade !== null) {
                                                                                 $formattedGrade = number_format(
                                                                                     $grade->adjusted_finals_grade,
                                                                                     $grade->adjusted_finals_grade == intval($grade->adjusted_finals_grade) ? 0 : 2
                                                                                 );
 
-                                                                                echo '<select class="status-dropdown" data-grade-type="final" data-grade-id="' . $grade->id . '" ' . ($isPastSubjectList ? 'disabled' : '') . '>';
+                                                                               echo '<select 
+                                                                                class="status-dropdown ' . $textClass . '" 
+                                                                                data-grade-type="final" 
+                                                                                data-enrolled-student-id="' . $enrolledStudent->id . '" 
+                                                                                data-grade-id="' . $grade->id . '" 
+                                                                                data-adjusted-finals="true" 
+                                                                                ' . ($isPastSubjectList ? 'disabled' : '') . '>';
 
-                                                                                // Grade as the first option
+                                                                                ///// Grade as the first option
                                                                                 echo '<option value="DEFAULT" ' . ($grade->finals_status === 'DEFAULT' ? 'selected' : '') . '>' . $formattedGrade . '</option>';
 
-                                                                                // Other status options
-                                                                                echo '<option value="DRP" ' . ($grade->finals_status === 'DRP' ? 'selected' : '') . '>DRP</option>';
-                                                                                echo '<option value="OD" ' . ($grade->finals_status === 'OD' ? 'selected' : '') . '>OD</option>';
-                                                                                echo '<option value="WITHDRAW" ' . ($grade->finals_status === 'WITHDRAW' ? 'selected' : '') . '>Withdraw</option>';
-                                                                                echo '<option value="NFE" ' . ($grade->finals_status === 'NFE' ? 'selected' : '') . '>NFE</option>';
-                                                                                echo '<option value="INC" ' . ($grade->finals_status === 'INC' ? 'selected' : '') . '>INC</option>';
+                                                                                 foreach ($statuses as $status) {
+                                                                                    $selected = $grade->finals_status === $status->name ? 'selected' : '';
+                                                                                    echo '<option value="' . $status->name . '" ' . $selected . '>' . $status->name . '</option>';
+                                                                                }
+
+                                                                            
 
                                                                                 echo '</select>';
                                                                             }
@@ -2134,12 +2297,154 @@ $(document).on('change', '.date-choice', function () {
                                                                 foreach ($gradingPeriodAssessments as $assessment) {
                                                                     if ($assessment->type != 'Direct Bonus Grade' ) {
                                                                     echo '<th class="assessment-column">
-                                                                        <p class="assessment-description"
+                                                                        <span class="assessment-description"
                                                                             data-grading-period="' . $assessment->grading_period . '"
                                                                             data-type="' . $assessment->type . '"
                                                                             data-description="' . $assessment->description . '">
                                                                             ' . (!empty($assessment->activity_date) ? $assessment->activity_date : ($assessment->manual_activity_date ?? '')) . '
-                                                                        </p>
+                                                                        </span>
+                                                                        
+
+                                                                    </th>';
+                                                                    }
+                                                                    
+                                                                    $currentColIndex++; ///// move to the next column
+                                                                }
+                                                            
+                                                            if ($assessmentType === $lastAssessmentType && $showTotalLecHeaders) {
+                                                            if ($gradingPeriod == "First Grading" && strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            
+                                                                    echo '<th class="assessment-column"></th>
+                                                                        <th class="assessment-column"></th>';
+                                                                            $currentColIndex++; ///// move to the next column
+                                                                        
+                                                                    }
+
+                                                            if ($gradingPeriod == "Midterm" && strpos($subject->subject_type, 'LecLab') !== false) {
+                                                            
+                                                                    echo '<th class="assessment-column"></th>
+                                                                        <th class="assessment-column"></th>';
+                                                                            $currentColIndex++; ///// move to the next column
+                                                                        
+                                                                    }
+
+                                                                if ($gradingPeriod == "Finals" && strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                
+                                                                    echo '<th class="assessment-column"></th>
+                                                                        <th class="assessment-column"></th>';
+                                                                            $currentColIndex++; ///// move to the next column
+                                                                        
+                                                                    }
+
+                                                                }
+
+
+                                                                if ($gradingPeriodAssessments->isNotEmpty()) {
+                                                                    //// empty th for Total Points
+                                                                    if ($assessment->type != 'Direct Bonus Grade') {
+                                                                    echo '<th class="assessment-column"></th>';
+                                                                }
+                                                                    $currentColIndex++; 
+                                                                }
+                                                            }
+                                                            $subjectId = $subject->id;
+                                                                ///// empty th for grades column under 
+                                                        
+
+                                                    if ($gradingPeriod == "First Grading") {
+                                                            if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                //// for LecLab subject type
+                                                                echo '<th class="grade-column"></th>
+                                                                    <th class="grade-column"></th>';
+                                                            } else {
+                                                                //// for Lec and Lab type
+                                                                echo '<th class="grade-column"></th>';
+                                                            }
+                                                        }  elseif ($gradingPeriod == "Midterm") {
+                                                                if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                    ///// For LecLab subject type in Midterm
+                                                                    echo '<th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>'; 
+                                                                
+                                                                } else {
+                                                                    ///// For Lec and Lab type in Midterm
+                                                                    echo '<th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>'; 
+                                                                    
+                                                                }
+                                                            } elseif ($gradingPeriod == "Finals") {
+                                                                if (strpos($subject->subject_type, 'LecLab') !== false) {
+                                                                    //// For LecLab subject type in Finals
+                                                                    echo '<th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>'; 
+                                                                    if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                        echo '<th class="assessment-column"></th>';
+                                                                    }
+                                                                } else {
+                                                                    //// For Lec and Lab type in Finals
+                                                                    echo '<th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>
+                                                                        <th class="grade-column"></th>'; 
+                                                                    if ($assessment->type == 'Direct Bonus Grade' && $assessments->where('type', 'Direct Bonus Grade')->count() > 0) {
+                                                                        echo '<th class="assessment-column"></th>';
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        echo '
+                                                        <th class="grade-column">
+                                                           
+                                                        </th>';
+                                                            $currentColIndex++;
+                                                        }
+                                                    @endphp
+                                                </tr>
+                                                     <!----for the publish button appear below---->
+                                                   <tr>
+                                                    <th class="fixed-column"></th> 
+                                                    <th class="fixed-column"></th> 
+                                                    <th class="fixed-column"></th> 
+                                                    <th class="fixed-column"></th> 
+                                                    @php
+                                                        $currentColIndex = 1; 
+                                                        foreach ($gradingPeriods as $gradingPeriod) {
+                                                            foreach ($assessmentTypes as $assessmentType) {
+                                                                $gradingPeriodAssessments = $assessments
+                                                                    ->where('grading_period', $gradingPeriod)
+                                                                    ->where('type', $assessmentType)
+                                                                    ->sortBy(function ($assessment) {
+                                                                        $typeOrder = [
+                                                                            'Quiz' => 1,
+                                                                                    'Additional Points Quiz' => 2,
+                                                                                    'OtherActivity' => 3,
+                                                                                    'Additional Points OT' => 4,
+                                                                                    'Exam' => 5,
+                                                                                    'Additional Points Exam' => 6,
+                                                                                    'Lab Activity' => 7,
+                                                                                    'Lab Exam' => 8,
+                                                                                    'Additional Points Lab' => 9,
+                                                                                    'Direct Bonus Grade' => 10,
+                                                                        ];
+                                                                        return [
+                                                                                            'type_order' => $typeOrder[$assessment->type] ?? 999,
+                                                                                        'activity_date' => $assessment->activity_date ? $assessment->activity_date : '9999-12-31',
+                                                                                        
+                                                                                        ];
+                                                                    });
+
+                                                                
+                                                                foreach ($gradingPeriodAssessments as $assessment) {
+                                                                    if ($assessment->type != 'Direct Bonus Grade' ) {
+                                                                    echo '<th class="assessment-column">
+                                                                        <span class="assessment-description" style="display: none;"
+                                                                            data-grading-period="' . $assessment->grading_period . '"
+                                                                            data-type="' . $assessment->type . '"
+                                                                            data-description="' . $assessment->description . '">
+                                                                            ' . (!empty($assessment->activity_date) ? $assessment->activity_date : ($assessment->manual_activity_date ?? '')) . '
+                                                                        </span>
                                                                         <button class="btn btn-sm btn-publish publish-button btn-primary" data-assessment-id="' . $assessment->id . '" data-published="' . ($assessment->published ? 'true' : 'false') . '"' . ($isPastSubjectList ? ' disabled' : '') . '>
                                                                                 ' . ($assessment->published ? 'Hide Scores' : 'Publish Scores') . '
                                                                             </button>
@@ -2248,8 +2553,10 @@ $(document).on('change', '.date-choice', function () {
                                         </table>
                                     </div>
                                 </div>
+                                <br>
 
                                 <a href="{{ route('generateExcelReport', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank">Records Report</a>
+                                <a href="{{ route('generatePdfReport', ['subjectId' => $subject->id]) }}"  class="btn btn-success" target="_blank">Records Report (PDF)</a>
                                 <a href="{{ route('export.gradeslist', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank">Grades List</a>
                                 <a href="{{ route('export.summary', ['subjectId' => $subject->id]) }}" class="btn btn-success" target="_blank"> Summary</a>      
                                 <a href="{{ $isPastSubjectList ? 'javascript:void(0);' : route('teacher.list.studentlistremove', ['subjectId' => $subject->id]) }}" class="btn btn-danger{{ $isPastSubjectList ? ' disabled' : '' }}">Remove Students</a>
