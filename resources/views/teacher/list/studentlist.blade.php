@@ -976,7 +976,7 @@ $(document).on('change', '.date-choice', function () {
             
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">{{ $subject->subject_code }} | {{ $subject->description }} </h3>
+                        <h3 class="card-title">{{ $subject->subject_code }} | {{ $subject->description }} | {{ $subject->section }}</h3>
                     </div>
                     <div class="table-responsive ">
                         <div class="card-body">
