@@ -1201,7 +1201,7 @@ $(document).on('change', '.date-choice', function () {
   }
                                 </style>
                                 <div style="margin-bottom: 10px;">
-                                    <button type ="button"class="btn btn-info" onclick="zoomIn()">Zoom In +s</button>
+                                    <button type ="button"class="btn btn-info" onclick="zoomIn()">Zoom In +</button>
                                     <button type ="button"class="btn btn-info" onclick="zoomOut()">Zoom Out -</button>
                                     <button type ="button"class="btn btn-info" onclick="resetZoom()">Reset Zoom</button>
                                 </div>
